@@ -271,17 +271,25 @@ textarea#pain-note{ width:100%; min-height:56px; resize:vertical; border-radius:
 .nutrition-targets{ display:flex; flex-direction:column; gap:4px; margin-top:14px; padding-top:14px; border-top:1px dashed var(--border); font-size:12.5px; color:var(--ink-dim); font-weight:600; }
 
 /* ============ WEEK ============ */
-.week-range{ font-size:12.5px; color:var(--ink-dim); font-weight:650; margin-bottom:12px; }
-.week-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:7px; }
-@media (max-width:560px){ .week-grid{ grid-template-columns:repeat(4,1fr); } }
-.day-tile{ background:var(--surface-2); border:1.5px solid transparent; border-radius:14px; padding:9px 7px; text-align:center; display:flex; flex-direction:column; gap:4px; align-items:center; }
-.day-tile.today{ background:linear-gradient(160deg,var(--grad-a),var(--grad-b)); border-color:transparent; box-shadow:var(--shadow-glow); }
-.day-tile.today .dname,.day-tile.today .dtitle,.day-tile.today .dfocus,.day-tile.today .dextra{ color:#fff; }
-.dname{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:12px; letter-spacing:.05em; color:var(--ink-faint); }
-.dtitle{ font-size:10.5px; font-weight:700; line-height:1.25; min-height:26px; }
-.dfocus{ display:none; }
-.dextra{ font-size:9px; color:var(--ink-faint); line-height:1.3; }
-.day-tile.today .dextra{ color:rgba(255,255,255,.85); }
+.week-range{ font-size:12.5px; color:var(--ink-dim); font-weight:650; margin-bottom:14px; }
+.week-strip{ display:flex; gap:9px; overflow-x:auto; padding:2px 2px 8px; margin:0 -2px; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.week-strip::-webkit-scrollbar{ display:none; }
+.day-chip{ flex:0 0 60px; scroll-snap-align:start; width:60px; background:var(--surface-2); border:1.5px solid transparent; border-radius:16px; padding:11px 0 10px; display:flex; flex-direction:column; align-items:center; gap:7px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.day-chip .dname{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:14px; letter-spacing:.04em; color:var(--ink); }
+.day-chip .ddate{ font-size:10.5px; color:var(--ink-faint); font-weight:650; }
+.day-chip .dtype-dot{ width:9px; height:9px; border-radius:50%; background:var(--violet); }
+.day-chip[data-venue="home"] .dtype-dot{ background:var(--teal); }
+.day-chip[data-venue="rest"] .dtype-dot{ background:var(--ink-faint); }
+.day-chip.today{ border-color:var(--ember); }
+.day-chip.selected{ background:linear-gradient(160deg,var(--grad-a),var(--grad-b)); box-shadow:var(--shadow-glow); border-color:transparent; }
+.day-chip.selected .dname,.day-chip.selected .ddate{ color:#fff; }
+.day-chip.selected .dtype-dot{ background:#fff; }
+.week-detail{ background:var(--surface-2); border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:8px; }
+.week-detail-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.week-detail-day{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:16px; letter-spacing:.02em; }
+.week-detail-title{ font-size:15px; font-weight:750; line-height:1.3; }
+.week-detail-focus{ font-size:13px; color:var(--ink-dim); font-weight:600; }
+.week-detail-extra{ font-size:12.5px; color:var(--ink-faint); font-weight:600; padding-top:6px; border-top:1px dashed var(--border); }
 
 /* ============ PROFILE ============ */
 .profile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
@@ -544,7 +552,8 @@ textarea#why-input{ width:100%; min-height:80px; resize:vertical; border-radius:
     <div class="card-icon i-grad"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="16" y1="2" x2="16" y2="6"></line></svg></div>
     <div class="card-title-wrap"><div class="card-title">Haftalık Program</div><div class="card-sub week-range" id="week-range-out">–</div></div>
   </div>
-  <div class="week-grid" id="week-grid"></div>
+  <div class="week-strip" id="week-strip"></div>
+  <div class="week-detail" id="week-detail"></div>
 </section>
 
 <section class="card span-2" id="playlist-card" style="margin-bottom:16px;">
@@ -1452,29 +1461,44 @@ function renderNutrition(){
   targets.innerHTML = lines.map(function(l){return '<div>'+l+'</div>';}).join('');
 }
 
+var selectedWeekDayISO = null;
 function renderWeek(){
-  var wrap = document.getElementById('week-grid');
-  wrap.innerHTML = '';
+  var strip = document.getElementById('week-strip');
+  var detail = document.getElementById('week-detail');
+  strip.innerHTML = '';
   var week = weekNumberFor(todayISO);
   var mondayOffset = -dowIndex(todayISO);
   var monday = new Date(parseISO(todayISO)); monday.setDate(monday.getDate()+mondayOffset);
   var sunday = new Date(monday); sunday.setDate(sunday.getDate()+6);
   document.getElementById('week-range-out').textContent = 'Hafta ' + Math.min(week,TOTAL_WEEKS) + ' · ' + fmtDate(toISO(monday)) + ' – ' + fmtDate(toISO(sunday));
 
+  if(!selectedWeekDayISO) selectedWeekDayISO = todayISO;
+  var weekIsos = [];
+
   SPLIT.forEach(function(day, i){
     var d = new Date(monday); d.setDate(d.getDate()+i);
     var iso = toISO(d);
+    weekIsos.push(iso);
     var isToday = iso === todayISO;
-    var extra = i===6 ? '+ Esneme' : ('+ Kardiyo, Duruş' + (JUMPROPE_DAYS.indexOf(i)!==-1 ? ', İp Atlama' : ''));
-    var tile = el('<div class="day-tile'+(isToday?' today':'')+'"></div>');
-    tile.innerHTML =
+    var isSelected = iso === selectedWeekDayISO;
+    var chip = el('<div class="day-chip'+(isToday?' today':'')+(isSelected?' selected':'')+'" data-venue="'+day.venue+'" data-week-day="'+iso+'"></div>');
+    chip.innerHTML =
       '<div class="dname">'+DOW_SHORT[i]+'</div>' +
-      '<span class="type-pill type-'+day.venue+'">'+VENUE_LABEL[day.venue]+'</span>' +
-      '<div class="dtitle">'+day.title+'</div>' +
-      '<div class="dfocus">'+day.focus+'</div>' +
-      '<div class="dextra">'+extra+'</div>';
-    wrap.appendChild(tile);
+      '<div class="dtype-dot"></div>' +
+      '<div class="ddate">'+d.getDate()+'</div>';
+    strip.appendChild(chip);
   });
+
+  if(weekIsos.indexOf(selectedWeekDayISO) === -1) selectedWeekDayISO = todayISO;
+
+  var selIdx = dowIndex(selectedWeekDayISO);
+  var day = SPLIT[selIdx];
+  var extra = selIdx===6 ? '+ Esneme' : ('+ Kardiyo, Duruş' + (JUMPROPE_DAYS.indexOf(selIdx)!==-1 ? ', İp Atlama' : ''));
+  detail.innerHTML =
+    '<div class="week-detail-head"><span class="week-detail-day">'+DOW_NAMES[selIdx]+'</span><span class="type-pill type-'+day.venue+'">'+VENUE_LABEL[day.venue]+'</span></div>' +
+    '<div class="week-detail-title">'+day.title+'</div>' +
+    '<div class="week-detail-focus">'+day.focus+'</div>' +
+    '<div class="week-detail-extra">'+extra+'</div>';
 }
 
 function renderProfile(){
@@ -1728,6 +1752,12 @@ document.addEventListener('click', function(e){
   var tabBtn = e.target.closest('[data-goto-tab]');
   if(tabBtn){
     showTab(tabBtn.dataset.gotoTab);
+    return;
+  }
+  var dayChip = e.target.closest('.day-chip');
+  if(dayChip){
+    selectedWeekDayISO = dayChip.dataset.weekDay;
+    renderWeek();
     return;
   }
   var rpePill = e.target.closest('.rpe-pill');
