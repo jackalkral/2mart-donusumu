@@ -152,22 +152,41 @@ button{ font-family:inherit; }
 .venue-rest,.type-rest{ background:var(--surface-3); color:var(--ink-dim); }
 
 /* ============ CHECK ROWS / MOVEMENT ICONS ============ */
-.check-row{ display:flex; align-items:flex-start; gap:12px; padding:11px 4px; border-bottom:1px solid var(--border); position:relative; }
+.check-row{
+  display:flex; align-items:center; gap:12px; padding:13px 6px; border-bottom:1px solid var(--border);
+  position:relative; cursor:pointer; -webkit-tap-highlight-color:transparent; border-radius:12px;
+}
 .check-row:last-child{ border-bottom:none; }
-.mv-box{ flex:0 0 auto; width:38px; height:38px; border-radius:11px; background:var(--surface-2); display:flex; align-items:center; justify-content:center; }
-.mv-icon{ width:26px; height:26px; }
+.check-row:active{ background:var(--surface-2); }
+.mv-box{ flex:0 0 auto; width:34px; height:34px; border-radius:10px; background:var(--surface-2); display:flex; align-items:center; justify-content:center; }
+.mv-icon{ width:21px; height:21px; }
 .mv-icon .mv-line{ stroke:currentColor; stroke-width:4; stroke-linecap:round; fill:none; }
 .mv-icon .mv-head{ fill:currentColor; }
 .mv-icon .mv-context{ stroke:var(--border); stroke-width:2.5; stroke-dasharray:3 3; }
 .mv-icon .rope{ fill:none; stroke:currentColor; stroke-width:2; opacity:.55; }
-.check-row input[type="checkbox"]{ appearance:none; -webkit-appearance:none; width:23px; height:23px; margin-top:2px; border-radius:8px; border:2px solid var(--border); background:var(--surface); cursor:pointer; flex:0 0 auto; position:relative; transition:.15s; }
-.check-row input[type="checkbox"]:checked{ background:linear-gradient(135deg,var(--teal),#34D399); border-color:transparent; animation:checkPop .3s cubic-bezier(.3,1.4,.4,1); }
-.check-row input[type="checkbox"]:checked::after{ content:''; position:absolute; left:6px; top:2px; width:6px; height:11px; border:solid #fff; border-width:0 2.5px 2.5px 0; transform:rotate(40deg); }
+.check-row input[type="checkbox"]{ position:absolute; opacity:0; width:1px; height:1px; pointer-events:none; }
 @keyframes checkPop{ 0%{ transform:scale(.7); } 60%{ transform:scale(1.18); } 100%{ transform:scale(1); } }
-.check-row label{ flex:1 1 auto; min-width:0; font-weight:650; font-size:14.5px; cursor:pointer; line-height:1.4; }
-.check-row.done label{ color:var(--ink-dim); text-decoration:line-through; text-decoration-color:var(--teal); text-decoration-thickness:2px; }
+.check-row-body{ flex:1 1 auto; min-width:0; }
+.check-row-title{ font-weight:650; font-size:14.5px; line-height:1.4; }
+.check-row.done .check-row-title{ color:var(--ink-dim); text-decoration:line-through; text-decoration-color:var(--teal); text-decoration-thickness:2px; }
 .check-row.done .mv-box{ background:var(--teal-soft); color:var(--teal); }
 .check-row .detail{ display:block; font-weight:500; font-size:12.5px; color:var(--ink-dim); margin-top:2px; }
+.check-circle{
+  flex:0 0 auto; width:32px; height:32px; border-radius:50%; border:2px solid var(--border);
+  background:var(--surface); display:flex; align-items:center; justify-content:center; transition:.15s; position:relative;
+}
+.check-row input:checked ~ .check-circle{ background:linear-gradient(135deg,var(--teal),#34D399); border-color:transparent; animation:checkPop .3s cubic-bezier(.3,1.4,.4,1); }
+.check-row input:checked ~ .check-circle::after{ content:''; width:8px; height:14px; border:solid #fff; border-width:0 2.5px 2.5px 0; transform:rotate(40deg) translate(-1px,-1px); }
+.check-row:has(input:focus-visible) .check-circle{ outline:2.5px solid var(--focus); outline-offset:2px; }
+
+/* ============ ACCORDION (Isınma / Soğuma) ============ */
+.accordion{ margin-bottom:4px; }
+.accordion summary{ cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between; gap:8px; -webkit-tap-highlight-color:transparent; }
+.accordion summary::-webkit-details-marker{ display:none; }
+.accordion summary::marker{ content:''; }
+.accordion-chevron{ font-size:15px; color:var(--ink-faint); transition:transform .2s; flex:0 0 auto; }
+.accordion[open] .accordion-chevron{ transform:rotate(90deg); }
+.accordion-count{ font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:600; color:var(--ink-faint); margin-left:auto; margin-right:2px; }
 .muscle-tag{ display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:.03em; padding:2px 8px; border-radius:999px; background:var(--violet-soft); color:var(--violet); margin-left:4px; vertical-align:1px; }
 .muscle-tag-gold{ background:var(--gold-soft); color:var(--gold-ink); }
 
@@ -398,10 +417,10 @@ textarea#why-input{ width:100%; min-height:80px; resize:vertical; border-radius:
       <div class="card-head-tail" id="today-venue-pill"></div>
     </div>
 
-    <div id="warmup-section">
-      <h3 class="sub">Isınma</h3>
+    <details id="warmup-section" class="accordion">
+      <summary class="sub accordion-summary"><span>Isınma</span><span class="accordion-chevron">›</span></summary>
       <div id="warmup-exercises"></div>
-    </div>
+    </details>
 
     <h3 class="sub">Antrenman</h3>
     <div id="today-exercises"></div>
@@ -409,10 +428,10 @@ textarea#why-input{ width:100%; min-height:80px; resize:vertical; border-radius:
     <h3 class="sub">Karın Bölgesi Devresi</h3>
     <div id="abs-exercises"></div>
 
-    <div id="cooldown-section">
-      <h3 class="sub">Soğuma</h3>
+    <details id="cooldown-section" class="accordion">
+      <summary class="sub accordion-summary"><span>Soğuma</span><span class="accordion-chevron">›</span></summary>
       <div id="cooldown-exercises"></div>
-    </div>
+    </details>
 
     <div class="pain-check">
       <label class="pain-toggle"><input type="checkbox" id="pain-flag"> Bugün ağrı / rahatsızlık hissettim</label>
@@ -710,6 +729,23 @@ function moveIconMarkup(type){
 }
 function moveIcon(type, accentVar){
   return '<svg class="mv-icon" data-move="'+type+'" viewBox="0 0 60 60" style="color:var(--'+(accentVar||'ink-dim')+')" aria-hidden="true">' + moveIconMarkup(type) + '</svg>';
+}
+
+/* ============ CHECK ROW BUILDER ============
+   Whole row is one big tap target (a <label>); the checkbox itself is visually
+   hidden and a large circular check-mark on the trailing edge reflects its state. */
+function checkRowHTML(opts){
+  var muscleTagHtml = opts.muscle ? '<span class="muscle-tag'+(opts.muscleGold?' muscle-tag-gold':'')+'">'+opts.muscle+'</span>' : '';
+  var iconHtml = opts.move ? '<span class="mv-box">'+moveIcon(opts.move, opts.accent||'ink-dim')+'</span>' : '';
+  return '<label class="check-row'+(opts.checked?' done':'')+'">' +
+    iconHtml +
+    '<span class="check-row-body"><span class="check-row-title">'+opts.name+' '+muscleTagHtml+'</span>' +
+      (opts.detail ? '<span class="detail">'+opts.detail+'</span>' : '') +
+      (opts.extra||'') +
+    '</span>' +
+    '<input type="checkbox" '+(opts.checked?'checked':'')+' '+opts.dataAttr+'>' +
+    '<span class="check-circle" aria-hidden="true"></span>' +
+  '</label>';
 }
 
 /* ============ CONSTANTS ============ */
@@ -1260,7 +1296,7 @@ function renderToday(){
     WARMUP_ROUTINE.forEach(function(item){
       var checked = !!w.warmup[item.id];
       var muscleTag = item.muscle ? '<span class="muscle-tag muscle-tag-gold">'+item.muscle+'</span>' : '';
-      var row = el('<div class="check-row'+(checked?' done':'')+'"><div class="mv-box">'+moveIcon(item.move,'gold')+'</div><input type="checkbox" id="wu-'+item.id+'" '+(checked?'checked':'')+' data-warmup="'+item.id+'"><label for="wu-'+item.id+'">'+item.name+' '+muscleTag+'<span class="detail">'+item.detail+'</span></label></div>');
+      var row = el(checkRowHTML({ checked:checked, move:item.move, accent:'gold', name:item.name, muscle:item.muscle, muscleGold:true, detail:item.detail, dataAttr:'data-warmup="'+item.id+'"' }));
       warmupWrap.appendChild(row);
     });
   }
@@ -1290,7 +1326,7 @@ function renderToday(){
         (hintText ? '<span class="wt-hint">'+hintText+'</span>' : '') +
       '</span>';
     }
-    var row = el('<div class="check-row'+(checked?' done':'')+'"><div class="mv-box">'+moveIcon(e.move,'ember')+'</div><input type="checkbox" id="ex-'+e.id+'" '+(checked?'checked':'')+' data-ex="'+e.id+'"><label for="ex-'+e.id+'">'+e.name+' '+muscleTag+'<span class="detail">'+e.detail+'</span>'+weightBlock+'</label></div>');
+    var row = el(checkRowHTML({ checked:checked, move:e.move, accent:'ember', name:e.name, muscle:e.muscle, detail:e.detail, extra:weightBlock, dataAttr:'data-ex="'+e.id+'"' }));
     exWrap.appendChild(row);
   });
 
@@ -1299,7 +1335,7 @@ function renderToday(){
   ABS_CIRCUIT.forEach(function(a){
     var checked = !!w.abs[a.id];
     var muscleTag = a.muscle ? '<span class="muscle-tag">'+a.muscle+'</span>' : '';
-    var row = el('<div class="check-row'+(checked?' done':'')+'"><div class="mv-box">'+moveIcon(a.move,'ember')+'</div><input type="checkbox" id="abs-'+a.id+'" '+(checked?'checked':'')+' data-abs="'+a.id+'"><label for="abs-'+a.id+'">'+a.name+' '+muscleTag+'<span class="detail">'+a.detail+'</span></label></div>');
+    var row = el(checkRowHTML({ checked:checked, move:a.move, accent:'ember', name:a.name, muscle:a.muscle, detail:a.detail, dataAttr:'data-abs="'+a.id+'"' }));
     absWrap.appendChild(row);
   });
 
@@ -1311,7 +1347,7 @@ function renderToday(){
     COOLDOWN_ROUTINE.forEach(function(item){
       var checked = !!w.cooldown[item.id];
       var muscleTag = item.muscle ? '<span class="muscle-tag">'+item.muscle+'</span>' : '';
-      var row = el('<div class="check-row'+(checked?' done':'')+'"><div class="mv-box">'+moveIcon(item.move,'teal')+'</div><input type="checkbox" id="cd-'+item.id+'" '+(checked?'checked':'')+' data-cooldown="'+item.id+'"><label for="cd-'+item.id+'">'+item.name+' '+muscleTag+'<span class="detail">'+item.detail+'</span></label></div>');
+      var row = el(checkRowHTML({ checked:checked, move:item.move, accent:'teal', name:item.name, muscle:item.muscle, detail:item.detail, dataAttr:'data-cooldown="'+item.id+'"' }));
       cooldownWrap.appendChild(row);
     });
   }
@@ -1372,7 +1408,7 @@ function renderPosture(){
   POSTURE_ROUTINE.forEach(function(item){
     var checked = !!p[item.id];
     var muscleTag = item.muscle ? '<span class="muscle-tag muscle-tag-gold">'+item.muscle+'</span>' : '';
-    var row = el('<div class="check-row'+(checked?' done':'')+'"><div class="mv-box">'+moveIcon(item.move,'gold')+'</div><input type="checkbox" id="pos-'+item.id+'" '+(checked?'checked':'')+' data-posture="'+item.id+'"><label for="pos-'+item.id+'">'+item.name+' '+muscleTag+'<span class="detail">'+item.detail+'</span></label></div>');
+    var row = el(checkRowHTML({ checked:checked, move:item.move, accent:'gold', name:item.name, muscle:item.muscle, muscleGold:true, detail:item.detail, dataAttr:'data-posture="'+item.id+'"' }));
     wrap.appendChild(row);
   });
 }
@@ -1399,7 +1435,7 @@ function renderNutrition(){
   wrap.innerHTML = '';
   NUTRITION_ITEMS.forEach(function(label, i){
     var checked = !!n[i];
-    var row = el('<div class="check-row'+(checked?' done':'')+'"><input type="checkbox" id="nut-'+i+'" '+(checked?'checked':'')+' data-nut="'+i+'"><label for="nut-'+i+'">'+label+'</label></div>');
+    var row = el(checkRowHTML({ checked:checked, name:label, dataAttr:'data-nut="'+i+'"' }));
     wrap.appendChild(row);
   });
   var pg = proteinTargetG();
