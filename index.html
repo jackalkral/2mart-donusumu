@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -69,12 +69,12 @@
 /* ============ BASE ============ */
 *{box-sizing:border-box;}
 @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;} }
-html{-webkit-text-size-adjust:100%; overflow-x:hidden; width:100%;}
+html{-webkit-text-size-adjust:100%; overflow-x:hidden; width:100%; touch-action:manipulation;}
 body{
   margin:0; background:var(--bg); color:var(--ink);
   font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
-  padding-bottom:88px; overflow-x:hidden; width:100%;
+  padding-bottom:88px; overflow-x:hidden; width:100%; touch-action:manipulation;
 }
 .mono{ font-family:"JetBrains Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums; }
 h1,h2,h3{ margin:0; text-wrap:balance; }
