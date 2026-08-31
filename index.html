@@ -6,8 +6,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="2 Mart">
 <meta name="theme-color" content="#4F46E5">
 <meta name="description" content="2 Mart Dönüşümü — 44. yaş hedefine kadar günlük antrenman, kardiyo, beslenme ve ilerleme takibi.">
+<link rel="icon" href="icon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icon-180.png">
 <body>
 <title>2 Mart Dönüşümü</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +20,7 @@
 /* ============ TOKENS ============ */
 :root{
   --grad-a:#4F46E5; --grad-b:#06B6D4; --glow:#F472B6;
-  --ember:#FF5A36; --ember-ink:#FFFFFF;
+  --ember:#FF5A36; --ember-ink:#FFFFFF; --ember-soft:#FFE4DC;
   --teal:#0FA76F; --teal-soft:#DCF6E9;
   --gold:#F0A319; --gold-soft:#FDECC8;
   --violet:#7C5CFC; --violet-soft:#EBE5FF;
@@ -33,7 +36,7 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --grad-a:#6366F1; --grad-b:#22D3EE; --glow:#F472B6;
-    --ember:#FF7A5C; --ember-ink:#1A0800;
+    --ember:#FF7A5C; --ember-ink:#1A0800; --ember-soft:#3A1D14;
     --teal:#34D399; --teal-soft:#0E2B22;
     --gold:#FBBF48; --gold-soft:#2E2409;
     --violet:#A78BFA; --violet-soft:#241C42;
@@ -49,7 +52,7 @@
 }
 :root[data-theme="dark"]{
   --grad-a:#6366F1; --grad-b:#22D3EE; --glow:#F472B6;
-  --ember:#FF7A5C; --ember-ink:#1A0800;
+  --ember:#FF7A5C; --ember-ink:#1A0800; --ember-soft:#3A1D14;
   --teal:#34D399; --teal-soft:#0E2B22;
   --gold:#FBBF48; --gold-soft:#2E2409;
   --violet:#A78BFA; --violet-soft:#241C42;
@@ -66,12 +69,12 @@
 /* ============ BASE ============ */
 *{box-sizing:border-box;}
 @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;} }
-html{-webkit-text-size-adjust:100%;}
+html{-webkit-text-size-adjust:100%; overflow-x:hidden; width:100%;}
 body{
   margin:0; background:var(--bg); color:var(--ink);
   font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
-  padding-bottom:88px;
+  padding-bottom:88px; overflow-x:hidden; width:100%;
 }
 .mono{ font-family:"JetBrains Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums; }
 h1,h2,h3{ margin:0; text-wrap:balance; }
@@ -162,6 +165,17 @@ button{ font-family:inherit; }
 .venue-home,.type-home{ background:var(--teal-soft); color:var(--teal); }
 .venue-rest,.type-rest{ background:var(--surface-3); color:var(--ink-dim); }
 
+/* ============ MUSCLE MAP ============ */
+.muscle-map{ display:flex; align-items:center; gap:18px; padding:14px 4px 18px; border-bottom:1px solid var(--border); margin-bottom:4px; }
+.muscle-map:empty{ display:none; }
+.muscle-map-figures{ flex:0 0 auto; width:132px; height:120px; }
+.muscle-map-figures [data-region]{ fill:var(--surface-3); transition:fill .3s; }
+.muscle-map-figures [data-region].active{ fill:var(--ember); }
+.muscle-map-figures .mm-outline{ fill:none; stroke:var(--border); stroke-width:1.5; }
+.muscle-map-legend{ flex:1; min-width:0; display:flex; flex-wrap:wrap; gap:6px; }
+.muscle-map-tag{ font-size:12px; font-weight:800; letter-spacing:.02em; padding:4px 10px; border-radius:999px; background:var(--ember-soft); color:var(--ember); border:1.5px solid transparent; }
+.muscle-map-caption{ font-size:11.5px; color:var(--ink-faint); font-weight:650; width:100%; margin-top:2px; }
+
 /* ============ CHECK ROWS / MOVEMENT ICONS ============ */
 .check-row{
   display:flex; align-items:center; gap:13px; padding:16px 8px; border-bottom:1px solid var(--border);
@@ -169,7 +183,6 @@ button{ font-family:inherit; }
 }
 .check-row:last-child{ border-bottom:none; }
 .check-row:active{ background:var(--surface-2); }
-.mv-box{ flex:0 0 auto; width:34px; height:34px; border-radius:10px; background:var(--surface-2); display:flex; align-items:center; justify-content:center; }
 .mv-icon{ width:21px; height:21px; }
 .mv-icon .mv-line{ stroke:currentColor; stroke-width:4; stroke-linecap:round; fill:none; }
 .mv-icon .mv-head{ fill:currentColor; }
@@ -180,7 +193,6 @@ button{ font-family:inherit; }
 .check-row-body{ flex:1 1 auto; min-width:0; }
 .check-row-title{ font-weight:700; font-size:16.5px; line-height:1.4; }
 .check-row.done .check-row-title{ color:var(--ink-dim); text-decoration:line-through; text-decoration-color:var(--teal); text-decoration-thickness:2px; }
-.check-row.done .mv-box{ background:var(--teal-soft); color:var(--teal); }
 .check-row .detail{ display:block; font-weight:550; font-size:14px; color:var(--ink-dim); margin-top:3px; }
 .check-circle{
   flex:0 0 auto; width:38px; height:38px; border-radius:50%; border:2.5px solid var(--border);
@@ -247,6 +259,9 @@ button{ font-family:inherit; }
 .rpe-pill:active{ transform:scale(0.92); }
 .rpe-pill.active{ background:linear-gradient(135deg,var(--teal),#34D399); border-color:transparent; box-shadow:0 3px 10px -3px rgba(20,184,166,.55); }
 .wt-hint{ flex-basis:100%; font-size:12.5px; color:var(--gold-ink); font-weight:700; }
+.howto-link{ display:inline-flex; align-items:center; gap:5px; margin-top:8px; font-size:12.5px; font-weight:700; color:var(--teal); text-decoration:none; }
+.howto-link svg{ flex:0 0 auto; }
+.howto-link:active{ opacity:.65; }
 
 /* ============ PAIN ============ */
 .pain-check{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--border); }
@@ -441,6 +456,8 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
       </div>
       <div class="card-head-tail" id="today-venue-pill"></div>
     </div>
+
+    <div class="muscle-map" id="muscle-map"></div>
 
     <details id="warmup-section" class="accordion">
       <summary class="sub accordion-summary"><span>Isınma</span><span class="accordion-chevron">›</span></summary>
@@ -757,21 +774,104 @@ function moveIcon(type, accentVar){
   return '<svg class="mv-icon" data-move="'+type+'" viewBox="0 0 60 60" style="color:var(--'+(accentVar||'ink-dim')+')" aria-hidden="true">' + moveIconMarkup(type) + '</svg>';
 }
 
+/* ============ MUSCLE MAP (front + back body diagram) ============ */
+var MUSCLE_MAP_SVG =
+  '<svg class="mm-svg" viewBox="0 0 132 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' +
+    /* front figure */
+    '<circle class="mm-outline" cx="32" cy="10" r="8"/>' +
+    '<rect class="mm-outline" x="28" y="17" width="8" height="6" rx="2"/>' +
+    '<ellipse data-region="shoulders" cx="18" cy="28" rx="9" ry="6"/>' +
+    '<ellipse data-region="shoulders" cx="46" cy="28" rx="9" ry="6"/>' +
+    '<rect data-region="chest" x="20" y="24" width="24" height="18" rx="8"/>' +
+    '<ellipse data-region="biceps" cx="12" cy="34" rx="5" ry="10"/>' +
+    '<ellipse data-region="biceps" cx="52" cy="34" rx="5" ry="10"/>' +
+    '<rect data-region="obliques" x="16" y="44" width="6" height="16" rx="3"/>' +
+    '<rect data-region="obliques" x="42" y="44" width="6" height="16" rx="3"/>' +
+    '<rect data-region="abs" x="22" y="42" width="20" height="20" rx="6"/>' +
+    '<rect data-region="quads" x="18" y="64" width="11" height="28" rx="5"/>' +
+    '<rect data-region="quads" x="35" y="64" width="11" height="28" rx="5"/>' +
+    '<rect data-region="calves" x="19" y="94" width="9" height="22" rx="4"/>' +
+    '<rect data-region="calves" x="36" y="94" width="9" height="22" rx="4"/>' +
+    /* back figure */
+    '<circle class="mm-outline" cx="96" cy="10" r="8"/>' +
+    '<rect class="mm-outline" x="92" y="17" width="8" height="6" rx="2"/>' +
+    '<ellipse data-region="shoulders" cx="82" cy="28" rx="9" ry="6"/>' +
+    '<ellipse data-region="shoulders" cx="110" cy="28" rx="9" ry="6"/>' +
+    '<rect data-region="back" x="84" y="24" width="24" height="14" rx="7"/>' +
+    '<ellipse data-region="triceps" cx="76" cy="34" rx="5" ry="10"/>' +
+    '<ellipse data-region="triceps" cx="116" cy="34" rx="5" ry="10"/>' +
+    '<rect data-region="back" x="88" y="38" width="16" height="14" rx="5"/>' +
+    '<ellipse data-region="glutes" cx="90" cy="58" rx="7" ry="7"/>' +
+    '<ellipse data-region="glutes" cx="102" cy="58" rx="7" ry="7"/>' +
+    '<rect data-region="hamstrings" x="82" y="64" width="11" height="26" rx="5"/>' +
+    '<rect data-region="hamstrings" x="99" y="64" width="11" height="26" rx="5"/>' +
+    '<rect data-region="calves" x="83" y="94" width="9" height="22" rx="4"/>' +
+    '<rect data-region="calves" x="100" y="94" width="9" height="22" rx="4"/>' +
+  '</svg>';
+
+var MUSCLE_REGION_LABEL = {
+  chest:'Göğüs', shoulders:'Omuz', back:'Sırt', biceps:'Biceps', triceps:'Triceps',
+  abs:'Karın', obliques:'Yan Karın', quads:'Quadriceps', hamstrings:'Hamstring',
+  glutes:'Kalça', calves:'Baldır', neck:'Boyun'
+};
+function muscleNameToRegions(name){
+  if(!name) return [];
+  var n = name;
+  var out = [];
+  function has(s){ return n.indexOf(s) !== -1; }
+  if(has('Göğüs')) out.push('chest');
+  if(has('Omuz')) out.push('shoulders');
+  if(has('Sırt')) out.push('back');
+  if(has('Biceps')) out.push('biceps');
+  if(has('Triceps')) out.push('triceps');
+  if(has('Yan Karın')) out.push('obliques');
+  else if(has('Karın') || has('Kor')) out.push('abs');
+  if(has('Quadriceps')) out.push('quads');
+  if(has('Hamstring')) out.push('hamstrings');
+  if(has('Kalça')) out.push('glutes');
+  if(has('Baldır')) out.push('calves');
+  if(has('Boyun')) out.push('neck');
+  return out;
+}
+function renderMuscleMap(){
+  var wrap = document.getElementById('muscle-map');
+  if(!wrap) return;
+  var week = Math.min(weekNumberFor(todayISO), TOTAL_WEEKS);
+  var dow = dowIndex(todayISO);
+  var day = SPLIT[dow];
+  if(!day || day.venue === 'rest'){ wrap.innerHTML = ''; return; }
+  var regionSet = {};
+  (day.exercises||[]).forEach(function(e){ muscleNameToRegions(e.muscle).forEach(function(r){ regionSet[r]=true; }); });
+  ABS_CIRCUIT.forEach(function(a){ muscleNameToRegions(a.muscle).forEach(function(r){ regionSet[r]=true; }); });
+  var regions = Object.keys(regionSet);
+  if(!regions.length){ wrap.innerHTML = ''; return; }
+  var tagsHtml = regions.map(function(r){ return '<span class="muscle-map-tag">'+(MUSCLE_REGION_LABEL[r]||r)+'</span>'; }).join('');
+  wrap.innerHTML =
+    '<div class="muscle-map-figures">'+MUSCLE_MAP_SVG+'</div>' +
+    '<div class="muscle-map-legend">'+tagsHtml+'<span class="muscle-map-caption">Bugün çalışan bölgeler</span></div>';
+  regions.forEach(function(r){
+    wrap.querySelectorAll('[data-region="'+r+'"]').forEach(function(el){ el.classList.add('active'); });
+  });
+}
+
 /* ============ CHECK ROW BUILDER ============
    Whole row is one big tap target (a <label>); the checkbox itself is visually
    hidden and a large circular check-mark on the trailing edge reflects its state. */
 function checkRowHTML(opts){
   var muscleTagHtml = opts.muscle ? '<span class="muscle-tag'+(opts.muscleGold?' muscle-tag-gold':'')+'">'+opts.muscle+'</span>' : '';
-  var iconHtml = opts.move ? '<span class="mv-box">'+moveIcon(opts.move, opts.accent||'ink-dim')+'</span>' : '';
   return '<label class="check-row'+(opts.checked?' done':'')+'">' +
     '<input type="checkbox" '+(opts.checked?'checked':'')+' '+opts.dataAttr+'>' +
-    iconHtml +
     '<span class="check-row-body"><span class="check-row-title">'+opts.name+' '+muscleTagHtml+'</span>' +
       (opts.detail ? '<span class="detail">'+opts.detail+'</span>' : '') +
       (opts.extra||'') +
     '</span>' +
     '<span class="check-circle" aria-hidden="true"></span>' +
   '</label>';
+}
+function howToLink(name){
+  var q = encodeURIComponent(name + ' doğru form nasıl yapılır');
+  return '<a class="howto-link" href="https://www.youtube.com/results?search_query='+q+'" target="_blank" rel="noopener">'+
+    '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Nasıl yapılır</a>';
 }
 
 /* ============ CONSTANTS ============ */
@@ -1321,7 +1421,6 @@ function renderToday(){
     warmupWrap.innerHTML = '';
     WARMUP_ROUTINE.forEach(function(item){
       var checked = !!w.warmup[item.id];
-      var muscleTag = item.muscle ? '<span class="muscle-tag muscle-tag-gold">'+item.muscle+'</span>' : '';
       var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, muscleGold:true, detail:item.detail, dataAttr:'data-warmup="'+item.id+'"' }));
       warmupWrap.appendChild(row);
     });
@@ -1331,7 +1430,6 @@ function renderToday(){
   exWrap.innerHTML = '';
   day.exercises.forEach(function(e){
     var checked = !!w.ex[e.id];
-    var muscleTag = e.muscle ? '<span class="muscle-tag">'+e.muscle+'</span>' : '';
     var weightBlock = '';
     if(e.logWeight){
       var entry = todaysEntry(e.id);
@@ -1350,7 +1448,7 @@ function renderToday(){
         (hintText ? '<span class="wt-hint">'+hintText+'</span>' : '') +
       '</span>';
     }
-    var row = el(checkRowHTML({ checked:checked, name:e.name, muscle:e.muscle, detail:e.detail, extra:weightBlock, dataAttr:'data-ex="'+e.id+'"' }));
+    var row = el(checkRowHTML({ checked:checked, name:e.name, muscle:e.muscle, detail:e.detail, extra:weightBlock+howToLink(e.name), dataAttr:'data-ex="'+e.id+'"' }));
     exWrap.appendChild(row);
   });
 
@@ -1358,8 +1456,7 @@ function renderToday(){
   absWrap.innerHTML = '';
   ABS_CIRCUIT.forEach(function(a){
     var checked = !!w.abs[a.id];
-    var muscleTag = a.muscle ? '<span class="muscle-tag">'+a.muscle+'</span>' : '';
-    var row = el(checkRowHTML({ checked:checked, name:a.name, muscle:a.muscle, detail:a.detail, dataAttr:'data-abs="'+a.id+'"' }));
+    var row = el(checkRowHTML({ checked:checked, name:a.name, muscle:a.muscle, detail:a.detail, extra:howToLink(a.name), dataAttr:'data-abs="'+a.id+'"' }));
     absWrap.appendChild(row);
   });
 
@@ -1370,12 +1467,12 @@ function renderToday(){
     cooldownWrap.innerHTML = '';
     COOLDOWN_ROUTINE.forEach(function(item){
       var checked = !!w.cooldown[item.id];
-      var muscleTag = item.muscle ? '<span class="muscle-tag">'+item.muscle+'</span>' : '';
       var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, detail:item.detail, dataAttr:'data-cooldown="'+item.id+'"' }));
       cooldownWrap.appendChild(row);
     });
   }
 
+  renderMuscleMap();
   renderPain();
 }
 
@@ -1431,8 +1528,7 @@ function renderPosture(){
   wrap.innerHTML = '';
   POSTURE_ROUTINE.forEach(function(item){
     var checked = !!p[item.id];
-    var muscleTag = item.muscle ? '<span class="muscle-tag muscle-tag-gold">'+item.muscle+'</span>' : '';
-    var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, muscleGold:true, detail:item.detail, dataAttr:'data-posture="'+item.id+'"' }));
+    var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, muscleGold:true, detail:item.detail, extra:howToLink(item.name), dataAttr:'data-posture="'+item.id+'"' }));
     wrap.appendChild(row);
   });
 }
