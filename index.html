@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="2 Mart">
 <meta name="theme-color" content="#4F46E5">
 <meta name="description" content="2 Mart Dönüşümü — 44. yaş hedefine kadar günlük antrenman, kardiyo, beslenme ve ilerleme takibi.">
@@ -316,6 +316,29 @@ textarea#pain-note{ width:100%; min-height:60px; resize:vertical; border-radius:
 .week-detail-title{ font-size:17px; font-weight:750; line-height:1.3; }
 .week-detail-focus{ font-size:14.5px; color:var(--ink-dim); font-weight:600; }
 .week-detail-extra{ font-size:14px; color:var(--ink-faint); font-weight:600; padding-top:8px; border-top:1px dashed var(--border); }
+
+#history-strip .day-chip .dtype-dot{ background:var(--border); }
+#history-strip .day-chip.hist-complete .dtype-dot{ background:var(--teal); }
+#history-strip .day-chip.hist-partial .dtype-dot{ background:var(--gold); }
+.hist-date{ display:block; font-size:13.5px; font-weight:650; color:var(--ink-faint); margin-top:-3px; }
+.hist-status{ font-size:12px; font-weight:800; letter-spacing:.02em; padding:5px 11px; border-radius:999px; white-space:nowrap; }
+.hist-status-done{ background:var(--teal-soft); color:var(--teal); }
+.hist-status-partial{ background:var(--gold-soft); color:var(--gold-ink,var(--gold)); }
+.hist-status-none{ background:var(--surface); color:var(--ink-faint); border:1.5px solid var(--border); }
+.hist-rows{ display:flex; flex-direction:column; gap:12px; }
+.hist-row{ display:grid; grid-template-columns:84px 1fr; column-gap:10px; row-gap:5px; align-items:center; }
+.hist-row-label{ font-size:13.5px; font-weight:700; color:var(--ink-dim); }
+.hist-row-val{ font-size:14.5px; font-weight:750; color:var(--ink); text-align:right; font-variant-numeric:tabular-nums; }
+.hist-row-bar{ grid-column:1 / -1; height:7px; border-radius:999px; background:var(--surface); overflow:hidden; }
+.hist-row-fill{ display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,var(--grad-a),var(--grad-b)); }
+.hist-compare{ margin-top:6px; padding-top:14px; border-top:1px dashed var(--border); display:flex; flex-direction:column; gap:9px; }
+.hist-compare-title{ font-size:12.5px; font-weight:800; letter-spacing:.02em; color:var(--ink-faint); text-transform:uppercase; }
+.hist-delta{ display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:14px; }
+.hist-delta-label{ font-weight:650; color:var(--ink-dim); }
+.hist-delta-val{ font-weight:800; font-variant-numeric:tabular-nums; }
+.hist-delta-up{ color:var(--teal); }
+.hist-delta-down{ color:var(--ember); }
+.hist-delta-flat{ color:var(--ink-faint); }
 
 /* ============ PROFILE ============ */
 .profile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
@@ -630,6 +653,15 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
       <span class="mono" id="log-unit-label" style="align-self:center; font-size:13px; color:var(--ink-faint);">Kilo (kg)</span>
       <button type="submit">Ekle</button>
     </form>
+  </section>
+
+  <section class="card" id="history-card">
+    <div class="card-head">
+      <div class="card-icon i-teal"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.5"></circle><path d="M12 9v4l3 2"></path><path d="M8 2.5 5 5.5M16 2.5l3 3"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Geçmiş</div><div class="card-sub">Günlük özet &amp; bir önceki güne göre</div></div>
+    </div>
+    <div class="week-strip" id="history-strip"></div>
+    <div class="week-detail" id="history-detail"></div>
   </section>
 
   <section class="card" id="streak-card">
@@ -1265,6 +1297,28 @@ function cardioComplete(iso){
 function dayComplete(iso){
   return workoutComplete(iso) && cardioComplete(iso) && nutritionComplete(iso) && waterComplete(iso);
 }
+function dayWorkoutCounts(iso){
+  var dow = dowIndex(iso);
+  var day = SPLIT[dow];
+  if(day.venue==='rest') return { done:0, total:0, rest:true };
+  var w = dayWorkout(iso);
+  var exDone = day.exercises.filter(function(e){ return !!w.ex[e.id]; }).length;
+  var absDone = ABS_CIRCUIT.filter(function(a){ return !!w.abs[a.id]; }).length;
+  return { done: exDone+absDone, total: day.exercises.length+ABS_CIRCUIT.length, rest:false };
+}
+function dayNutritionCounts(iso){
+  var n = dayNutrition(iso);
+  return { done: n.filter(Boolean).length, total: n.length };
+}
+function dayHasActivity(iso){
+  var w = state.workout[iso];
+  var wDone = w && ((w.ex && Object.keys(w.ex).some(function(k){ return w.ex[k]; })) || (w.abs && Object.keys(w.abs).some(function(k){ return w.abs[k]; })));
+  var nut = state.nutrition[iso] && state.nutrition[iso].some(Boolean);
+  var wat = (state.water[iso]||0) > 0;
+  var st = (state.steps[iso]||0) > 0;
+  var car = !!state.cardio[iso];
+  return !!(wDone || nut || wat || st || car);
+}
 function computeStreak(){
   var streak=0;
   var cursor = new Date();
@@ -1569,6 +1623,7 @@ function renderNutrition(){
 }
 
 var selectedWeekDayISO = null;
+var selectedHistoryISO = null;
 function renderWeek(){
   var strip = document.getElementById('week-strip');
   var detail = document.getElementById('week-detail');
@@ -1606,6 +1661,100 @@ function renderWeek(){
     '<div class="week-detail-title">'+day.title+'</div>' +
     '<div class="week-detail-focus">'+day.focus+'</div>' +
     '<div class="week-detail-extra">'+extra+'</div>';
+}
+
+/* ============ HISTORY ============ */
+function histRow(label, val, pct){
+  return '<div class="hist-row"><span class="hist-row-label">'+label+'</span><span class="hist-row-val">'+val+'</span><span class="hist-row-bar"><span class="hist-row-fill" style="width:'+Math.max(0,Math.min(100,pct))+'%"></span></span></div>';
+}
+function histDelta(label, diff, unit){
+  unit = unit || '';
+  var rounded = Math.round(diff);
+  var sign = rounded>0 ? '+' : '';
+  var cls = rounded>0 ? 'up' : (rounded<0 ? 'down' : 'flat');
+  var arrow = rounded>0 ? '▲' : (rounded<0 ? '▼' : '—');
+  return '<div class="hist-delta"><span class="hist-delta-label">'+label+'</span><span class="hist-delta-val hist-delta-'+cls+'">'+arrow+' '+sign+rounded.toLocaleString('tr-TR')+unit+'</span></div>';
+}
+function renderHistory(){
+  var strip = document.getElementById('history-strip');
+  if(!strip) return;
+  if(!selectedHistoryISO) selectedHistoryISO = todayISO;
+  var totalDays = daysBetween(PROGRAM_START, todayISO) + 1;
+  var maxChips = 21;
+  var showDays = Math.min(totalDays, maxChips);
+  var startD = parseISO(PROGRAM_START);
+  strip.innerHTML = '';
+  for(var i = totalDays - showDays; i < totalDays; i++){
+    var d = new Date(startD); d.setDate(d.getDate()+i);
+    var iso = toISO(d);
+    var dow = dowIndex(iso);
+    var isToday = iso === todayISO;
+    var isSelected = iso === selectedHistoryISO;
+    var complete = dayComplete(iso);
+    var hasAny = dayHasActivity(iso);
+    var statusCls = complete ? ' hist-complete' : (hasAny ? ' hist-partial' : '');
+    var chip = el('<div class="day-chip'+(isToday?' today':'')+(isSelected?' selected':'')+statusCls+'" data-history-day="'+iso+'"></div>');
+    chip.innerHTML =
+      '<div class="dname">'+DOW_SHORT[dow]+'</div>' +
+      '<div class="dtype-dot"></div>' +
+      '<div class="ddate">'+d.getDate()+'</div>';
+    strip.appendChild(chip);
+  }
+  var selChip = strip.querySelector('.day-chip.selected');
+  if(selChip) selChip.scrollIntoView({block:'nearest', inline:'center'});
+  renderHistoryDetail();
+}
+function renderHistoryDetail(){
+  var detail = document.getElementById('history-detail');
+  if(!detail) return;
+  var iso = selectedHistoryISO;
+  var dow = dowIndex(iso);
+  var day = SPLIT[dow];
+  var prevD = new Date(parseISO(iso)); prevD.setDate(prevD.getDate()-1);
+  var prevISO = toISO(prevD);
+  var hasPrev = daysBetween(PROGRAM_START, prevISO) >= 0;
+
+  var wc = dayWorkoutCounts(iso);
+  var nc = dayNutritionCounts(iso);
+  var steps = state.steps[iso] || 0;
+  var stepGoal = state.stepGoal || 8000;
+  var water = state.water[iso] || 0;
+  var waterGoal = waterTargetMl();
+  var cardioDone = !!state.cardio[iso];
+  var isSunday = dow === 6;
+  var complete = dayComplete(iso);
+  var hasAny = dayHasActivity(iso);
+
+  var statusLabel = complete ? 'Tamamlandı' : (hasAny ? 'Kısmi' : 'Kayıt yok');
+  var statusCls = complete ? 'hist-status-done' : (hasAny ? 'hist-status-partial' : 'hist-status-none');
+
+  var rowsHtml = '';
+  if(!wc.rest){
+    rowsHtml += histRow('Antrenman', wc.done+'/'+wc.total+' egzersiz', wc.total ? Math.round(wc.done/wc.total*100) : 0);
+  } else {
+    rowsHtml += '<div class="hist-row"><span class="hist-row-label">Antrenman</span><span class="hist-row-val">Dinlenme günü</span></div>';
+  }
+  rowsHtml += histRow('Adım', steps.toLocaleString('tr-TR')+' / '+stepGoal.toLocaleString('tr-TR'), stepGoal ? Math.round(steps/stepGoal*100) : 0);
+  rowsHtml += histRow('Su', (Math.round(water/100)/10)+' L / '+(Math.round(waterGoal/100)/10)+' L', waterGoal ? Math.round(water/waterGoal*100) : 0);
+  rowsHtml += histRow('Beslenme', nc.done+'/'+nc.total, nc.total ? Math.round(nc.done/nc.total*100) : 0);
+  rowsHtml += '<div class="hist-row"><span class="hist-row-label">Kardiyo</span><span class="hist-row-val">'+(isSunday ? 'Opsiyonel' : (cardioDone ? 'Yapıldı' : 'Yapılmadı'))+'</span></div>';
+
+  var cmpHtml = '';
+  if(hasPrev){
+    var prevSteps = state.steps[prevISO] || 0;
+    var prevWater = state.water[prevISO] || 0;
+    cmpHtml = '<div class="hist-compare">' +
+      '<div class="hist-compare-title">'+DOW_NAMES[dowIndex(prevISO)]+' gününe göre</div>' +
+      histDelta('Adım', steps - prevSteps) +
+      histDelta('Su', water - prevWater, ' ml') +
+      '</div>';
+  }
+
+  detail.innerHTML =
+    '<div class="week-detail-head"><span class="week-detail-day">'+DOW_NAMES[dow]+'</span><span class="hist-status '+statusCls+'">'+statusLabel+'</span></div>' +
+    '<span class="hist-date">'+fmtDate(iso)+'</span>' +
+    '<div class="hist-rows">'+rowsHtml+'</div>' +
+    cmpHtml;
 }
 
 function renderProfile(){
@@ -1802,6 +1951,7 @@ function render(){
   renderSteps();
   renderNutrition();
   renderWeek();
+  renderHistory();
   renderProfile();
   renderReminders();
   renderBadges();
@@ -1863,8 +2013,13 @@ document.addEventListener('click', function(e){
   }
   var dayChip = e.target.closest('.day-chip');
   if(dayChip){
-    selectedWeekDayISO = dayChip.dataset.weekDay;
-    renderWeek();
+    if(dayChip.dataset.historyDay){
+      selectedHistoryISO = dayChip.dataset.historyDay;
+      renderHistory();
+    } else {
+      selectedWeekDayISO = dayChip.dataset.weekDay;
+      renderWeek();
+    }
     return;
   }
   var rpePill = e.target.closest('.rpe-pill');
