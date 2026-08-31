@@ -1,0 +1,1733 @@
+<title>2 Mart Dönüşümü</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --grad-a:#4F46E5; --grad-b:#06B6D4; --glow:#F472B6;
+  --ember:#FF5A36; --ember-ink:#FFFFFF;
+  --teal:#0FA76F; --teal-soft:#DCF6E9;
+  --gold:#F0A319; --gold-soft:#FDECC8;
+  --violet:#7C5CFC; --violet-soft:#EBE5FF;
+  --danger:#F43F5E; --danger-soft:#FEE2E7; --gold-ink:#8A5C00;
+  --bg:#F1F3FC; --surface:#FFFFFF; --surface-2:#ECF0FB; --surface-3:#E1E6FA;
+  --ink:#10152F; --ink-dim:#585E88; --ink-faint:#9AA0C9; --border:#E1E5F6;
+  --shadow-sm:0 1px 2px rgba(21,26,74,.07), 0 1px 1px rgba(21,26,74,.04);
+  --shadow-md:0 16px 36px -16px rgba(21,26,74,.22), 0 6px 16px -6px rgba(21,26,74,.12);
+  --shadow-glow:0 0 0 1px rgba(255,255,255,.06), 0 20px 50px -20px rgba(79,70,229,.55);
+  --focus:#4F46E5;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --grad-a:#6366F1; --grad-b:#22D3EE; --glow:#F472B6;
+    --ember:#FF7A5C; --ember-ink:#1A0800;
+    --teal:#34D399; --teal-soft:#0E2B22;
+    --gold:#FBBF48; --gold-soft:#2E2409;
+    --violet:#A78BFA; --violet-soft:#241C42;
+    --danger:#FB7185; --danger-soft:#3A1420; --gold-ink:#FBBF48;
+    --bg:#080B18; --surface:#121732; --surface-2:#171D3D; --surface-3:#1F2650;
+    --ink:#EEF0FC; --ink-dim:#A7ADD6; --ink-faint:#666EA0; --border:#242C57;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.35);
+    --shadow-md:0 18px 40px -18px rgba(0,0,0,.6), 0 6px 16px -6px rgba(0,0,0,.4);
+    --shadow-glow:0 0 0 1px rgba(255,255,255,.05), 0 20px 55px -18px rgba(99,102,241,.55);
+    --focus:#8B92FF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --grad-a:#6366F1; --grad-b:#22D3EE; --glow:#F472B6;
+  --ember:#FF7A5C; --ember-ink:#1A0800;
+  --teal:#34D399; --teal-soft:#0E2B22;
+  --gold:#FBBF48; --gold-soft:#2E2409;
+  --violet:#A78BFA; --violet-soft:#241C42;
+  --danger:#FB7185; --danger-soft:#3A1420; --gold-ink:#FBBF48;
+  --bg:#080B18; --surface:#121732; --surface-2:#171D3D; --surface-3:#1F2650;
+  --ink:#EEF0FC; --ink-dim:#A7ADD6; --ink-faint:#666EA0; --border:#242C57;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.35);
+  --shadow-md:0 18px 40px -18px rgba(0,0,0,.6), 0 6px 16px -6px rgba(0,0,0,.4);
+  --shadow-glow:0 0 0 1px rgba(255,255,255,.05), 0 20px 55px -18px rgba(99,102,241,.55);
+  --focus:#8B92FF;
+  color-scheme:dark;
+}
+
+/* ============ BASE ============ */
+*{box-sizing:border-box;}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;} }
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  padding-bottom:60px;
+}
+.mono{ font-family:"JetBrains Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums; }
+h1,h2,h3{ margin:0; text-wrap:balance; }
+p{ margin:0; }
+a{ color:inherit; }
+button{ font-family:inherit; }
+:focus-visible{ outline:2.5px solid var(--focus); outline-offset:2px; border-radius:6px; }
+.wrap{ max-width:900px; margin:0 auto; padding:0 16px; }
+
+/* ============ HERO ============ */
+.hero{ position:relative; overflow:hidden; padding:34px 0 42px; margin-bottom:22px; isolation:isolate; }
+.hero-bg{
+  position:absolute; inset:0; z-index:-2;
+  background:
+    radial-gradient(120% 90% at 18% -10%, rgba(244,114,182,.55), transparent 55%),
+    radial-gradient(90% 80% at 100% 0%, rgba(34,211,238,.5), transparent 60%),
+    linear-gradient(135deg, var(--grad-a), var(--grad-b));
+}
+.hero-bg::after{
+  content:''; position:absolute; inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.16) 1px, transparent 1.4px);
+  background-size:22px 22px; opacity:.5; mix-blend-mode:overlay;
+}
+.hero-inner{ max-width:900px; margin:0 auto; padding:0 16px; color:#fff; }
+.hero-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.hero-eyebrow{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; letter-spacing:.14em; font-size:13px; text-transform:uppercase; color:rgba(255,255,255,.92); background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.28); padding:5px 12px; border-radius:999px; backdrop-filter:blur(6px); }
+.hero-startdate{ font-size:12.5px; color:rgba(255,255,255,.85); }
+.hero-title{
+  font-family:"Big Shoulders Display",sans-serif; font-weight:900; letter-spacing:.01em;
+  font-size:clamp(38px,9vw,64px); line-height:.94; text-transform:uppercase;
+  margin-bottom:22px; text-shadow:0 6px 24px rgba(10,14,40,.25);
+}
+.hero-main{ display:flex; align-items:center; gap:28px; flex-wrap:wrap; margin-bottom:22px; }
+.ring-wrap{ position:relative; width:172px; height:172px; flex:0 0 auto; }
+.ring-svg{ width:100%; height:100%; transform:rotate(-90deg); filter:drop-shadow(0 8px 24px rgba(0,0,0,.25)); }
+.ring-track{ fill:none; stroke:rgba(255,255,255,.22); stroke-width:11; }
+.ring-fill{ fill:none; stroke:#fff; stroke-width:11; stroke-linecap:round; transition:stroke-dashoffset .8s cubic-bezier(.3,.9,.3,1); }
+.ring-center{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+.ring-num{ font-family:"Big Shoulders Display",sans-serif; font-weight:900; font-size:46px; line-height:1; }
+.ring-label{ font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.85); margin-top:2px; }
+.hero-stats{ display:flex; flex-wrap:wrap; gap:22px 30px; }
+.hstat{ display:flex; flex-direction:column; gap:2px; }
+.hstat-n{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:26px; line-height:1; }
+.hstat-l{ font-size:11.5px; color:rgba(255,255,255,.82); letter-spacing:.04em; text-transform:uppercase; }
+.hero-quote{ margin:0; padding-top:18px; border-top:1px solid rgba(255,255,255,.25); }
+.hero-quote p{ font-size:15.5px; font-style:italic; font-weight:500; line-height:1.5; }
+.hero-quote cite{ display:block; margin-top:6px; font-size:12.5px; font-style:normal; font-weight:700; letter-spacing:.03em; color:rgba(255,255,255,.85); }
+
+/* ============ LAYOUT / CARDS ============ */
+.grid{ display:grid; gap:16px; }
+.grid-2{ grid-template-columns:repeat(2,1fr); }
+@media (min-width:680px){ .grid-flow{ grid-template-columns:repeat(2,1fr); } .span-2{ grid-column:span 2; } }
+@media (max-width:679px){ .grid-2{ grid-template-columns:1fr; } }
+
+.card{
+  background:var(--surface); border:1px solid var(--border); border-radius:22px;
+  padding:20px; box-shadow:var(--shadow-sm); position:relative;
+  animation:cardIn .5s cubic-bezier(.2,.9,.25,1) both;
+}
+@keyframes cardIn{ from{ opacity:0; transform:translateY(10px) scale(.98); } to{ opacity:1; transform:none; } }
+.grid-flow > .card:nth-child(1){ animation-delay:.02s; } .grid-flow > .card:nth-child(2){ animation-delay:.06s; }
+.grid-flow > .card:nth-child(3){ animation-delay:.10s; } .grid-flow > .card:nth-child(4){ animation-delay:.14s; }
+.grid-flow > .card:nth-child(5){ animation-delay:.18s; } .grid-flow > .card:nth-child(6){ animation-delay:.22s; }
+.grid-flow > .card:nth-child(7){ animation-delay:.26s; } .grid-flow > .card:nth-child(8){ animation-delay:.30s; }
+
+.card-head{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.card-icon{
+  flex:0 0 auto; width:42px; height:42px; border-radius:13px; display:flex; align-items:center; justify-content:center;
+  color:#fff; box-shadow:var(--shadow-sm);
+}
+.card-icon svg{ width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.card-icon.i-ember{ background:linear-gradient(135deg,var(--ember),#FF8A3D); }
+.card-icon.i-teal{ background:linear-gradient(135deg,var(--teal),#34D399); }
+.card-icon.i-gold{ background:linear-gradient(135deg,var(--gold),#FFD166); }
+.card-icon.i-violet{ background:linear-gradient(135deg,var(--violet),#A78BFA); }
+.card-icon.i-grad{ background:linear-gradient(135deg,var(--grad-a),var(--grad-b)); }
+.card-title-wrap{ min-width:0; }
+.card-title{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:19px; letter-spacing:.01em; text-transform:uppercase; }
+.card-sub{ font-size:12px; color:var(--ink-dim); margin-top:1px; }
+.card-head-tail{ margin-left:auto; }
+.sub{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:14.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-dim); margin:18px 0 8px; }
+.sub:first-child{ margin-top:0; }
+
+/* ============ TODAY / VENUE ============ */
+.today-title{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:19px; text-transform:uppercase; }
+.venue-pill,.type-pill{ display:inline-flex; align-items:center; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:4px 10px; border-radius:999px; }
+.venue-gym,.type-gym{ background:var(--violet-soft); color:var(--violet); }
+.venue-home,.type-home{ background:var(--teal-soft); color:var(--teal); }
+.venue-rest,.type-rest{ background:var(--surface-3); color:var(--ink-dim); }
+
+/* ============ CHECK ROWS / MOVEMENT ICONS ============ */
+.check-row{ display:flex; align-items:flex-start; gap:12px; padding:11px 4px; border-bottom:1px solid var(--border); position:relative; }
+.check-row:last-child{ border-bottom:none; }
+.mv-box{ flex:0 0 auto; width:38px; height:38px; border-radius:11px; background:var(--surface-2); display:flex; align-items:center; justify-content:center; }
+.mv-icon{ width:26px; height:26px; }
+.mv-icon .mv-line{ stroke:currentColor; stroke-width:4; stroke-linecap:round; fill:none; }
+.mv-icon .mv-head{ fill:currentColor; }
+.mv-icon .mv-context{ stroke:var(--border); stroke-width:2.5; stroke-dasharray:3 3; }
+.mv-icon .rope{ fill:none; stroke:currentColor; stroke-width:2; opacity:.55; }
+.check-row input[type="checkbox"]{ appearance:none; -webkit-appearance:none; width:23px; height:23px; margin-top:2px; border-radius:8px; border:2px solid var(--border); background:var(--surface); cursor:pointer; flex:0 0 auto; position:relative; transition:.15s; }
+.check-row input[type="checkbox"]:checked{ background:linear-gradient(135deg,var(--teal),#34D399); border-color:transparent; animation:checkPop .3s cubic-bezier(.3,1.4,.4,1); }
+.check-row input[type="checkbox"]:checked::after{ content:''; position:absolute; left:6px; top:2px; width:6px; height:11px; border:solid #fff; border-width:0 2.5px 2.5px 0; transform:rotate(40deg); }
+@keyframes checkPop{ 0%{ transform:scale(.7); } 60%{ transform:scale(1.18); } 100%{ transform:scale(1); } }
+.check-row label{ flex:1 1 auto; min-width:0; font-weight:650; font-size:14.5px; cursor:pointer; line-height:1.4; }
+.check-row.done label{ color:var(--ink-dim); text-decoration:line-through; text-decoration-color:var(--teal); text-decoration-thickness:2px; }
+.check-row.done .mv-box{ background:var(--teal-soft); color:var(--teal); }
+.check-row .detail{ display:block; font-weight:500; font-size:12.5px; color:var(--ink-dim); margin-top:2px; }
+.muscle-tag{ display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:.03em; padding:2px 8px; border-radius:999px; background:var(--violet-soft); color:var(--violet); margin-left:4px; vertical-align:1px; }
+.muscle-tag-gold{ background:var(--gold-soft); color:var(--gold-ink); }
+
+/* movement micro-animations */
+.mv-icon .figure{ transform-origin:30px 30px; }
+[data-move="walk"] .legL,[data-move="walk"] .legR,[data-move="run"] .legL,[data-move="run"] .legR{ animation:legSwing 1s ease-in-out infinite; transform-origin:30px 36px; }
+[data-move="walk"] .legR,[data-move="run"] .legR{ animation-delay:.5s; }
+@keyframes legSwing{ 0%,100%{ transform:rotate(-14deg); } 50%{ transform:rotate(14deg); } }
+[data-move="jumprope"] .figure{ animation:jumpHop .55s ease-in-out infinite; }
+[data-move="jumprope"] .rope{ animation:ropeSpin .55s linear infinite; transform-origin:30px 34px; }
+@keyframes jumpHop{ 0%,100%{ transform:translateY(0); } 45%{ transform:translateY(-5px); } }
+@keyframes ropeSpin{ from{ transform:scaleX(1); } 50%{ transform:scaleX(.15); } to{ transform:scaleX(1); } }
+[data-move="squat"] .figure,[data-move="lunge"] .figure{ animation:squatBob 1.3s ease-in-out infinite; }
+@keyframes squatBob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(4px); } }
+[data-move="push"] .armL,[data-move="push"] .armR{ animation:pushArm 1.2s ease-in-out infinite; transform-origin:30px 19px; }
+@keyframes pushArm{ 0%,100%{ transform:rotate(0deg); } 50%{ transform:rotate(-10deg); } }
+[data-move="pull"] .armL,[data-move="pull"] .armR{ animation:pullArm 1.1s ease-in-out infinite; transform-origin:30px 19px; }
+@keyframes pullArm{ 0%,100%{ transform:translateX(0); } 50%{ transform:translateX(3px); } }
+[data-move="curl"] .armL,[data-move="curl"] .armR{ animation:curlArm 1.1s ease-in-out infinite; transform-origin:30px 19px; }
+@keyframes curlArm{ 0%,100%{ transform:rotate(0deg); } 50%{ transform:rotate(18deg); } }
+[data-move="core-hold"] .figure{ animation:holdPulse 1.8s ease-in-out infinite; }
+@keyframes holdPulse{ 0%,100%{ opacity:1; } 50%{ opacity:.62; } }
+[data-move="core-dynamic"] .legL,[data-move="core-dynamic"] .legR{ animation:legSwing .8s ease-in-out infinite; transform-origin:30px 36px; }
+[data-move="chin-tuck"] .head{ animation:nod 1.4s ease-in-out infinite; transform-origin:30px 19px; }
+@keyframes nod{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(2px); } }
+[data-move="wall-angel"] .armL,[data-move="wall-angel"] .armR{ animation:angelArm 1.6s ease-in-out infinite; transform-origin:30px 19px; }
+@keyframes angelArm{ 0%,100%{ transform:rotate(0deg); } 50%{ transform:rotate(-16deg); } }
+[data-move="catcow"] .torso{ animation:catcowArch 1.8s ease-in-out infinite; }
+@keyframes catcowArch{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+[data-move="overhead-stretch"] .armL,[data-move="overhead-stretch"] .armR{ animation:reach 1.6s ease-in-out infinite; transform-origin:30px 19px; }
+@keyframes reach{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.06); } }
+[data-move="breathe"] .figure{ animation:breathe 2.6s ease-in-out infinite; }
+@keyframes breathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.05); } }
+[data-move="calf"] .legL,[data-move="calf"] .legR{ animation:calfRaise 1s ease-in-out infinite; transform-origin:30px 60px; }
+@keyframes calfRaise{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-3px); } }
+
+/* ============ WEIGHT LOG / RPE ============ */
+.weight-log{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.wt-input{ width:64px; font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:600; padding:6px 8px; border-radius:9px; border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink); }
+.wt-input.auto{ border-style:dashed; color:var(--ink-dim); }
+.wt-unit{ font-size:11.5px; color:var(--ink-faint); margin-right:2px; }
+.rpe-select{ font-size:12.5px; font-weight:600; padding:6px 8px; border-radius:9px; border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink); }
+.wt-hint{ font-size:11px; color:var(--gold); font-weight:700; }
+
+/* ============ PAIN ============ */
+.pain-check{ margin-top:14px; padding-top:14px; border-top:1px dashed var(--border); }
+.pain-toggle{ display:flex; align-items:center; gap:9px; cursor:pointer; font-size:13px; font-weight:650; color:var(--ink-dim); }
+.pain-toggle input{ width:19px; height:19px; accent-color:var(--danger); cursor:pointer; }
+#pain-detail{ margin-top:10px; }
+textarea#pain-note{ width:100%; min-height:56px; resize:vertical; border-radius:12px; border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink); font-family:inherit; font-size:13px; padding:9px 11px; }
+.pain-tip{ font-size:11.5px; color:var(--ink-faint); margin-top:6px; line-height:1.5; }
+
+/* ============ BUTTONS ============ */
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:6px; border:none; border-radius:13px; padding:12px 18px; font-weight:800; font-size:14px; letter-spacing:.01em; cursor:pointer; transition:transform .12s, box-shadow .12s; }
+.btn:active{ transform:scale(.97); }
+.btn-sm{ padding:10px 16px; font-size:13px; width:100%; background:var(--surface-2); color:var(--ink); border:1.5px solid var(--border); }
+.btn-sm.done{ background:var(--teal-soft); color:var(--teal); border-color:transparent; }
+
+/* ============ RING METRICS (water / steps) ============ */
+.ring-metric-row{ display:flex; align-items:center; gap:16px; }
+.ring-metric{ position:relative; width:104px; height:104px; flex:0 0 auto; }
+.ring-metric-svg{ width:100%; height:100%; transform:rotate(-90deg); }
+.ring-metric-track{ fill:none; stroke:var(--surface-3); stroke-width:10; }
+.ring-metric-fill{ fill:none; stroke-width:10; stroke-linecap:round; transition:stroke-dashoffset .7s cubic-bezier(.3,.9,.3,1); }
+.ring-metric-center{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+.ring-metric-value{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:19px; line-height:1; }
+.ring-metric-value span{ display:block; font-family:"Plus Jakarta Sans",sans-serif; font-weight:600; font-size:9.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; margin-top:2px; }
+.ring-metric-info{ flex:1; min-width:0; }
+.ring-metric-target{ font-size:12px; color:var(--ink-dim); font-weight:600; margin-bottom:10px; }
+.qty-btns{ display:flex; gap:8px; flex-wrap:wrap; }
+.qty-btn{ border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink); border-radius:11px; padding:8px 12px; font-weight:800; font-size:13px; cursor:pointer; font-family:"JetBrains Mono",monospace; }
+.qty-btn:active{ transform:scale(.94); }
+.qty-btn.neg{ color:var(--danger); }
+
+/* ============ NUTRITION ============ */
+.nutrition-targets{ display:flex; flex-direction:column; gap:4px; margin-top:14px; padding-top:14px; border-top:1px dashed var(--border); font-size:12.5px; color:var(--ink-dim); font-weight:600; }
+
+/* ============ WEEK ============ */
+.week-range{ font-size:12.5px; color:var(--ink-dim); font-weight:650; margin-bottom:12px; }
+.week-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:7px; }
+@media (max-width:560px){ .week-grid{ grid-template-columns:repeat(4,1fr); } }
+.day-tile{ background:var(--surface-2); border:1.5px solid transparent; border-radius:14px; padding:9px 7px; text-align:center; display:flex; flex-direction:column; gap:4px; align-items:center; }
+.day-tile.today{ background:linear-gradient(160deg,var(--grad-a),var(--grad-b)); border-color:transparent; box-shadow:var(--shadow-glow); }
+.day-tile.today .dname,.day-tile.today .dtitle,.day-tile.today .dfocus,.day-tile.today .dextra{ color:#fff; }
+.dname{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:12px; letter-spacing:.05em; color:var(--ink-faint); }
+.dtitle{ font-size:10.5px; font-weight:700; line-height:1.25; min-height:26px; }
+.dfocus{ display:none; }
+.dextra{ font-size:9px; color:var(--ink-faint); line-height:1.3; }
+.day-tile.today .dextra{ color:rgba(255,255,255,.85); }
+
+/* ============ PROFILE ============ */
+.profile-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+.field{ display:flex; flex-direction:column; gap:4px; }
+.field label{ font-size:11px; font-weight:700; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.04em; }
+.field select,.field input{ border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink); border-radius:11px; padding:9px 10px; font-size:13.5px; font-family:inherit; font-weight:600; }
+.profile-out{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.out-item{ background:var(--surface-2); border-radius:13px; padding:11px 12px; }
+.out-item .n{ font-weight:800; font-size:18px; }
+.out-item .l{ font-size:10.5px; color:var(--ink-dim); font-weight:650; margin-top:2px; }
+.profile-note{ font-size:12.5px; color:var(--ink-dim); background:var(--surface-2); border-radius:13px; padding:12px; }
+
+/* ============ REMINDERS ============ */
+.reminder-water-note{ font-size:12px; color:var(--ink-dim); line-height:1.5; margin-bottom:12px; background:var(--violet-soft); color:var(--violet); padding:10px 12px; border-radius:12px; font-weight:600; }
+.reminder-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 2px; border-bottom:1px solid var(--border); }
+.reminder-row:last-child{ border-bottom:none; }
+.reminder-left{ display:flex; align-items:center; gap:9px; font-size:13.5px; font-weight:650; flex-wrap:wrap; }
+.reminder-time{ background:var(--surface-2); padding:3px 8px; border-radius:8px; font-size:12px; font-weight:700; }
+.reminder-amount{ font-size:10.5px; font-weight:800; color:var(--violet); background:var(--violet-soft); padding:2px 7px; border-radius:999px; }
+.switch{ position:relative; display:inline-block; width:44px; height:26px; flex:0 0 auto; cursor:pointer; }
+.switch input{ opacity:0; width:0; height:0; position:absolute; }
+.switch .track{ position:absolute; inset:0; background:var(--surface-3); border-radius:999px; transition:.2s; }
+.switch .thumb{ position:absolute; left:3px; top:3px; width:20px; height:20px; background:#fff; border-radius:50%; transition:.2s cubic-bezier(.3,1.3,.4,1); box-shadow:0 1px 3px rgba(0,0,0,.25); }
+.switch input:checked + .track{ background:linear-gradient(135deg,var(--teal),#34D399); }
+.switch input:checked ~ .thumb{ transform:translateX(18px); }
+.notif-btn{ width:auto; margin-top:12px; }
+
+/* ============ BADGES / STREAK ============ */
+.streak-hero{ display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+.streak-num{ font-family:"Big Shoulders Display",sans-serif; font-weight:900; font-size:44px; line-height:1; background:linear-gradient(135deg,var(--ember),var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.streak-label{ font-size:12px; color:var(--ink-dim); font-weight:650; }
+.flame{ width:22px; height:22px; vertical-align:-4px; margin-right:6px; fill:var(--ink-faint); }
+.flame.lit{ fill:var(--ember); filter:drop-shadow(0 0 6px rgba(255,90,54,.6)); animation:flicker 1.4s ease-in-out infinite; }
+@keyframes flicker{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.1) rotate(-2deg); } }
+.badges{ display:flex; flex-wrap:wrap; gap:8px; }
+.badge{ font-size:11.5px; font-weight:700; padding:7px 12px; border-radius:999px; background:var(--surface-2); color:var(--ink-faint); border:1.5px solid var(--border); }
+.badge.on{ background:linear-gradient(135deg,var(--grad-a),var(--grad-b)); color:#fff; border-color:transparent; }
+
+/* ============ CHART ============ */
+.chart-seg{ display:flex; gap:6px; margin-bottom:12px; }
+.chart-seg button{ flex:1; border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink-dim); border-radius:11px; padding:8px; font-weight:800; font-size:12.5px; cursor:pointer; }
+.chart-seg button.active{ background:linear-gradient(135deg,var(--grad-a),var(--grad-b)); color:#fff; border-color:transparent; }
+#chart-holder{ width:100%; overflow-x:auto; }
+.log-form{ display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+.log-form input{ border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink); border-radius:11px; padding:9px 10px; font-size:13px; font-family:inherit; }
+.log-form input[type="date"]{ flex:1; min-width:130px; }
+.log-form input[type="number"]{ width:100px; }
+.log-form button{ background:linear-gradient(135deg,var(--grad-a),var(--grad-b)); color:#fff; border:none; border-radius:11px; padding:9px 16px; font-weight:800; font-size:13px; cursor:pointer; }
+
+/* ============ WHY / PLAYLIST / RECIPES / TIP ============ */
+textarea#why-input{ width:100%; min-height:80px; resize:vertical; border-radius:14px; border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink); font-family:inherit; font-size:14px; padding:12px 14px; line-height:1.5; }
+.playlist-song{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 2px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; }
+.playlist-song:last-child{ border-bottom:none; }
+.playlist-song .artist{ color:var(--ink-dim); font-weight:500; }
+.playlist-link{ font-size:11.5px; font-weight:800; color:var(--teal); text-decoration:none; white-space:nowrap; }
+.tip-box{ background:linear-gradient(135deg,var(--violet-soft),var(--surface-2)); border-radius:14px; padding:14px 16px; font-size:13.5px; line-height:1.55; font-weight:550; }
+.recipes-list{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+.recipe-card{ background:var(--surface-2); border-radius:14px; padding:12px 14px; }
+.recipe-head{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.recipe-name{ font-weight:800; font-size:13.5px; }
+.recipe-time{ font-size:11px; color:var(--ink-faint); font-weight:650; }
+.recipe-protein{ font-size:11.5px; color:var(--teal); font-weight:700; margin-top:3px; }
+.recipe-ing{ font-size:12px; color:var(--ink-dim); margin-top:4px; line-height:1.5; }
+
+/* ============ JUMPROPE OFF STATE ============ */
+.jr-off{ display:flex; align-items:center; gap:14px; padding:6px 2px; color:var(--ink-dim); font-size:13px; line-height:1.5; }
+.mv-hero{ width:56px; height:56px; flex:0 0 auto; background:var(--gold-soft); border-radius:16px; display:flex; align-items:center; justify-content:center; color:var(--gold); }
+.mv-hero .mv-icon{ width:38px; height:38px; }
+.mv-hero-wrap{ display:flex; align-items:center; gap:14px; }
+
+/* ============ FOOTER ============ */
+.footer-note{ text-align:center; font-size:11.5px; color:var(--ink-faint); line-height:1.6; padding:28px 20px 0; }
+
+/* ============ SAVE FLAG / CELEBRATION ============ */
+#save-flag{ position:fixed; left:50%; bottom:18px; transform:translate(-50%,20px); background:var(--ink); color:var(--bg); font-size:12.5px; font-weight:700; padding:9px 16px; border-radius:999px; opacity:0; pointer-events:none; transition:.25s; z-index:40; }
+#save-flag.show{ opacity:1; transform:translate(-50%,0); }
+.celebrate-toast{ position:fixed; top:22px; left:50%; transform:translateX(-50%) translateY(-30px); background:linear-gradient(135deg,var(--grad-a),var(--grad-b)); color:#fff; font-weight:800; font-size:14px; padding:14px 22px; border-radius:16px; box-shadow:var(--shadow-glow); opacity:0; pointer-events:none; transition:.35s cubic-bezier(.3,1.2,.4,1); z-index:50; }
+.celebrate-toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+.confetti-piece{ position:fixed; top:20%; left:50%; width:9px; height:14px; z-index:49; pointer-events:none; animation:confettiBurst 1.3s ease-out forwards; }
+@keyframes confettiBurst{ 0%{ transform:translate(0,0) rotate(0deg); opacity:1; } 100%{ transform:translate(var(--dx),var(--dy)) rotate(var(--rot)); opacity:0; } }
+</style>
+
+<header class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-top">
+      <span class="hero-eyebrow">2 Mart Dönüşümü</span>
+      <span class="hero-startdate">Başlangıç <span id="start-date-out" class="mono"></span></span>
+    </div>
+    <h1 class="hero-title" id="hero-title">44 Yaş.<br>Sıfır Bahane.</h1>
+    <div class="hero-main">
+      <div class="ring-wrap">
+        <svg class="ring-svg" viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="ring-track" cx="100" cy="100" r="88"></circle>
+          <circle class="ring-fill" id="ring-fill" cx="100" cy="100" r="88"></circle>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-num mono" id="days-left-num">0</div>
+          <div class="ring-label">gün kaldı</div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><span class="hstat-n mono" id="stat-day">–</span><span class="hstat-l">Gün</span></div>
+        <div class="hstat"><span class="hstat-n mono" id="stat-week">–</span><span class="hstat-l">Hafta</span></div>
+        <div class="hstat"><span class="hstat-n mono" id="stat-pct">–</span><span class="hstat-l">Tamamlandı</span></div>
+        <div class="hstat"><span class="hstat-n mono" id="stat-streak">–</span><span class="hstat-l">Seri</span></div>
+      </div>
+    </div>
+    <blockquote class="hero-quote">
+      <p id="quote-out">""</p>
+      <cite id="quote-author-out"></cite>
+    </blockquote>
+  </div>
+</header>
+
+<main class="wrap">
+
+<div class="grid grid-flow" style="margin-bottom:16px;">
+
+  <section class="card span-2" id="today-card">
+    <div class="card-head">
+      <div class="card-icon i-ember"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.4"></circle><circle cx="19" cy="12" r="2.4"></circle><line x1="7.4" y1="12" x2="16.6" y2="12"></line><line x1="9.5" y1="8.5" x2="9.5" y2="15.5"></line><line x1="14.5" y1="8.5" x2="14.5" y2="15.5"></line></svg></div>
+      <div class="card-title-wrap">
+        <div class="today-title" id="today-title">–</div>
+        <div class="card-sub" id="today-focus">–</div>
+      </div>
+      <div class="card-head-tail" id="today-venue-pill"></div>
+    </div>
+
+    <div id="warmup-section">
+      <h3 class="sub">Isınma</h3>
+      <div id="warmup-exercises"></div>
+    </div>
+
+    <h3 class="sub">Antrenman</h3>
+    <div id="today-exercises"></div>
+
+    <h3 class="sub">Karın Bölgesi Devresi</h3>
+    <div id="abs-exercises"></div>
+
+    <div id="cooldown-section">
+      <h3 class="sub">Soğuma</h3>
+      <div id="cooldown-exercises"></div>
+    </div>
+
+    <div class="pain-check">
+      <label class="pain-toggle"><input type="checkbox" id="pain-flag"> Bugün ağrı / rahatsızlık hissettim</label>
+      <div id="pain-detail">
+        <textarea id="pain-note" placeholder="Nerede, ne zaman, ne kadar şiddetli? (isteğe bağlı not)"></textarea>
+        <div class="pain-tip">Keskin veya eklem ağrısı devam ederse hareketi atla ve bir fizyoterapiste danış — antrenmanı ağrı üzerinden zorlama.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="cardio-card">
+    <div class="card-head">
+      <div class="card-icon i-teal"><svg viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.6-9.3C1 8 2.3 4.8 5.4 4.1c2-.5 3.9.4 5 2 .8-1.6 2.9-2.5 4.9-2C18.5 4.8 20 8 18.6 11.2 16.6 15.9 12 20.5 12 20.5Z"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Kardiyo</div><div class="card-sub" id="cardio-week-out">–</div></div>
+    </div>
+    <div class="mv-hero-wrap">
+      <div class="mv-hero" id="cardio-icon"></div>
+      <div><div id="cardio-title" style="font-weight:700; font-size:13.5px; margin-bottom:3px;"></div>
+      <div id="cardio-detail" style="font-size:12.5px; color:var(--ink-dim); line-height:1.5;"></div></div>
+    </div>
+    <button class="btn btn-sm" id="cardio-toggle" style="margin-top:14px;"></button>
+  </section>
+
+  <section class="card" id="jumprope-card">
+    <div class="card-head">
+      <div class="card-icon i-gold"><svg viewBox="0 0 24 24"><path d="M2 8c4 6 16-6 20 0"></path><path d="M2 16c4-6 16 6 20 0"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">İp Atlama</div><div class="card-sub" id="jumprope-week-out">–</div></div>
+    </div>
+    <div id="jumprope-body"></div>
+  </section>
+
+  <section class="card" id="posture-card">
+    <div class="card-head">
+      <div class="card-icon i-gold"><svg viewBox="0 0 24 24"><line x1="12" y1="3" x2="12" y2="21"></line><circle cx="12" cy="6" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="12" cy="10.5" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="12" cy="15" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="12" cy="19.5" r="1.6" fill="currentColor" stroke="none"></circle></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Duruş &amp; Kifoz</div><div class="card-sub">Günlük mobilite</div></div>
+    </div>
+    <div id="posture-list"></div>
+  </section>
+
+  <section class="card" id="water-card">
+    <div class="card-head">
+      <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><path d="M12 3s6.5 7.4 6.5 12A6.5 6.5 0 1 1 5.5 15C5.5 10.4 12 3 12 3Z"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Su Takibi</div><div class="card-sub" id="water-target-out">–</div></div>
+    </div>
+    <div class="ring-metric-row">
+      <div class="ring-metric">
+        <svg class="ring-metric-svg" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="ring-metric-track" cx="60" cy="60" r="50"></circle>
+          <circle class="ring-metric-fill" id="water-bar" cx="60" cy="60" r="50" style="stroke:var(--violet)"></circle>
+        </svg>
+        <div class="ring-metric-center"><div class="ring-metric-value mono" id="water-current">0<span>ml</span></div></div>
+      </div>
+      <div class="ring-metric-info">
+        <div class="qty-btns">
+          <button class="qty-btn" data-water="250">+250</button>
+          <button class="qty-btn" data-water="500">+500</button>
+          <button class="qty-btn neg" data-water="-250">−250</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="nutrition-card">
+    <div class="card-head">
+      <div class="card-icon i-gold"><svg viewBox="0 0 24 24"><path d="M7 3v7a2 2 0 0 0 2 2v9"></path><path d="M7 3v6M10 3v6"></path><path d="M17 3c-1.7 0-3 2-3 5s1.3 5 3 5v8"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Beslenme</div><div class="card-sub">Günlük hedefler</div></div>
+    </div>
+    <div id="nutrition-list"></div>
+    <div class="nutrition-targets" id="nutrition-targets"></div>
+  </section>
+
+  <section class="card" id="steps-card">
+    <div class="card-head">
+      <div class="card-icon i-teal"><svg viewBox="0 0 24 24"><ellipse cx="9" cy="7" rx="2.3" ry="3.2" transform="rotate(-18 9 7)"></ellipse><ellipse cx="16" cy="16" rx="2.3" ry="3.2" transform="rotate(14 16 16)"></ellipse></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Aktivite</div><div class="card-sub" id="steps-target-out">–</div></div>
+    </div>
+    <div class="ring-metric-row">
+      <div class="ring-metric">
+        <svg class="ring-metric-svg" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="ring-metric-track" cx="60" cy="60" r="50"></circle>
+          <circle class="ring-metric-fill" id="steps-bar" cx="60" cy="60" r="50" style="stroke:var(--teal)"></circle>
+        </svg>
+        <div class="ring-metric-center"><div class="ring-metric-value mono" id="steps-current">0<span>adım</span></div></div>
+      </div>
+      <div class="ring-metric-info">
+        <div class="qty-btns">
+          <button class="qty-btn" data-steps="1000">+1000</button>
+          <button class="qty-btn" data-steps="2000">+2000</button>
+          <button class="qty-btn neg" data-steps="-1000">−1000</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card span-2" id="playlist-card">
+    <div class="card-head">
+      <div class="card-icon i-grad"><svg viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="17" cy="16" r="3"></circle></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Antrenman Çalma Listesi</div><div class="card-sub">Isınma → yoğun tempo → soğuma</div></div>
+    </div>
+    <div id="playlist-list"></div>
+  </section>
+
+</div>
+
+<section class="card" style="margin-bottom:16px;">
+  <div class="card-head">
+    <div class="card-icon i-grad"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="16" y1="2" x2="16" y2="6"></line></svg></div>
+    <div class="card-title-wrap"><div class="card-title">Haftalık Program</div><div class="card-sub week-range" id="week-range-out">–</div></div>
+  </div>
+  <div class="week-grid" id="week-grid"></div>
+</section>
+
+<div class="grid grid-2" style="margin-bottom:16px;">
+  <section class="card" id="tip-card">
+    <div class="card-head">
+      <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4.9 1 .9 1.7v.4h5.2v-.4c0-.7.3-1.3.9-1.7A6 6 0 0 0 12 3Z"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">PT İpucu</div><div class="card-sub" id="tip-week-out">–</div></div>
+    </div>
+    <div class="tip-box" id="tip-out"></div>
+  </section>
+  <section class="card" id="recipes-card">
+    <div class="card-head">
+      <div class="card-icon i-ember"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 8v4l3 2"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Protein Odaklı Tarifler</div><div class="card-sub">Hızlı &amp; pratik</div></div>
+    </div>
+    <div class="recipes-list" id="recipes-list"></div>
+  </section>
+</div>
+
+<div class="grid grid-2" style="margin-bottom:16px;">
+  <section class="card" id="progress-card">
+    <div class="card-head">
+      <div class="card-icon i-grad"><svg viewBox="0 0 24 24"><polyline points="4,17 9,10 13,14 20,5"></polyline><polyline points="14,5 20,5 20,11"></polyline></svg></div>
+      <div class="card-title-wrap"><div class="card-title">İlerleme</div><div class="card-sub">Kilo &amp; bel çevresi</div></div>
+    </div>
+    <div class="chart-seg" id="chart-seg">
+      <button data-metric="weight" class="active">Kilo</button>
+      <button data-metric="waist">Bel Çevresi</button>
+    </div>
+    <div id="chart-holder"><canvas id="chart"></canvas></div>
+    <form class="log-form" id="log-form">
+      <input type="date" id="log-date" required>
+      <input type="number" step="0.1" id="log-value" placeholder="Değer" required>
+      <span class="mono" id="log-unit-label" style="align-self:center; font-size:11.5px; color:var(--ink-faint);">Kilo (kg)</span>
+      <button type="submit">Ekle</button>
+    </form>
+  </section>
+
+  <section class="card" id="streak-card">
+    <div class="card-head">
+      <div class="card-icon i-ember"><svg viewBox="0 0 24 24"><path d="M12 2c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 4 4 4 7a6 6 0 0 1-12 0c0-5 3-6 6-12z" fill="currentColor" stroke="none"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Seri &amp; Rozetler</div><div class="card-sub">Motivasyon</div></div>
+    </div>
+    <div class="streak-hero">
+      <div class="streak-num mono" id="streak-big">0</div>
+      <div class="streak-label">gün üst üste tam tamamlanan hedef</div>
+    </div>
+    <div class="badges" id="badges"></div>
+  </section>
+</div>
+
+<div class="grid grid-2" style="margin-bottom:16px;">
+  <section class="card" id="profile-card">
+    <div class="card-head">
+      <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"></circle><path d="M4.5 20c1.5-4 4.2-6 7.5-6s6 2 7.5 6"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Profil</div><div class="card-sub">Hedefler buna göre hesaplanır</div></div>
+    </div>
+    <div class="profile-grid">
+      <div class="field"><label for="p-sex">Cinsiyet</label>
+        <select id="p-sex"><option value="">Seç</option><option value="male">Erkek</option><option value="female">Kadın</option></select>
+      </div>
+      <div class="field"><label for="p-age">Yaş</label><input type="number" id="p-age" min="10" max="100"></div>
+      <div class="field"><label for="p-height">Boy (cm)</label><input type="number" id="p-height" min="120" max="230"></div>
+      <div class="field"><label for="p-weight">Kilo (kg)</label><input type="number" step="0.1" id="p-weight" min="30" max="300"></div>
+      <div class="field"><label for="p-goal">Hedef Kilo (kg)</label><input type="number" step="0.1" id="p-goal" min="30" max="300"></div>
+      <div class="field"><label for="p-activity">Aktivite</label>
+        <select id="p-activity">
+          <option value="sedentary">Hareketsiz</option>
+          <option value="light">Az Hareketli</option>
+          <option value="moderate">Orta</option>
+          <option value="active">Hareketli</option>
+          <option value="veryActive">Çok Hareketli</option>
+        </select>
+      </div>
+    </div>
+    <div class="profile-out" id="profile-out"></div>
+  </section>
+
+  <section class="card" id="reminders-card">
+    <div class="card-head">
+      <div class="card-icon i-grad"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Hatırlatıcılar</div><div class="card-sub">Bildirim izni gerekir, sekme açık kalmalı</div></div>
+    </div>
+    <div class="reminder-water-note" id="reminder-water-note"></div>
+    <div id="reminders-list"></div>
+    <button class="btn btn-sm notif-btn" id="notif-permission">Bildirimlere izin ver</button>
+  </section>
+</div>
+
+<section class="card" id="why-card" style="margin-bottom:16px;">
+  <div class="card-head">
+    <div class="card-icon i-ember"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.5-9C1 8.4 2.3 4.9 5.7 4.1c2.1-.5 4 .5 5 2 1-1.5 2.9-2.5 5-2 3.4.8 4.7 4.3 3.2 7.9C19.4 16.6 12 21 12 21Z"></path></svg></div>
+    <div class="card-title-wrap"><div class="card-title">Neden Yapıyorum?</div><div class="card-sub">Zor günlerde buraya geri dön</div></div>
+  </div>
+  <textarea id="why-input" placeholder="44. yaş gününde nasıl hissetmek istiyorsun? Bunu neden yapıyorsun? Buraya yaz — zorlandığın anlarda oku."></textarea>
+</section>
+
+<div class="footer-note">Bu uygulama genel bir antrenman ve beslenme rehberidir, tıbbi tavsiye yerine geçmez. Ağrı, sakatlık veya sağlık durumun varsa bir hekim/fizyoterapiste danış.</div>
+
+</main>
+
+<div id="save-flag">Kaydedildi</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ MOVEMENT ICON SYSTEM ============ */
+function mvLine(x1,y1,x2,y2,cls){ return '<line class="mv-line '+(cls||'')+'" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"/>'; }
+function mvUpper(alx,aly,arx,ary){
+  return '<g class="upper">' +
+    '<circle class="mv-head head" cx="30" cy="12" r="5.5"/>' +
+    mvLine(30,19,30,36,'torso') +
+    '<g class="armL">'+mvLine(30,19,alx,aly)+'</g>' +
+    '<g class="armR">'+mvLine(30,19,arx,ary)+'</g>' +
+  '</g>';
+}
+function mvLegs(llx,lly,lrx,lry){
+  return '<g class="legL">'+mvLine(30,36,llx,lly)+'</g>' + '<g class="legR">'+mvLine(30,36,lrx,lry)+'</g>';
+}
+function mvFigureWrap(inner, staticRotate){
+  var f = '<g class="figure">' + inner + '</g>';
+  if(staticRotate){ return '<g class="orient" transform="rotate('+staticRotate+' 30 30)">'+f+'</g>'; }
+  return f;
+}
+function moveIconMarkup(type){
+  var context = '', rope = '', inner = '';
+  switch(type){
+    case 'walk': inner = mvFigureWrap(mvUpper(22,31,38,31)+mvLegs(24,54,36,54)); break;
+    case 'run': inner = mvFigureWrap(mvUpper(20,30,40,30)+mvLegs(22,55,38,53)); break;
+    case 'jumprope': inner = mvFigureWrap(mvUpper(24,30,36,30)+mvLegs(27,54,33,54)); rope = '<ellipse class="rope" cx="30" cy="34" rx="5" ry="25"/>'; break;
+    case 'squat': inner = mvFigureWrap(mvUpper(20,32,40,32)+mvLegs(20,50,40,50)); break;
+    case 'lunge': inner = mvFigureWrap(mvUpper(21,31,39,31)+mvLegs(19,55,41,48)); break;
+    case 'hinge': inner = mvFigureWrap(mvUpper(20,30,40,30)+mvLegs(25,54,35,54)); break;
+    case 'push': inner = mvFigureWrap(mvUpper(18,26,42,26)+mvLegs(24,54,36,54)); break;
+    case 'pull': inner = mvFigureWrap(mvUpper(42,26,18,26)+mvLegs(24,54,36,54)); break;
+    case 'curl': inner = mvFigureWrap(mvUpper(20,32,40,32)+mvLegs(24,54,36,54)); break;
+    case 'calf': inner = mvFigureWrap(mvUpper(22,31,38,31)+mvLegs(25,53,35,53)); break;
+    case 'core-hold': inner = mvFigureWrap(mvUpper(20,28,40,28)+mvLegs(24,54,36,54), -90); break;
+    case 'core-dynamic': inner = mvFigureWrap(mvUpper(20,28,40,28)+mvLegs(26,54,34,54), -90); break;
+    case 'chin-tuck': inner = mvFigureWrap(mvUpper(22,31,38,31)+mvLegs(24,54,36,54)); break;
+    case 'wall-angel': context = mvLine(8,2,8,58,'mv-context'); inner = mvFigureWrap(mvUpper(17,25,43,25)+mvLegs(24,54,36,54)); break;
+    case 'doorway-stretch': context = mvLine(9,2,9,58,'mv-context')+mvLine(51,2,51,58,'mv-context'); inner = mvFigureWrap(mvUpper(22,31,48,19)+mvLegs(24,54,36,54)); break;
+    case 'catcow': inner = mvFigureWrap(mvUpper(20,30,40,30)+mvLegs(22,52,38,52), -90); break;
+    case 'forward-fold': inner = mvFigureWrap(mvUpper(22,31,38,31)+mvLegs(24,54,36,54)); break;
+    case 'overhead-stretch': inner = mvFigureWrap(mvUpper(18,9,42,9)+mvLegs(24,54,36,54)); break;
+    case 'hip-flexor-stretch': inner = mvFigureWrap(mvUpper(22,31,38,31)+mvLegs(19,55,41,48)); break;
+    case 'breathe': inner = mvFigureWrap(mvUpper(22,31,38,31)+mvLegs(24,54,36,54)); break;
+    default: inner = mvFigureWrap(mvUpper(22,31,38,31)+mvLegs(24,54,36,54));
+  }
+  return context + inner + rope;
+}
+function moveIcon(type, accentVar){
+  return '<svg class="mv-icon" data-move="'+type+'" viewBox="0 0 60 60" style="color:var(--'+(accentVar||'ink-dim')+')" aria-hidden="true">' + moveIconMarkup(type) + '</svg>';
+}
+
+/* ============ CONSTANTS ============ */
+var PROGRAM_START = '2026-08-29';
+var PROGRAM_END   = '2027-03-02';
+
+var DOW_NAMES = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
+var DOW_SHORT = ['PZT','SAL','ÇAR','PER','CUM','CMT','PAZ'];
+var MONTH_NAMES = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+var VENUE_LABEL = {gym:'Spor Salonu', home:'Ev', rest:'Dinlenme'};
+var JUMPROPE_DAYS = [1,3,5]; // Salı, Perşembe, Cumartesi (Mon=0)
+
+var SPLIT = [
+  { key:'mon', venue:'gym', title:'Alt Vücut — Bacak (Salon)', focus:'Quadriceps, kalça, hamstring, baldır',
+    exercises:[
+      {id:'e0', name:'Leg press ya da squat (bar/dambıl)', detail:'4 set × 12 tekrar', move:'squat', muscle:'Quadriceps', logWeight:true},
+      {id:'e1', name:'Leg curl makinesi', detail:'3 set × 12 tekrar', move:'curl', muscle:'Hamstring', logWeight:true},
+      {id:'e2', name:'Hip thrust (bar ile)', detail:'3 set × 15 tekrar', move:'hinge', muscle:'Kalça', logWeight:true},
+      {id:'e3', name:'Bacak ekstansiyon makinesi', detail:'3 set × 12 tekrar', move:'squat', muscle:'Quadriceps', logWeight:true},
+      {id:'e4', name:'Calf raise makinesi', detail:'3 set × 20 tekrar', move:'calf', muscle:'Baldır', logWeight:true}
+    ]},
+  { key:'tue', venue:'home', title:'Üst Vücut İtiş (Ev)', focus:'Göğüs, omuz, arka kol',
+    exercises:[
+      {id:'e0', name:'Şınav (gerekirse dizde)', detail:'4 set × maksimum tekrar', move:'push', muscle:'Göğüs'},
+      {id:'e1', name:'Sandalyede dips', detail:'3 set × 10-12 tekrar', move:'push', muscle:'Triceps'},
+      {id:'e2', name:'Pike şınav (omuz)', detail:'3 set × 8-10 tekrar', move:'push', muscle:'Omuz'},
+      {id:'e3', name:'Plank-to-push-up', detail:'3 set × 10 tekrar', move:'push', muscle:'Kor'}
+    ]},
+  { key:'wed', venue:'gym', title:'Üst Vücut Çekiş (Salon)', focus:'Sırt, arka omuz, ön kol',
+    exercises:[
+      {id:'e0', name:'Lat pulldown', detail:'4 set × 12 tekrar', move:'pull', muscle:'Sırt', logWeight:true},
+      {id:'e1', name:'Oturarak sıra çekme (cable row)', detail:'3 set × 12 tekrar', move:'pull', muscle:'Sırt', logWeight:true},
+      {id:'e2', name:'Face pull', detail:'3 set × 15 tekrar', move:'pull', muscle:'Arka Omuz', logWeight:true},
+      {id:'e3', name:'Dambıl biceps curl', detail:'3 set × 12 tekrar', move:'curl', muscle:'Biceps', logWeight:true}
+    ]},
+  { key:'thu', venue:'home', title:'Alt Vücut & Kalça (Ev)', focus:'Bacak, kalça, denge',
+    exercises:[
+      {id:'e0', name:'Squat', detail:'4 set × 15 tekrar', move:'squat', muscle:'Quadriceps', logWeight:true},
+      {id:'e1', name:'Bulgar split squat', detail:'3 set × 10 tekrar / bacak', move:'lunge', muscle:'Kalça', logWeight:true},
+      {id:'e2', name:'Glute bridge', detail:'3 set × 15 tekrar', move:'hinge', muscle:'Kalça', logWeight:true},
+      {id:'e3', name:'Reverse lunge', detail:'3 set × 10 tekrar / bacak', move:'lunge', muscle:'Quadriceps', logWeight:true},
+      {id:'e4', name:'Duvar squat (statik)', detail:'3 set × 40 saniye', move:'squat', muscle:'Quadriceps'}
+    ]},
+  { key:'fri', venue:'gym', title:'Tüm Vücut — Fonksiyonel (Salon)', focus:'Kalça zinciri, kor, taşıma gücü',
+    exercises:[
+      {id:'e0', name:'Romanian deadlift (bar/dambıl)', detail:'4 set × 12 tekrar', move:'hinge', muscle:'Hamstring', logWeight:true},
+      {id:'e1', name:'Kettlebell/dambıl swing', detail:'3 set × 15 tekrar', move:'hinge', muscle:'Kalça', logWeight:true},
+      {id:'e2', name:'Göğüs presi makinesi', detail:'3 set × 12 tekrar', move:'push', muscle:'Göğüs', logWeight:true},
+      {id:'e3', name:'Farmer carry', detail:'3 set × 30 metre', move:'walk', muscle:'Kor'}
+    ]},
+  { key:'sat', venue:'home', title:'Fonksiyonel & Kor (Ev)', focus:'Kalp atışı, kor stabilite',
+    exercises:[
+      {id:'e0', name:'Mountain climber', detail:'4 set × 30 saniye', move:'core-dynamic', muscle:'Kor'},
+      {id:'e1', name:'Squat to press (su şişesi/dambıl)', detail:'3 set × 12 tekrar', move:'squat', muscle:'Tüm Vücut'},
+      {id:'e2', name:'Superman', detail:'3 set × 15 tekrar', move:'hinge', muscle:'Sırt Alt'},
+      {id:'e3', name:'Plank hold', detail:'3 set × 45 saniye', move:'core-hold', muscle:'Kor'}
+    ]},
+  { key:'sun', venue:'rest', title:'Tam Dinlenme', focus:'Toparlanma, sinir sistemi',
+    exercises:[
+      {id:'e0', name:'Serbest esneme (isteğe bağlı)', detail:'10 dakika', move:'forward-fold', muscle:'Tüm Vücut'},
+      {id:'e1', name:'Derin nefes / gevşeme', detail:'5-10 dakika', move:'breathe', muscle:'Sinir Sistemi'}
+    ]}
+];
+
+var ABS_CIRCUIT = [
+  {id:'a0', name:'Plank', detail:'3 set × 45 saniye', move:'core-hold', muscle:'Kor'},
+  {id:'a1', name:'Bicycle crunch', detail:'3 set × 20 tekrar', move:'core-dynamic', muscle:'Karın'},
+  {id:'a2', name:'Bacak kaldırma (leg raise)', detail:'3 set × 15 tekrar', move:'core-dynamic', muscle:'Alt Karın'},
+  {id:'a3', name:'Russian twist', detail:'3 set × 20 tekrar', move:'core-dynamic', muscle:'Yan Karın'},
+  {id:'a4', name:'Side plank', detail:'2 set × 30 sn / taraf', move:'core-hold', muscle:'Yan Karın'},
+  {id:'a5', name:'Mountain climber (kor)', detail:'2 set × 30 saniye', move:'core-dynamic', muscle:'Kor'}
+];
+
+var POSTURE_ROUTINE = [
+  {id:'p0', name:'Çene çekme (chin tuck)', detail:'3 set × 10 tekrar, 3 sn tutarak', move:'chin-tuck', muscle:'Boyun (Derin Fleksör)'},
+  {id:'p1', name:'Duvar meleği (wall angel)', detail:'3 set × 12 tekrar', move:'wall-angel', muscle:'Üst Sırt / Arka Omuz'},
+  {id:'p2', name:'Kapıda göğüs esnetme', detail:'2 × 30 saniye / taraf', move:'doorway-stretch', muscle:'Göğüs (Esnetme)'},
+  {id:'p3', name:'Kedi-deve (cat-cow)', detail:'10 tekrar, yavaş nefesle', move:'catcow', muscle:'Omurga / Kor'},
+  {id:'p4', name:'Kürek kemiği sıkma', detail:'3 set × 15 tekrar, 2 sn sıkarak', move:'pull', muscle:'Orta Sırt (Romboid)'}
+];
+
+var WARMUP_ROUTINE = [
+  {id:'wu0', name:'Yerinde tempolu yürüyüş', detail:'1 dakika', move:'walk', muscle:'Kalp-Damar'},
+  {id:'wu1', name:'Kol çemberleri (ileri + geri)', detail:'30+30 saniye', move:'overhead-stretch', muscle:'Omuz'},
+  {id:'wu2', name:'Vücut ağırlığı squat', detail:'10-15 tekrar, kontrollü', move:'squat', muscle:'Bacak'},
+  {id:'wu3', name:'Kalça çemberleri / bacak sallama', detail:'8-10 tekrar / bacak', move:'hip-flexor-stretch', muscle:'Kalça'},
+  {id:'wu4', name:'Kürek çekme hareketi (bantsız)', detail:'10-12 tekrar', move:'pull', muscle:'Üst Sırt'}
+];
+
+var COOLDOWN_ROUTINE = [
+  {id:'cd0', name:'Ayakta hamstring esnetme', detail:'30 saniye / bacak', move:'forward-fold', muscle:'Hamstring (Esnetme)'},
+  {id:'cd1', name:'Ayakta quadriceps esnetme', detail:'30 saniye / bacak', move:'hip-flexor-stretch', muscle:'Quadriceps (Esnetme)'},
+  {id:'cd2', name:'Kapıda/duvar göğüs esnetme', detail:'30 saniye / taraf', move:'doorway-stretch', muscle:'Göğüs (Esnetme)'},
+  {id:'cd3', name:'Derin nefes / yavaşlama', detail:'1-2 dakika', move:'breathe', muscle:'Sinir Sistemi'}
+];
+
+var CARDIO_PROGRAM = [
+  {from:1, to:2, title:'Sadece tempolu yürüyüş', detail:'30-35 dakika düz zeminde tempolu yürüyüş. Amaç: nefes nefese kalmadan konuşabildiğin bir tempo.', move:'walk', system:'Kalp-Damar / Bacak'},
+  {from:3, to:4, title:'Yürüyüş + hafif koşu denemesi', detail:'5 dk ısınma yürüyüşü, sonra 8 tur: 3 dk yürü / 1 dk hafif koşu. 5 dk soğuma yürüyüşü.', move:'walk', system:'Kalp-Damar / Bacak'},
+  {from:5, to:6, title:'Aralıklı koşuya geçiş', detail:'5 dk ısınma, 8 tur: 2 dk yürü / 2 dk koşu. 5 dk soğuma.', move:'run', system:'Kalp-Damar / Bacak'},
+  {from:7, to:8, title:'Koşu ağırlıklı aralıklar', detail:'5 dk ısınma, 6 tur: 1 dk yürü / 3 dk koşu. 5 dk soğuma.', move:'run', system:'Kalp-Damar / Bacak'},
+  {from:9, to:10, title:'Kesintisiz koşuya yaklaşma', detail:'5 dk ısınma yürüyüşü, 20 dakika hafif tempo koşu (gerekirse kısa yürüyüş molalarıyla), 5 dk soğuma.', move:'run', system:'Kalp-Damar / Bacak'},
+  {from:11, to:12, title:'Kesintisiz 25-30 dakika koşu', detail:'5 dk ısınma, 25-30 dakika sabit ve rahat tempoda koşu, 5 dk soğuma.', move:'run', system:'Kalp-Damar / Bacak'},
+  {from:13, to:null, title:'Sürdürme & ilerleme fazı', detail:'Haftada 3-4 kez 25-35 dakika koşu. Her 2 haftada bir süreyi ya da tempoyu biraz artır; eklem ağrısı olursa bir aşama geri dön.', move:'run', system:'Kalp-Damar / Bacak'}
+];
+function cardioStage(week){
+  for(var i=0;i<CARDIO_PROGRAM.length;i++){
+    var s = CARDIO_PROGRAM[i];
+    if(week>=s.from && (s.to===null || week<=s.to)) return s;
+  }
+  return CARDIO_PROGRAM[CARDIO_PROGRAM.length-1];
+}
+
+var JUMPROPE_PROGRAM = [
+  {from:1, to:2, title:'Teknik ve ritim', detail:'İp olmadan sadece bilekten döndürme + zıplama ritmi: 5 tur, 20 sn ritim / 40 sn dinlenme.', move:'jumprope', system:'Koordinasyon / Baldır'},
+  {from:3, to:4, title:'İple ilk zıplamalar', detail:'8 tur: 20 saniye ip ile zıplama / 40 saniye dinlenme.', move:'jumprope', system:'Koordinasyon / Baldır'},
+  {from:5, to:6, title:'Süreyi artırma', detail:'8 tur: 30 saniye zıplama / 30 saniye dinlenme.', move:'jumprope', system:'Kalp-Damar / Baldır'},
+  {from:7, to:8, title:'Art arda zıplama', detail:'6 tur: 45 saniye zıplama / 45 saniye dinlenme.', move:'jumprope', system:'Kalp-Damar / Baldır'},
+  {from:9, to:10, title:'Değişen adım', detail:'6 tur: 45 saniye (adım değiştirerek) zıplama / 30 saniye dinlenme.', move:'jumprope', system:'Kalp-Damar / Koordinasyon'},
+  {from:11, to:null, title:'İleri teknikler', detail:'10 dakika serbest pratik: yüksek diz, çift ayak, ileri-geri adım; double-under denemeleri.', move:'jumprope', system:'Kalp-Damar / Koordinasyon'}
+];
+function jumpropeStage(week){
+  for(var i=0;i<JUMPROPE_PROGRAM.length;i++){
+    var s = JUMPROPE_PROGRAM[i];
+    if(week>=s.from && (s.to===null || week<=s.to)) return s;
+  }
+  return JUMPROPE_PROGRAM[JUMPROPE_PROGRAM.length-1];
+}
+
+var NUTRITION_ITEMS = [
+  'Her öğünde bir protein kaynağı',
+  'En az 2 porsiyon sebze',
+  'İşlenmiş şeker / paketli atıştırmalık yok',
+  'Yeterli lif — tam tahıl, sebze, meyve',
+  'Akşam yemeğinden sonra atıştırma yok',
+  'Alkol yok ya da minimum'
+];
+
+var QUOTES = [
+  {text:'Antrenmanın her anından nefret ettim ama kendime dedim ki: Vazgeçme, şimdi acı çek, hayatının geri kalanını şampiyon olarak yaşa.', author:'Muhammed Ali'},
+  {text:'Günleri sayma, günleri değerli kıl.', author:'Muhammed Ali'},
+  {text:'Mekiklerimi saymam. Saymaya ancak acımaya başladığında başlarım, çünkü sayılmaya değer olanlar onlardır.', author:'Muhammed Ali'},
+  {text:'Kariyerimde 9.000’den fazla şutu kaçırdım… Hayatımda defalarca başarısız oldum. Başarılı olmamın sebebi de bu.', author:'Michael Jordan'},
+  {text:'Kısayol yoktur — her şey tekrar, tekrar, tekrardır.', author:'Arnold Schwarzenegger'},
+  {text:'Ya sonuçların olur ya bahanelerin. İkisi birden olmaz.', author:'Arnold Schwarzenegger'},
+  {text:'Kazananlar hiç başarısız olmayanlar değil, hiç vazgeçmeyenlerdir.', author:'Arnold Schwarzenegger'},
+  {text:'Güç kazanmaktan gelmez. Mücadelelerin gücünü geliştirir.', author:'Arnold Schwarzenegger'},
+  {text:'Kası büyüten son üç dört tekrardır. Bu acı bölgesi, şampiyonu şampiyon olmayandan ayırır.', author:'Arnold Schwarzenegger'},
+  {text:'Zaman ayırmazsan, çalışmazsan, sonuç da alamazsın.', author:'Arnold Schwarzenegger'},
+  {text:'Herkes vücut geliştirici olmak ister ama kimse o ağır ağırlıkları kaldırmak istemez.', author:'Ronnie Coleman'},
+  {text:'Alçakgönüllü ol. Hırslı ol. Ve her zaman odadaki en çok çalışan kişi ol.', author:'Dwayne Johnson'},
+  {text:'Başarının anahtarlarından biri, yalnızken bile zor işi yapmaya istekli olmaktır.', author:'Dwayne Johnson'},
+  {text:'Gücünle aş, geç ve üstesinden gel.', author:'Serena Williams'},
+  {text:'Bir şampiyonun görüntüsü, kimse bakmıyorken, ter içinde iki büklüm, tükenme noktasındadır.', author:'Mia Hamm'}
+];
+
+var PLAYLIST = [
+  { phase:'Isınma', songs:[
+      {title:'Stronger', artist:'Kanye West'},
+      {title:'Pump It', artist:'The Black Eyed Peas'},
+      {title:'Dynamite', artist:'Taio Cruz'},
+      {title:'Just Dance', artist:'Lady Gaga'}
+    ]},
+  { phase:'Yoğun Tempo', songs:[
+      {title:'Lose Yourself', artist:'Eminem'},
+      {title:'’Till I Collapse', artist:'Eminem'},
+      {title:'Toxic', artist:'Britney Spears'},
+      {title:'Jimmy Cooks', artist:'Drake ft. 21 Savage'},
+      {title:'In Da Club', artist:'50 Cent'},
+      {title:'FE!N', artist:'Travis Scott ft. Playboi Carti'}
+    ]},
+  { phase:'Soğuma', songs:[
+      {title:'Wake Me Up', artist:'Avicii ft. Aloe Blacc'},
+      {title:'Moves Like Jagger', artist:'Maroon 5 ft. Christina Aguilera'}
+    ]}
+];
+
+var TIPS = [
+  'Kas büyümesi asıl olarak antrenmandan SONRA, dinlenirken olur — art arda aynı kas grubuna gitmeden önce en az 48 saat bırak.',
+  'Uyku sırasında büyüme hormonu salınımı artar; 7-8 saat kaliteli uyku, antrenman kadar toparlanmanın bir parçasıdır.',
+  'Protein alımını tek öğüne sıkıştırmak yerine gün boyu 3-4 öğüne yaymak, kas onarımı için daha verimlidir.',
+  'İlk haftalarda tartıda gördüğün değişim çoğunlukla su tutulumu ve sindirimdir — gerçek yağ/kas değişimini görmek için en az 3-4 hafta gerekir.',
+  'Aynı ağırlıkla daha fazla tekrar yapabiliyorsan, sıradaki antrenmanda ağırlığı küçük bir adım artırmayı dene — ilerlemenin en basit yolu budur (progressive overload).',
+  'Antrenman öncesi 5-10 dakikalık ısınma, sakatlanma riskini azaltır ve performansı artırır — atlama.',
+  'Su hedefine ulaşamadığın günlerde bile antrenmanı ve beslenmeyi aksatma; su takibini tamamlayıcı bir alışkanlık olarak gör, engel değil.',
+  'Karın kasları mutfakta şekillenir: görünürlüğü asıl belirleyen genel vücut yağ oranı, egzersiz sadece kası güçlendirir.',
+  'RPE (algılanan zorluk) 7-8 civarında çalışmak — yani son 2-3 tekrarı zor ama formu bozmadan tamamlayabildiğin ağırlık — çoğu hareket için güvenli ve etkili bir hedeftir.',
+  'Duruş egzersizlerini (chin tuck, wall angel) her gün kısa süreli de olsa yapmak, uzun masa başı saatlerinin etkisini dengelemeye yardımcı olur.',
+  'Kilo platoya girdiğinde önce uyku, stres ve su tüketimini gözden geçir — çoğu zaman sorun kalori değil, toparlanmadır.',
+  'Esneme ve hareketliliğe (mobility) haftada en az 2 kez zaman ayırmak, 40'+String.fromCharCode(39)+'lı yaşlarda sakatlanmayı önlemede güç antrenmanı kadar önemlidir.'
+];
+
+var RECIPES = [
+  { name:'Yulaf & Yunan Yoğurdu Kasesi', time:'5 dk', protein:'≈30-35 g protein (yaklaşık)',
+    ingredients:'60 g yulaf, 200 g yağsız süzme (Yunan) yoğurt, 1 tatlı kaşığı fıstık ezmesi, tarçın, isteğe göre meyve' },
+  { name:'Izgara Tavuk & Karabuğday Salatası', time:'20 dk', protein:'≈40 g protein (yaklaşık)',
+    ingredients:'150 g tavuk göğsü, haşlanmış karabuğday, salatalık, domates, zeytinyağı, limon' },
+  { name:'Sarımsaklı Limonlu Karides Tava', time:'10 dk', protein:'≈28 g protein (yaklaşık)',
+    ingredients:'150 g karides, sarımsak, limon, az zeytinyağı, maydanoz' },
+  { name:'Ton Balıklı Salata', time:'8 dk', protein:'≈35 g protein (yaklaşık)',
+    ingredients:'1 kutu ton balığı (suda), yeşillik, 1 haşlanmış yumurta, zeytinyağı, limon' },
+  { name:'Şekersiz Lorlu Fırın Kek Dilimi', time:'35 dk (fırında)', protein:'≈18-20 g protein / dilim (yaklaşık)',
+    ingredients:'250 g lor peyniri, 3 yumurta, 2 yemek kaşığı kakao, tatlandırıcı, kabartma tozu' },
+  { name:'Antrenman Sonrası Smoothie', time:'3 dk', protein:'≈30-35 g protein (yaklaşık)',
+    ingredients:'1 ölçek whey protein, 1 muz, 200 ml süt/badem sütü, bir avuç yulaf, buz' }
+];
+
+var BADGES = [
+  {id:'streak3', kind:'streak', threshold:3, label:'3 Günlük Seri'},
+  {id:'streak7', kind:'streak', threshold:7, label:'1 Haftalık Seri'},
+  {id:'streak14', kind:'streak', threshold:14, label:'2 Haftalık Seri'},
+  {id:'streak30', kind:'streak', threshold:30, label:'30 Günlük Seri'},
+  {id:'q1', kind:'day', threshold:46, label:'Yolun Çeyreği'},
+  {id:'half', kind:'day', threshold:93, label:'Yarı Yol · %50'},
+  {id:'q3', kind:'day', threshold:139, label:'Son Düzlük'},
+  {id:'final20', kind:'day', threshold:166, label:'Son 20 Gün'},
+  {id:'finish', kind:'day', threshold:186, label:'Hedef Günü — 44 Yaş!'}
+];
+
+var DEFAULT_STATE = {
+  schemaVersion:3,
+  profile:{ sex:'', age:43, heightCm:182, weightKg:105, goalWeightKg:null, activity:'moderate' },
+  stepGoal:8000,
+  water:{}, steps:{}, workout:{}, nutrition:{}, posture:{}, cardio:{}, jumprope:{}, exerciseLog:{}, painLog:{},
+  weightLog:[], waistLog:[],
+  reminders:[
+    {id:'w1', label:'Su iç', time:'09:30', enabled:true},
+    {id:'w2', label:'Su iç', time:'11:30', enabled:true},
+    {id:'w3', label:'Su iç', time:'13:30', enabled:true},
+    {id:'w4', label:'Su iç', time:'15:30', enabled:true},
+    {id:'w5', label:'Su iç', time:'17:30', enabled:true},
+    {id:'r2', label:'Antrenman zamanı', time:'18:30', enabled:true},
+    {id:'r3', label:'Akşam atıştırma yok, uyku vakti', time:'22:30', enabled:true}
+  ],
+  whyNote:''
+};
+
+/* ============ DATE HELPERS ============ */
+function parseISO(s){ var p=s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+function toISO(d){ var y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0'); return y+'-'+m+'-'+day; }
+function daysBetween(a,b){ return Math.round((parseISO(b)-parseISO(a))/86400000); }
+function dayNumberFor(iso){ return daysBetween(PROGRAM_START, iso) + 1; }
+function daysRemainingFrom(iso){ return Math.max(0, daysBetween(iso, PROGRAM_END)); }
+function dowIndex(iso){ var d = parseISO(iso).getDay(); return (d+6)%7; } // Mon=0..Sun=6
+function weekNumberFor(iso){ return Math.floor((dayNumberFor(iso)-1)/7)+1; }
+function fmtDate(iso){ var d=parseISO(iso); return d.getDate()+' '+MONTH_NAMES[d.getMonth()]+' '+d.getFullYear(); }
+var TOTAL_DAYS = daysBetween(PROGRAM_START, PROGRAM_END);
+var TOTAL_WEEKS = Math.ceil(TOTAL_DAYS/7);
+
+/* ============ STATE ============ */
+var state = null;
+var todayISO = toISO(new Date());
+
+function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
+
+function ensureShape(s){
+  var incomingVersion = (s && s.schemaVersion) || 0;
+  s = Object.assign(deepClone(DEFAULT_STATE), s || {});
+  s.profile = Object.assign(deepClone(DEFAULT_STATE.profile), s.profile || {});
+  s.water = s.water || {}; s.steps = s.steps || {}; s.workout = s.workout || {}; s.nutrition = s.nutrition || {};
+  s.posture = s.posture || {}; s.cardio = s.cardio || {}; s.jumprope = s.jumprope || {};
+  s.exerciseLog = s.exerciseLog || {};
+  s.painLog = s.painLog || {};
+  s.weightLog = s.weightLog || []; s.waistLog = s.waistLog || [];
+  s.reminders = s.reminders && s.reminders.length ? s.reminders : deepClone(DEFAULT_STATE.reminders);
+  if(incomingVersion < 3){
+    // Migration: upgrade the old single daily water reminder to a spaced-out set across the day,
+    // keeping any user's enabled/disabled + custom-time edits on the workout/sleep reminders if present.
+    var oldByLabel = {};
+    s.reminders.forEach(function(r){ oldByLabel[r.label] = r; });
+    var newReminders = deepClone(DEFAULT_STATE.reminders);
+    newReminders.forEach(function(r){
+      if(r.id.charAt(0)==='w' && oldByLabel['Su iç']) { r.enabled = oldByLabel['Su iç'].enabled; }
+      if(r.id==='r2' && oldByLabel['Antrenman zamanı']) { r.time = oldByLabel['Antrenman zamanı'].time; r.enabled = oldByLabel['Antrenman zamanı'].enabled; }
+      if(r.id==='r3' && oldByLabel['Akşam atıştırma yok, uyku vakti']) { r.time = oldByLabel['Akşam atıştırma yok, uyku vakti'].time; r.enabled = oldByLabel['Akşam atıştırma yok, uyku vakti'].enabled; }
+    });
+    s.reminders = newReminders;
+  }
+  s.schemaVersion = 3;
+  if (typeof s.whyNote !== 'string') s.whyNote = '';
+  if (typeof s.stepGoal !== 'number') s.stepGoal = 8000;
+  return s;
+}
+
+function dayWorkout(iso){
+  if(!state.workout[iso]) state.workout[iso] = { ex:{}, abs:{} };
+  var w = state.workout[iso];
+  if(!w.warmup) w.warmup = {};
+  if(!w.cooldown) w.cooldown = {};
+  return w;
+}
+function dayPain(iso){
+  if(!state.painLog[iso]) state.painLog[iso] = { flag:false, note:'' };
+  return state.painLog[iso];
+}
+function dayNutrition(iso){
+  if(!state.nutrition[iso]) state.nutrition[iso] = new Array(NUTRITION_ITEMS.length).fill(false);
+  return state.nutrition[iso];
+}
+function dayPosture(iso){
+  if(!state.posture[iso]) state.posture[iso] = {};
+  return state.posture[iso];
+}
+function exerciseLogFor(exId){
+  if(!state.exerciseLog[exId]) state.exerciseLog[exId] = [];
+  return state.exerciseLog[exId];
+}
+function lastLoggedEntry(exId, beforeISO){
+  var log = state.exerciseLog[exId];
+  if(!log || !log.length) return null;
+  var prior = log.filter(function(p){ return p.date < beforeISO; }).sort(function(a,b){ return a.date<b.date?1:-1; });
+  return prior.length ? prior[0] : null;
+}
+function lastLoggedWeight(exId, beforeISO){
+  var e = lastLoggedEntry(exId, beforeISO);
+  return e ? e.kg : null;
+}
+function todaysEntry(exId){
+  var log = state.exerciseLog[exId];
+  if(!log) return null;
+  return log.find(function(p){ return p.date===todayISO; }) || null;
+}
+function todaysLoggedWeight(exId){
+  var e = todaysEntry(exId);
+  return e ? e.kg : null;
+}
+function logExerciseWeight(exId, kg, rpe){
+  var log = exerciseLogFor(exId);
+  var existing = log.find(function(p){ return p.date===todayISO; });
+  if((kg===null || isNaN(kg)) && !rpe){
+    if(existing){ log.splice(log.indexOf(existing), 1); }
+    return;
+  }
+  var kgVal = (kg===null || isNaN(kg)) ? (existing?existing.kg:null) : kg;
+  if(existing){ existing.kg = kgVal; existing.rpe = rpe||''; }
+  else log.push({date:todayISO, kg:kgVal, rpe:rpe||''});
+}
+/* Suggests today's starting weight: repeats the last used weight, but nudges it
+   up by 2.5kg if last time felt easy (RPE) — simple progressive-overload coaching. */
+function suggestedWeight(exId){
+  var last = lastLoggedEntry(exId, todayISO);
+  if(!last || last.kg===null) return { val:null, bumped:false };
+  var val = last.kg;
+  var bumped = false;
+  if(last.rpe === 'easy'){ val = Math.round((val+2.5)*2)/2; bumped = true; }
+  return { val:val, bumped:bumped };
+}
+
+/* ============ DERIVED CALCS ============ */
+function waterTargetMl(){
+  var kg = state.profile.weightKg;
+  if(!kg || kg<=0) return 2500;
+  return Math.round(kg*35/250)*250;
+}
+function proteinTargetG(){
+  var kg = state.profile.weightKg;
+  if(!kg || kg<=0) return null;
+  var goal = state.profile.goalWeightKg;
+  var basis = goal ? (kg+goal)/2 : kg;
+  return Math.round(basis*1.8);
+}
+function bmrTdee(){
+  var p = state.profile;
+  if(!p.sex || !p.heightCm || !p.weightKg || !p.age) return null;
+  var bmr = 10*p.weightKg + 6.25*p.heightCm - 5*p.age + (p.sex==='male' ? 5 : -161);
+  var mult = {sedentary:1.2, light:1.375, moderate:1.55, active:1.725, veryActive:1.9}[p.activity] || 1.55;
+  var tdee = bmr*mult;
+  return { bmr:Math.round(bmr), tdee:Math.round(tdee), deficit:Math.round(tdee*0.8) };
+}
+
+function workoutComplete(iso){
+  var dow = dowIndex(iso);
+  var day = SPLIT[dow];
+  var w = dayWorkout(iso);
+  if(day.venue==='rest') return true;
+  var allEx = day.exercises.every(function(e){ return !!w.ex[e.id]; });
+  var allAbs = ABS_CIRCUIT.every(function(a){ return !!w.abs[a.id]; });
+  return allEx && allAbs;
+}
+function nutritionComplete(iso){
+  var n = dayNutrition(iso);
+  return n.every(Boolean);
+}
+function waterComplete(iso){
+  return (state.water[iso]||0) >= waterTargetMl();
+}
+function cardioComplete(iso){
+  if(dowIndex(iso)===6) return true; // Pazar: kardiyo opsiyonel
+  return !!state.cardio[iso];
+}
+function dayComplete(iso){
+  return workoutComplete(iso) && cardioComplete(iso) && nutritionComplete(iso) && waterComplete(iso);
+}
+function computeStreak(){
+  var streak=0;
+  var cursor = new Date();
+  if(!dayComplete(toISO(cursor))){ cursor.setDate(cursor.getDate()-1); }
+  while(dayNumberFor(toISO(cursor)) >= 1){
+    var iso = toISO(cursor);
+    if(dayComplete(iso)){ streak++; cursor.setDate(cursor.getDate()-1); }
+    else break;
+  }
+  return streak;
+}
+
+/* ============ PERSISTENCE ============ */
+var artifactApi = null;
+var LS_KEY = 'transform-2027-state-v2';
+var saveTimer = null;
+
+function loadState(){
+  return (typeof claude !== 'undefined' ? claude.use('artifact') : Promise.resolve(null))
+    .then(function(api){
+      artifactApi = api;
+      return fetch('data/state.json').then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; });
+    })
+    .catch(function(){ return null; })
+    .then(function(remote){
+      if(remote){ return remote; }
+      try{
+        var local = localStorage.getItem(LS_KEY);
+        if(local) return JSON.parse(local);
+      }catch(e){}
+      return null;
+    })
+    .then(function(data){
+      state = ensureShape(data);
+      render();
+    });
+}
+
+function persist(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){}
+  if(!artifactApi) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(function(){
+    artifactApi.publish({ 'data/state.json': JSON.stringify(state) })
+      .then(function(){ flashSaved(); })
+      .catch(function(){ /* conflict / rate limit: local copy stays authoritative for this view */ });
+  }, 900);
+}
+function flashSaved(){
+  var el = document.getElementById('save-flag');
+  el.classList.add('show');
+  clearTimeout(flashSaved._t);
+  flashSaved._t = setTimeout(function(){ el.classList.remove('show'); }, 1400);
+}
+function mutate(fn){
+  var wasComplete = dayComplete(todayISO);
+  fn();
+  render();
+  var isComplete = dayComplete(todayISO);
+  if(isComplete && !wasComplete){ celebrateDayComplete(); }
+  persist();
+}
+
+/* ============ CELEBRATION ============ */
+var CELEBRATE_COLORS = ['#4F46E5','#06B6D4','#FF5A36','#F0A319','#0FA76F','#F472B6'];
+function celebrateDayComplete(){
+  var toast = document.getElementById('celebrate-toast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'celebrate-toast';
+    toast.className = 'celebrate-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = '🎉 Bugünü tamamladın! Harika gidiyorsun.';
+  toast.classList.add('show');
+  clearTimeout(celebrateDayComplete._t);
+  celebrateDayComplete._t = setTimeout(function(){ toast.classList.remove('show'); }, 3200);
+
+  for(var i=0; i<18; i++){
+    (function(){
+      var p = document.createElement('div');
+      p.className = 'confetti-piece';
+      var angle = Math.random()*Math.PI*2;
+      var dist = 70 + Math.random()*160;
+      p.style.setProperty('--dx', (Math.cos(angle)*dist)+'px');
+      p.style.setProperty('--dy', (Math.sin(angle)*dist - 30)+'px');
+      p.style.setProperty('--rot', (Math.random()*360)+'deg');
+      p.style.background = CELEBRATE_COLORS[i % CELEBRATE_COLORS.length];
+      p.style.animationDelay = (Math.random()*0.12)+'s';
+      document.body.appendChild(p);
+      setTimeout(function(){ p.remove(); }, 1500);
+    })();
+  }
+}
+
+/* ============ RING HELPER ============ */
+function setRing(circleEl, r, pct){
+  var c = 2*Math.PI*r;
+  circleEl.style.strokeDasharray = c;
+  circleEl.style.strokeDashoffset = c - (Math.max(0,Math.min(100,pct))/100)*c;
+}
+
+/* ============ RENDER ============ */
+function el(html){ var t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstChild; }
+
+function renderHero(){
+  var dayNum = Math.min(dayNumberFor(todayISO), TOTAL_DAYS);
+  var remaining = daysRemainingFrom(todayISO);
+  var pct = Math.min(100, Math.max(0, (dayNumberFor(todayISO)/TOTAL_DAYS)*100));
+  var week = Math.min(weekNumberFor(todayISO), TOTAL_WEEKS);
+  var streak = computeStreak();
+
+  document.getElementById('start-date-out').textContent = fmtDate(PROGRAM_START);
+  document.getElementById('days-left-num').textContent = remaining;
+  document.getElementById('stat-day').textContent = dayNum + ' / ' + TOTAL_DAYS;
+  document.getElementById('stat-week').textContent = week + ' / ' + TOTAL_WEEKS;
+  document.getElementById('stat-pct').textContent = pct.toFixed(1) + '%';
+
+  var flame = '<svg class="flame'+(streak>0?' lit':'')+'" viewBox="0 0 24 24"><path d="M12 2c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 4 4 4 7a6 6 0 0 1-12 0c0-5 3-6 6-12z"/></svg>';
+  document.getElementById('stat-streak').innerHTML = flame + streak;
+
+  setRing(document.getElementById('ring-fill'), 88, pct);
+
+  var qIdx = (dayNumberFor(todayISO)-1) % QUOTES.length;
+  if(qIdx<0) qIdx = 0;
+  var q = QUOTES[qIdx];
+  document.getElementById('quote-out').textContent = '“' + q.text + '”';
+  document.getElementById('quote-author-out').textContent = '— ' + q.author;
+}
+
+function renderToday(){
+  var dow = dowIndex(todayISO);
+  var day = SPLIT[dow];
+  var w = dayWorkout(todayISO);
+  document.getElementById('today-title').textContent = day.title;
+  document.getElementById('today-focus').textContent = DOW_NAMES[dow] + ' · ' + day.focus;
+  document.getElementById('today-venue-pill').innerHTML = '<span class="venue-pill venue-'+day.venue+'">'+VENUE_LABEL[day.venue]+'</span>';
+
+  var isRest = day.venue === 'rest';
+  var warmupWrap = document.getElementById('warmup-exercises');
+  var warmupSection = document.getElementById('warmup-section');
+  if(warmupSection) warmupSection.hidden = isRest;
+  if(!isRest && warmupWrap){
+    warmupWrap.innerHTML = '';
+    WARMUP_ROUTINE.forEach(function(item){
+      var checked = !!w.warmup[item.id];
+      var muscleTag = item.muscle ? '<span class="muscle-tag muscle-tag-gold">'+item.muscle+'</span>' : '';
+      var row = el('<div class="check-row'+(checked?' done':'')+'"><div class="mv-box">'+moveIcon(item.move,'gold')+'</div><input type="checkbox" id="wu-'+item.id+'" '+(checked?'checked':'')+' data-warmup="'+item.id+'"><label for="wu-'+item.id+'">'+item.name+' '+muscleTag+'<span class="detail">'+item.detail+'</span></label></div>');
+      warmupWrap.appendChild(row);
+    });
+  }
+
+  var exWrap = document.getElementById('today-exercises');
+  exWrap.innerHTML = '';
+  day.exercises.forEach(function(e){
+    var checked = !!w.ex[e.id];
+    var muscleTag = e.muscle ? '<span class="muscle-tag">'+e.muscle+'</span>' : '';
+    var weightBlock = '';
+    if(e.logWeight){
+      var entry = todaysEntry(e.id);
+      var suggestion = suggestedWeight(e.id);
+      var autoFilled = !entry && suggestion.val!==null;
+      var shownVal = entry ? entry.kg : (suggestion.val!==null ? suggestion.val : '');
+      var shownRpe = entry ? (entry.rpe||'') : '';
+      var hintText = autoFilled ? (suggestion.bumped ? 'geçen sefer kolaydı, +2.5 kg önerildi' : 'geçen seferden') : '';
+      weightBlock = '<span class="weight-log">' +
+        '<input type="number" step="0.5" min="0" class="wt-input'+(autoFilled?' auto':'')+'" data-wt="'+e.id+'" value="'+shownVal+'" placeholder="kg">' +
+        '<span class="wt-unit">kg</span>' +
+        '<select class="rpe-select" data-rpe="'+e.id+'">' +
+          '<option value=""'+(shownRpe===''?' selected':'')+'>Zorluk?</option>' +
+          '<option value="easy"'+(shownRpe==='easy'?' selected':'')+'>😌 Kolay</option>' +
+          '<option value="ok"'+(shownRpe==='ok'?' selected':'')+'>👍 Uygun</option>' +
+          '<option value="hard"'+(shownRpe==='hard'?' selected':'')+'>😣 Zor</option>' +
+        '</select>' +
+        (hintText ? '<span class="wt-hint">'+hintText+'</span>' : '') +
+      '</span>';
+    }
+    var row = el('<div class="check-row'+(checked?' done':'')+'"><div class="mv-box">'+moveIcon(e.move,'ember')+'</div><input type="checkbox" id="ex-'+e.id+'" '+(checked?'checked':'')+' data-ex="'+e.id+'"><label for="ex-'+e.id+'">'+e.name+' '+muscleTag+'<span class="detail">'+e.detail+'</span>'+weightBlock+'</label></div>');
+    exWrap.appendChild(row);
+  });
+
+  var absWrap = document.getElementById('abs-exercises');
+  absWrap.innerHTML = '';
+  ABS_CIRCUIT.forEach(function(a){
+    var checked = !!w.abs[a.id];
+    var muscleTag = a.muscle ? '<span class="muscle-tag">'+a.muscle+'</span>' : '';
+    var row = el('<div class="check-row'+(checked?' done':'')+'"><div class="mv-box">'+moveIcon(a.move,'ember')+'</div><input type="checkbox" id="abs-'+a.id+'" '+(checked?'checked':'')+' data-abs="'+a.id+'"><label for="abs-'+a.id+'">'+a.name+' '+muscleTag+'<span class="detail">'+a.detail+'</span></label></div>');
+    absWrap.appendChild(row);
+  });
+
+  var cooldownWrap = document.getElementById('cooldown-exercises');
+  var cooldownSection = document.getElementById('cooldown-section');
+  if(cooldownSection) cooldownSection.hidden = isRest;
+  if(!isRest && cooldownWrap){
+    cooldownWrap.innerHTML = '';
+    COOLDOWN_ROUTINE.forEach(function(item){
+      var checked = !!w.cooldown[item.id];
+      var muscleTag = item.muscle ? '<span class="muscle-tag">'+item.muscle+'</span>' : '';
+      var row = el('<div class="check-row'+(checked?' done':'')+'"><div class="mv-box">'+moveIcon(item.move,'teal')+'</div><input type="checkbox" id="cd-'+item.id+'" '+(checked?'checked':'')+' data-cooldown="'+item.id+'"><label for="cd-'+item.id+'">'+item.name+' '+muscleTag+'<span class="detail">'+item.detail+'</span></label></div>');
+      cooldownWrap.appendChild(row);
+    });
+  }
+
+  renderPain();
+}
+
+function renderPain(){
+  var p = dayPain(todayISO);
+  var flag = document.getElementById('pain-flag');
+  var detail = document.getElementById('pain-detail');
+  var note = document.getElementById('pain-note');
+  if(!flag) return;
+  flag.checked = !!p.flag;
+  detail.hidden = !p.flag;
+  if(document.activeElement !== note) note.value = p.note || '';
+}
+
+function renderCardio(){
+  var week = Math.min(weekNumberFor(todayISO), TOTAL_WEEKS);
+  var stage = cardioStage(week);
+  document.getElementById('cardio-week-out').textContent = 'Hafta ' + week;
+  document.getElementById('cardio-icon').innerHTML = moveIcon(stage.move,'teal');
+  document.getElementById('cardio-title').innerHTML = stage.title + (stage.system ? ' <span class="muscle-tag">'+stage.system+'</span>' : '');
+  document.getElementById('cardio-detail').textContent = stage.detail;
+  var done = !!state.cardio[todayISO];
+  var btn = document.getElementById('cardio-toggle');
+  btn.textContent = done ? 'Bugün tamamlandı ✓' : 'Bugünkü kardiyoyu tamamladım';
+  btn.classList.toggle('done', done);
+}
+
+function renderJumprope(){
+  var week = Math.min(weekNumberFor(todayISO), TOTAL_WEEKS);
+  var dow = dowIndex(todayISO);
+  var body = document.getElementById('jumprope-body');
+  document.getElementById('jumprope-week-out').textContent = 'Hafta ' + week;
+  if(JUMPROPE_DAYS.indexOf(dow) === -1){
+    body.innerHTML =
+      '<div class="jr-off"><div class="mv-hero">'+moveIcon('jumprope','gold')+'</div>' +
+      '<div>Bugün ip atlama günü değil.<br>Program günleri: Salı, Perşembe, Cumartesi.</div></div>';
+    return;
+  }
+  var stage = jumpropeStage(week);
+  var done = !!state.jumprope[todayISO];
+  body.innerHTML =
+    '<div class="mv-hero-wrap">' +
+      '<div class="mv-hero">'+moveIcon('jumprope','gold')+'</div>' +
+      '<div><div style="font-weight:700; font-size:13.5px; margin-bottom:3px;">'+stage.title+(stage.system?' <span class="muscle-tag muscle-tag-gold">'+stage.system+'</span>':'')+'</div>' +
+      '<div style="font-size:12.5px; color:var(--ink-dim); line-height:1.5;">'+stage.detail+'</div></div>' +
+    '</div>' +
+    '<button class="btn btn-sm '+(done?'done':'')+'" id="jumprope-toggle" style="margin-top:14px;">'+(done?'Bugün tamamlandı ✓':'Bugünkü ip atlamayı tamamladım')+'</button>';
+}
+
+function renderPosture(){
+  var p = dayPosture(todayISO);
+  var wrap = document.getElementById('posture-list');
+  wrap.innerHTML = '';
+  POSTURE_ROUTINE.forEach(function(item){
+    var checked = !!p[item.id];
+    var muscleTag = item.muscle ? '<span class="muscle-tag muscle-tag-gold">'+item.muscle+'</span>' : '';
+    var row = el('<div class="check-row'+(checked?' done':'')+'"><div class="mv-box">'+moveIcon(item.move,'gold')+'</div><input type="checkbox" id="pos-'+item.id+'" '+(checked?'checked':'')+' data-posture="'+item.id+'"><label for="pos-'+item.id+'">'+item.name+' '+muscleTag+'<span class="detail">'+item.detail+'</span></label></div>');
+    wrap.appendChild(row);
+  });
+}
+
+function renderWater(){
+  var cur = state.water[todayISO] || 0;
+  var target = waterTargetMl();
+  document.getElementById('water-current').innerHTML = cur + '<span> ml</span>';
+  document.getElementById('water-target-out').textContent = '/ ' + target + ' ml hedef';
+  setRing(document.getElementById('water-bar'), 50, cur/target*100);
+}
+
+function renderSteps(){
+  var cur = state.steps[todayISO] || 0;
+  var target = state.stepGoal;
+  document.getElementById('steps-current').innerHTML = cur + '<span>adım</span>';
+  document.getElementById('steps-target-out').textContent = '/ ' + target + ' adım';
+  setRing(document.getElementById('steps-bar'), 50, cur/target*100);
+}
+
+function renderNutrition(){
+  var n = dayNutrition(todayISO);
+  var wrap = document.getElementById('nutrition-list');
+  wrap.innerHTML = '';
+  NUTRITION_ITEMS.forEach(function(label, i){
+    var checked = !!n[i];
+    var row = el('<div class="check-row'+(checked?' done':'')+'"><input type="checkbox" id="nut-'+i+'" '+(checked?'checked':'')+' data-nut="'+i+'"><label for="nut-'+i+'">'+label+'</label></div>');
+    wrap.appendChild(row);
+  });
+  var pg = proteinTargetG();
+  var t = bmrTdee();
+  var targets = document.getElementById('nutrition-targets');
+  var lines = [];
+  lines.push('Su: ' + waterTargetMl() + ' ml/gün');
+  lines.push('Protein: ' + (pg ? pg+' g/gün' : 'profilini doldur') );
+  lines.push('Kalori: ' + (t ? t.deficit+' kcal/gün (≈%20 açık)' : 'profilini doldur'));
+  targets.innerHTML = lines.map(function(l){return '<div>'+l+'</div>';}).join('');
+}
+
+function renderWeek(){
+  var wrap = document.getElementById('week-grid');
+  wrap.innerHTML = '';
+  var week = weekNumberFor(todayISO);
+  var mondayOffset = -dowIndex(todayISO);
+  var monday = new Date(parseISO(todayISO)); monday.setDate(monday.getDate()+mondayOffset);
+  var sunday = new Date(monday); sunday.setDate(sunday.getDate()+6);
+  document.getElementById('week-range-out').textContent = 'Hafta ' + Math.min(week,TOTAL_WEEKS) + ' · ' + fmtDate(toISO(monday)) + ' – ' + fmtDate(toISO(sunday));
+
+  SPLIT.forEach(function(day, i){
+    var d = new Date(monday); d.setDate(d.getDate()+i);
+    var iso = toISO(d);
+    var isToday = iso === todayISO;
+    var extra = i===6 ? '+ Esneme' : ('+ Kardiyo, Duruş' + (JUMPROPE_DAYS.indexOf(i)!==-1 ? ', İp Atlama' : ''));
+    var tile = el('<div class="day-tile'+(isToday?' today':'')+'"></div>');
+    tile.innerHTML =
+      '<div class="dname">'+DOW_SHORT[i]+'</div>' +
+      '<span class="type-pill type-'+day.venue+'">'+VENUE_LABEL[day.venue]+'</span>' +
+      '<div class="dtitle">'+day.title+'</div>' +
+      '<div class="dfocus">'+day.focus+'</div>' +
+      '<div class="dextra">'+extra+'</div>';
+    wrap.appendChild(tile);
+  });
+}
+
+function renderProfile(){
+  var p = state.profile;
+  document.getElementById('p-sex').value = p.sex || '';
+  document.getElementById('p-age').value = p.age || '';
+  document.getElementById('p-height').value = p.heightCm || '';
+  document.getElementById('p-weight').value = p.weightKg || '';
+  document.getElementById('p-goal').value = p.goalWeightKg || '';
+  document.getElementById('p-activity').value = p.activity || 'moderate';
+
+  var t = bmrTdee();
+  var out = document.getElementById('profile-out');
+  if(t){
+    out.innerHTML =
+      '<div class="out-item"><div class="n mono">'+t.bmr+'</div><div class="l">Bazal metabolizma (kcal)</div></div>' +
+      '<div class="out-item"><div class="n mono">'+t.tdee+'</div><div class="l">İdame kalorisi (kcal)</div></div>' +
+      '<div class="out-item"><div class="n mono">'+t.deficit+'</div><div class="l">Hedef kalori · yağ kaybı (kcal)</div></div>' +
+      '<div class="out-item"><div class="n mono">'+proteinTargetG()+' g</div><div class="l">Günlük protein hedefi</div></div>';
+  } else {
+    out.innerHTML = '<div class="profile-note" style="margin:0;">Kalori ve protein hedeflerini görmek için cinsiyet, yaş, boy ve kiloyu gir.</div>';
+  }
+}
+
+function waterReminderCount(){
+  return state.reminders.filter(function(r){ return r.id.charAt(0)==='w' && r.enabled; }).length;
+}
+function waterReminderAmountMl(){
+  var count = waterReminderCount();
+  if(count < 1) return waterTargetMl();
+  return Math.round((waterTargetMl()/count)/50)*50;
+}
+
+function renderReminders(){
+  var wrap = document.getElementById('reminders-list');
+  wrap.innerHTML = '';
+  var perAmount = waterReminderAmountMl();
+  state.reminders.forEach(function(r){
+    var isWater = r.id.charAt(0)==='w';
+    var amountBadge = (isWater && r.enabled) ? '<span class="reminder-amount">≈'+perAmount+' ml</span>' : '';
+    var row = el(
+      '<div class="reminder-row">' +
+        '<div class="reminder-left"><span class="reminder-time mono">'+r.time+'</span><span>'+r.label+'</span>'+amountBadge+'</div>' +
+        '<label class="switch"><input type="checkbox" data-reminder="'+r.id+'" '+(r.enabled?'checked':'')+'><span class="track"></span><span class="thumb"></span></label>' +
+      '</div>'
+    );
+    wrap.appendChild(row);
+  });
+  var note = document.getElementById('reminder-water-note');
+  var count = waterReminderCount();
+  if(count > 0){
+    note.textContent = 'Günlük su hedefin ' + waterTargetMl() + ' ml (profildeki kilona göre) — ' + count + ' su hatırlatıcına bölününce her birinde yaklaşık ' + perAmount + ' ml içmeyi hedefle. Profildeki kiloyu güncellersen bu miktar otomatik yeniden hesaplanır.';
+  } else {
+    note.textContent = 'Tüm su hatırlatıcıları kapalı — günlük hedefin yine de ' + waterTargetMl() + ' ml.';
+  }
+}
+
+function renderBadges(){
+  var streak = computeStreak();
+  var dayNum = dayNumberFor(todayISO);
+  document.getElementById('streak-big').textContent = streak;
+  var wrap = document.getElementById('badges');
+  wrap.innerHTML = '';
+  BADGES.forEach(function(b){
+    var on = b.kind==='streak' ? streak>=b.threshold : dayNum>=b.threshold;
+    var chip = el('<div class="badge'+(on?' on':'')+'">'+b.label+'</div>');
+    wrap.appendChild(chip);
+  });
+}
+
+var chartMetric = 'weight';
+function renderChart(){
+  var log = chartMetric==='weight' ? state.weightLog : state.waistLog;
+  var canvas = document.getElementById('chart');
+  var holder = document.getElementById('chart-holder');
+  var ctx = canvas.getContext('2d');
+  var cssW = holder.clientWidth || 560, cssH = 180;
+  var dpr = window.devicePixelRatio || 1;
+  canvas.width = cssW*dpr; canvas.height = cssH*dpr;
+  canvas.style.width = cssW+'px'; canvas.style.height = cssH+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,cssW,cssH);
+
+  var styles = getComputedStyle(document.body);
+  var border = styles.getPropertyValue('--border').trim();
+  var inkDim = styles.getPropertyValue('--ink-dim').trim();
+  var accent = chartMetric==='weight' ? styles.getPropertyValue('--ember').trim() : styles.getPropertyValue('--teal').trim();
+
+  if(!log || log.length===0){
+    ctx.fillStyle = inkDim;
+    ctx.font = '13px "Plus Jakarta Sans"';
+    ctx.textAlign = 'center';
+    ctx.fillText('Henüz veri yok — aşağıdan ilk ölçümünü ekle', cssW/2, cssH/2);
+    return;
+  }
+
+  var sorted = log.slice().sort(function(a,b){ return a.date<b.date?-1:1; });
+  var vals = sorted.map(function(p){ return p.v; });
+  var minV = Math.min.apply(null, vals), maxV = Math.max.apply(null, vals);
+  if(minV===maxV){ minV -= 1; maxV += 1; }
+  var padL=34, padR=14, padT=16, padB=22;
+  var plotW = cssW-padL-padR, plotH = cssH-padT-padB;
+
+  function x(i){ return padL + (sorted.length===1 ? plotW/2 : i/(sorted.length-1)*plotW); }
+  function y(v){ return padT + plotH - (v-minV)/(maxV-minV)*plotH; }
+
+  ctx.strokeStyle = border; ctx.lineWidth = 1;
+  ctx.font = '10.5px "JetBrains Mono"';
+  ctx.fillStyle = inkDim;
+  ctx.textAlign = 'right';
+  for(var g=0; g<=2; g++){
+    var gv = minV + (maxV-minV)*g/2;
+    var gy = y(gv);
+    ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(cssW-padR, gy); ctx.stroke();
+    ctx.fillText(gv.toFixed(1), padL-6, gy+3);
+  }
+
+  ctx.beginPath();
+  sorted.forEach(function(p,i){ var px=x(i), py=y(p.v); if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py); });
+  ctx.strokeStyle = accent; ctx.lineWidth = 2.5; ctx.lineJoin='round'; ctx.stroke();
+
+  var last = sorted[sorted.length-1];
+  ctx.lineTo(x(sorted.length-1), padT+plotH);
+  ctx.lineTo(x(0), padT+plotH);
+  ctx.closePath();
+  ctx.globalAlpha = 0.1;
+  ctx.fillStyle = accent;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+
+  var lx = x(sorted.length-1), ly = y(last.v);
+  ctx.beginPath(); ctx.arc(lx,ly,4.5,0,Math.PI*2); ctx.fillStyle = accent; ctx.fill();
+  ctx.strokeStyle = styles.getPropertyValue('--surface').trim(); ctx.lineWidth=2; ctx.stroke();
+  ctx.textAlign = 'left';
+  ctx.fillStyle = styles.getPropertyValue('--ink').trim();
+  ctx.font = '700 12px "JetBrains Mono"';
+  ctx.fillText(last.v + (chartMetric==='weight'?' kg':' cm'), Math.min(lx+8, cssW-46), ly+4);
+
+  if(chartMetric==='weight' && state.profile.goalWeightKg){
+    var gy2 = y(state.profile.goalWeightKg);
+    if(gy2>=padT && gy2<=padT+plotH){
+      ctx.setLineDash([4,4]);
+      ctx.strokeStyle = inkDim; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.moveTo(padL,gy2); ctx.lineTo(cssW-padR,gy2); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = inkDim; ctx.font='10.5px "Plus Jakarta Sans"'; ctx.textAlign='left';
+      ctx.fillText('Hedef '+state.profile.goalWeightKg+' kg', padL+4, gy2-4);
+    }
+  }
+}
+
+function renderWhy(){
+  var ta = document.getElementById('why-input');
+  if(document.activeElement !== ta) ta.value = state.whyNote || '';
+}
+
+function renderTip(){
+  var week = Math.min(weekNumberFor(todayISO), TOTAL_WEEKS);
+  var tip = TIPS[(week-1) % TIPS.length];
+  document.getElementById('tip-out').textContent = tip;
+  document.getElementById('tip-week-out').textContent = 'Hafta ' + week;
+}
+
+function renderRecipes(){
+  var wrap = document.getElementById('recipes-list');
+  wrap.innerHTML = RECIPES.map(function(r){
+    return '<div class="recipe-card">' +
+      '<div class="recipe-head"><span class="recipe-name">'+r.name+'</span><span class="recipe-time">'+r.time+'</span></div>' +
+      '<div class="recipe-protein">'+r.protein+'</div>' +
+      '<div class="recipe-ing">'+r.ingredients+'</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderPlaylist(){
+  var wrap = document.getElementById('playlist-list');
+  wrap.innerHTML = PLAYLIST.map(function(group){
+    var rows = group.songs.map(function(s){
+      var q = encodeURIComponent(s.title + ' ' + s.artist);
+      return '<div class="playlist-song"><span>'+s.title+' <span class="artist">— '+s.artist+'</span></span>' +
+        '<a class="playlist-link" href="https://open.spotify.com/search/'+q+'" target="_blank" rel="noopener">Spotify’da ara</a></div>';
+    }).join('');
+    return '<h3 class="sub">'+group.phase+'</h3>' + rows;
+  }).join('');
+}
+
+function render(){
+  renderHero();
+  renderToday();
+  renderCardio();
+  renderJumprope();
+  renderPosture();
+  renderWater();
+  renderSteps();
+  renderNutrition();
+  renderWeek();
+  renderProfile();
+  renderReminders();
+  renderBadges();
+  renderChart();
+  renderWhy();
+  renderPlaylist();
+  renderTip();
+  renderRecipes();
+  document.getElementById('log-date').value = todayISO;
+}
+
+/* ============ EVENTS ============ */
+document.addEventListener('change', function(e){
+  var t = e.target;
+  if(t.matches('[data-ex]')){
+    mutate(function(){ dayWorkout(todayISO).ex[t.dataset.ex] = t.checked; });
+  } else if(t.matches('[data-abs]')){
+    mutate(function(){ dayWorkout(todayISO).abs[t.dataset.abs] = t.checked; });
+  } else if(t.matches('[data-warmup]')){
+    mutate(function(){ dayWorkout(todayISO).warmup[t.dataset.warmup] = t.checked; });
+  } else if(t.matches('[data-cooldown]')){
+    mutate(function(){ dayWorkout(todayISO).cooldown[t.dataset.cooldown] = t.checked; });
+  } else if(t.matches('[data-wt]') || t.matches('[data-rpe]')){
+    var exId = t.dataset.wt || t.dataset.rpe;
+    var wtEl = document.querySelector('[data-wt="'+exId+'"]');
+    var rpeEl = document.querySelector('[data-rpe="'+exId+'"]');
+    var kg = (wtEl && wtEl.value!=='') ? parseFloat(wtEl.value) : null;
+    var rpe = rpeEl ? rpeEl.value : '';
+    mutate(function(){ logExerciseWeight(exId, kg, rpe); });
+  } else if(t.id==='pain-flag'){
+    mutate(function(){ dayPain(todayISO).flag = t.checked; });
+  } else if(t.matches('[data-nut]')){
+    mutate(function(){ dayNutrition(todayISO)[+t.dataset.nut] = t.checked; });
+  } else if(t.matches('[data-posture]')){
+    mutate(function(){ dayPosture(todayISO)[t.dataset.posture] = t.checked; });
+  } else if(t.matches('[data-reminder]')){
+    mutate(function(){
+      var r = state.reminders.find(function(r){ return r.id===t.dataset.reminder; });
+      if(r) r.enabled = t.checked;
+    });
+  } else if(t.id==='p-sex' || t.id==='p-age' || t.id==='p-height' || t.id==='p-weight' || t.id==='p-goal' || t.id==='p-activity'){
+    mutate(function(){
+      state.profile.sex = document.getElementById('p-sex').value;
+      state.profile.age = +document.getElementById('p-age').value || null;
+      state.profile.heightCm = +document.getElementById('p-height').value || null;
+      state.profile.weightKg = +document.getElementById('p-weight').value || null;
+      state.profile.goalWeightKg = +document.getElementById('p-goal').value || null;
+      state.profile.activity = document.getElementById('p-activity').value;
+    });
+  }
+});
+
+document.addEventListener('click', function(e){
+  var wBtn = e.target.closest('[data-water]');
+  if(wBtn){
+    mutate(function(){
+      var cur = state.water[todayISO] || 0;
+      state.water[todayISO] = Math.max(0, cur + (+wBtn.dataset.water));
+    });
+    return;
+  }
+  var sBtn = e.target.closest('[data-steps]');
+  if(sBtn){
+    mutate(function(){
+      var cur = state.steps[todayISO] || 0;
+      state.steps[todayISO] = Math.max(0, cur + (+sBtn.dataset.steps));
+    });
+    return;
+  }
+  if(e.target.id==='cardio-toggle'){
+    mutate(function(){ state.cardio[todayISO] = !state.cardio[todayISO]; });
+    return;
+  }
+  if(e.target.id==='jumprope-toggle'){
+    mutate(function(){ state.jumprope[todayISO] = !state.jumprope[todayISO]; });
+    return;
+  }
+  var metricBtn = e.target.closest('#chart-seg button');
+  if(metricBtn){
+    chartMetric = metricBtn.dataset.metric;
+    document.querySelectorAll('#chart-seg button').forEach(function(b){ b.classList.toggle('active', b===metricBtn); });
+    document.getElementById('log-unit-label').textContent = chartMetric==='weight' ? 'Kilo (kg)' : 'Bel çevresi (cm)';
+    renderChart();
+    return;
+  }
+  if(e.target.id==='notif-permission'){
+    requestNotif();
+    return;
+  }
+});
+
+document.getElementById('log-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var date = document.getElementById('log-date').value || todayISO;
+  var val = parseFloat(document.getElementById('log-value').value);
+  if(!val && val!==0) return;
+  mutate(function(){
+    var arr = chartMetric==='weight' ? state.weightLog : state.waistLog;
+    var existing = arr.find(function(p){ return p.date===date; });
+    if(existing) existing.v = val; else arr.push({date:date, v:val});
+    if(chartMetric==='weight') state.weightLog.sort(function(a,b){return a.date<b.date?-1:1;});
+    else state.waistLog.sort(function(a,b){return a.date<b.date?-1:1;});
+  });
+  document.getElementById('log-value').value = '';
+});
+
+var whyDebounce = null;
+document.getElementById('why-input').addEventListener('input', function(e){
+  var v = e.target.value;
+  clearTimeout(whyDebounce);
+  whyDebounce = setTimeout(function(){
+    state.whyNote = v;
+    persist();
+  }, 700);
+});
+
+var painDebounce = null;
+document.getElementById('pain-note').addEventListener('input', function(e){
+  var v = e.target.value;
+  clearTimeout(painDebounce);
+  painDebounce = setTimeout(function(){
+    dayPain(todayISO).note = v;
+    persist();
+  }, 700);
+});
+
+window.addEventListener('resize', function(){ renderChart(); });
+
+/* ============ NOTIFICATIONS (best-effort, tab must stay open) ============ */
+var notifiedToday = {};
+function requestNotif(){
+  if(!('Notification' in window)){ alert('Bu tarayıcı bildirimleri desteklemiyor.'); return; }
+  Notification.requestPermission().then(function(perm){
+    document.getElementById('notif-permission').textContent = perm==='granted' ? 'Bildirimler açık' : 'Bildirim izni verilmedi';
+  });
+}
+setInterval(function(){
+  if(!('Notification' in window) || Notification.permission!=='granted') return;
+  var now = new Date();
+  var hh = String(now.getHours()).padStart(2,'0');
+  var mm = String(now.getMinutes()).padStart(2,'0');
+  var cur = hh+':'+mm;
+  state.reminders.forEach(function(r){
+    if(r.enabled && r.time===cur && notifiedToday[r.id+cur]!==toISO(now)){
+      notifiedToday[r.id+cur] = toISO(now);
+      new Notification('2 Mart Dönüşümü', { body:r.label });
+    }
+  });
+}, 20000);
+
+/* ============ INIT ============ */
+loadState();
+
+})();
+</script>
