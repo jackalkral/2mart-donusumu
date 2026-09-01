@@ -85,7 +85,7 @@ button{ font-family:inherit; }
 .wrap{ max-width:900px; margin:0 auto; padding:0 16px; }
 
 /* ============ HERO ============ */
-.hero{ position:relative; overflow:hidden; padding:34px 0 42px; margin-bottom:22px; isolation:isolate; }
+.hero{ position:relative; overflow:hidden; padding:max(34px, calc(env(safe-area-inset-top) + 16px)) 0 42px; margin-bottom:22px; isolation:isolate; }
 .hero-bg{
   position:absolute; inset:0; z-index:-2;
   background:
@@ -210,6 +210,11 @@ button{ font-family:inherit; }
 .accordion-chevron{ font-size:17px; color:var(--ink-faint); transition:transform .2s; flex:0 0 auto; }
 .accordion[open] .accordion-chevron{ transform:rotate(90deg); }
 .accordion-count{ font-family:"JetBrains Mono",monospace; font-size:12.5px; font-weight:600; color:var(--ink-faint); margin-left:auto; margin-right:2px; }
+.card-head.accordion-summary{ justify-content:flex-start; gap:12px; cursor:pointer; list-style:none; -webkit-tap-highlight-color:transparent; }
+.card-head.accordion-summary::-webkit-details-marker{ display:none; }
+.card-head.accordion-summary::marker{ content:''; }
+.card-head.accordion-summary .accordion-chevron{ margin-left:auto; padding-left:6px; }
+details.accordion:not([open]) .card-head.accordion-summary{ margin-bottom:0; }
 .muscle-tag{ display:inline-block; font-size:12px; font-weight:800; letter-spacing:.03em; padding:3px 9px; border-radius:999px; background:var(--violet-soft); color:var(--violet); margin-left:4px; vertical-align:1px; }
 .muscle-tag-gold{ background:var(--gold-soft); color:var(--gold-ink); }
 
@@ -412,6 +417,14 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 /* ============ FOOTER ============ */
 .footer-note{ text-align:center; font-size:13px; color:var(--ink-faint); line-height:1.6; padding:28px 20px 0; }
 
+.backup-note{ font-size:14px; color:var(--ink-dim); line-height:1.55; margin:0 0 14px; }
+.backup-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+.backup-textarea{ width:100%; box-sizing:border-box; margin-top:12px; min-height:120px; border:1.5px solid var(--border); background:var(--surface-2); color:var(--ink); border-radius:12px; padding:12px; font-size:13px; font-family:"JetBrains Mono",monospace; resize:vertical; }
+.backup-io-actions{ display:flex; gap:10px; margin-top:10px; }
+.backup-status{ font-size:13.5px; font-weight:650; margin-top:12px; min-height:1px; }
+.backup-status.ok{ color:var(--teal); }
+.backup-status.err{ color:var(--danger); }
+
 /* ============ SAVE FLAG / CELEBRATION ============ */
 #save-flag{ position:fixed; left:50%; bottom:18px; transform:translate(-50%,20px); background:var(--ink); color:var(--bg); font-size:14px; font-weight:700; padding:10px 18px; border-radius:999px; opacity:0; pointer-events:none; transition:.25s; z-index:40; }
 #save-flag.show{ opacity:1; transform:translate(-50%,0); }
@@ -487,11 +500,15 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
       <div id="warmup-exercises"></div>
     </details>
 
-    <h3 class="sub">Antrenman</h3>
-    <div id="today-exercises"></div>
+    <details id="exercises-section" class="accordion" open>
+      <summary class="sub accordion-summary"><span>Antrenman</span><span class="accordion-count" id="exercises-count"></span><span class="accordion-chevron">›</span></summary>
+      <div id="today-exercises"></div>
+    </details>
 
-    <h3 class="sub">Karın Bölgesi Devresi</h3>
-    <div id="abs-exercises"></div>
+    <details id="abs-section" class="accordion" open>
+      <summary class="sub accordion-summary"><span>Karın Bölgesi Devresi</span><span class="accordion-count" id="abs-count"></span><span class="accordion-chevron">›</span></summary>
+      <div id="abs-exercises"></div>
+    </details>
 
     <details id="cooldown-section" class="accordion">
       <summary class="sub accordion-summary"><span>Soğuma</span><span class="accordion-chevron">›</span></summary>
@@ -508,32 +525,41 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
   </section>
 
   <section class="card" id="cardio-card">
-    <div class="card-head">
-      <div class="card-icon i-teal"><svg viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.6-9.3C1 8 2.3 4.8 5.4 4.1c2-.5 3.9.4 5 2 .8-1.6 2.9-2.5 4.9-2C18.5 4.8 20 8 18.6 11.2 16.6 15.9 12 20.5 12 20.5Z"></path></svg></div>
-      <div class="card-title-wrap"><div class="card-title">Kardiyo</div><div class="card-sub" id="cardio-week-out">–</div></div>
-    </div>
-    <div class="mv-hero-wrap">
-      <div class="mv-hero" id="cardio-icon"></div>
-      <div><div id="cardio-title" style="font-weight:700; font-size:15.5px; margin-bottom:3px;"></div>
-      <div id="cardio-detail" style="font-size:14px; color:var(--ink-dim); line-height:1.5;"></div></div>
-    </div>
-    <button class="btn btn-sm" id="cardio-toggle" style="margin-top:14px;"></button>
+    <details class="accordion" open>
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-teal"><svg viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.6-9.3C1 8 2.3 4.8 5.4 4.1c2-.5 3.9.4 5 2 .8-1.6 2.9-2.5 4.9-2C18.5 4.8 20 8 18.6 11.2 16.6 15.9 12 20.5 12 20.5Z"></path></svg></div>
+        <div class="card-title-wrap"><div class="card-title">Kardiyo</div><div class="card-sub" id="cardio-week-out">–</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div class="mv-hero-wrap">
+        <div class="mv-hero" id="cardio-icon"></div>
+        <div><div id="cardio-title" style="font-weight:700; font-size:15.5px; margin-bottom:3px;"></div>
+        <div id="cardio-detail" style="font-size:14px; color:var(--ink-dim); line-height:1.5;"></div></div>
+      </div>
+      <button class="btn btn-sm" id="cardio-toggle" style="margin-top:14px;"></button>
+    </details>
   </section>
 
   <section class="card" id="jumprope-card">
-    <div class="card-head">
-      <div class="card-icon i-gold"><svg viewBox="0 0 24 24"><path d="M2 8c4 6 16-6 20 0"></path><path d="M2 16c4-6 16 6 20 0"></path></svg></div>
-      <div class="card-title-wrap"><div class="card-title">İp Atlama</div><div class="card-sub" id="jumprope-week-out">–</div></div>
-    </div>
-    <div id="jumprope-body"></div>
+    <details class="accordion" open>
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-gold"><svg viewBox="0 0 24 24"><path d="M2 8c4 6 16-6 20 0"></path><path d="M2 16c4-6 16 6 20 0"></path></svg></div>
+        <div class="card-title-wrap"><div class="card-title">İp Atlama</div><div class="card-sub" id="jumprope-week-out">–</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div id="jumprope-body"></div>
+    </details>
   </section>
 
   <section class="card" id="posture-card">
-    <div class="card-head">
-      <div class="card-icon i-gold"><svg viewBox="0 0 24 24"><line x1="12" y1="3" x2="12" y2="21"></line><circle cx="12" cy="6" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="12" cy="10.5" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="12" cy="15" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="12" cy="19.5" r="1.6" fill="currentColor" stroke="none"></circle></svg></div>
-      <div class="card-title-wrap"><div class="card-title">Duruş &amp; Kifoz</div><div class="card-sub">Günlük mobilite</div></div>
-    </div>
-    <div id="posture-list"></div>
+    <details class="accordion" open>
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-gold"><svg viewBox="0 0 24 24"><line x1="12" y1="3" x2="12" y2="21"></line><circle cx="12" cy="6" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="12" cy="10.5" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="12" cy="15" r="1.6" fill="currentColor" stroke="none"></circle><circle cx="12" cy="19.5" r="1.6" fill="currentColor" stroke="none"></circle></svg></div>
+        <div class="card-title-wrap"><div class="card-title">Duruş &amp; Kifoz</div><div class="card-sub">Günlük mobilite</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div id="posture-list"></div>
+    </details>
   </section>
 
   <section class="card" id="water-card">
@@ -560,12 +586,15 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
   </section>
 
   <section class="card" id="nutrition-card">
-    <div class="card-head">
-      <div class="card-icon i-gold"><svg viewBox="0 0 24 24"><path d="M7 3v7a2 2 0 0 0 2 2v9"></path><path d="M7 3v6M10 3v6"></path><path d="M17 3c-1.7 0-3 2-3 5s1.3 5 3 5v8"></path></svg></div>
-      <div class="card-title-wrap"><div class="card-title">Beslenme</div><div class="card-sub">Günlük hedefler</div></div>
-    </div>
-    <div id="nutrition-list"></div>
-    <div class="nutrition-targets" id="nutrition-targets"></div>
+    <details class="accordion" open>
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-gold"><svg viewBox="0 0 24 24"><path d="M7 3v7a2 2 0 0 0 2 2v9"></path><path d="M7 3v6M10 3v6"></path><path d="M17 3c-1.7 0-3 2-3 5s1.3 5 3 5v8"></path></svg></div>
+        <div class="card-title-wrap"><div class="card-title">Beslenme</div><div class="card-sub">Günlük hedefler</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div id="nutrition-list"></div>
+      <div class="nutrition-targets" id="nutrition-targets"></div>
+    </details>
   </section>
 
   <section class="card" id="steps-card">
@@ -725,6 +754,26 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
     <div class="card-title-wrap"><div class="card-title">Neden Yapıyorum?</div><div class="card-sub">Zor günlerde buraya geri dön</div></div>
   </div>
   <textarea id="why-input" placeholder="44. yaş gününde nasıl hissetmek istiyorsun? Bunu neden yapıyorsun? Buraya yaz — zorlandığın anlarda oku."></textarea>
+</section>
+
+<section class="card" id="backup-card" style="margin-bottom:16px;">
+  <div class="card-head">
+    <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M4 19h16"></path></svg></div>
+    <div class="card-title-wrap"><div class="card-title">Veri Yedekleme</div><div class="card-sub">Telefon verisi silinirse kaybetme</div></div>
+  </div>
+  <p class="backup-note">Bu uygulamanın sunucusu yok — tüm verilerin sadece bu telefonda saklanıyor. iOS, ana ekrana eklenen sitelerin verisini bazen kendiliğinden temizleyebiliyor. Ara sıra yedek almanı öneririz.</p>
+  <div class="backup-actions">
+    <button class="btn btn-sm" id="backup-export-btn" type="button">Yedek Al</button>
+    <button class="btn btn-sm" id="backup-import-btn" type="button">Yedekten Geri Yükle</button>
+  </div>
+  <textarea id="backup-textarea" class="backup-textarea" hidden placeholder="Yedek JSON metnini buraya yapıştır ve Uygula'ya bas..."></textarea>
+  <div class="backup-io-actions" id="backup-io-actions" hidden>
+    <button class="btn btn-sm" id="backup-apply-btn" type="button">Uygula</button>
+    <button class="btn btn-sm" id="backup-file-pick-btn" type="button">Dosya Seç</button>
+    <button class="btn btn-sm" id="backup-cancel-btn" type="button">İptal</button>
+  </div>
+  <input type="file" id="backup-file-input" accept="application/json,.json" hidden>
+  <div class="backup-status" id="backup-status"></div>
 </section>
 
 <div class="footer-note">Bu uygulama genel bir antrenman ve beslenme rehberidir, tıbbi tavsiye yerine geçmez. Ağrı, sakatlık veya sağlık durumun varsa bir hekim/fizyoterapiste danış.</div>
@@ -1505,6 +1554,11 @@ function renderToday(){
     var row = el(checkRowHTML({ checked:checked, name:e.name, muscle:e.muscle, detail:e.detail, extra:weightBlock+howToLink(e.name), dataAttr:'data-ex="'+e.id+'"' }));
     exWrap.appendChild(row);
   });
+  var exercisesCountEl = document.getElementById('exercises-count');
+  if(exercisesCountEl){
+    var exDoneN = day.exercises.filter(function(e){ return !!w.ex[e.id]; }).length;
+    exercisesCountEl.textContent = day.exercises.length ? (exDoneN+'/'+day.exercises.length) : '';
+  }
 
   var absWrap = document.getElementById('abs-exercises');
   absWrap.innerHTML = '';
@@ -1513,6 +1567,11 @@ function renderToday(){
     var row = el(checkRowHTML({ checked:checked, name:a.name, muscle:a.muscle, detail:a.detail, extra:howToLink(a.name), dataAttr:'data-abs="'+a.id+'"' }));
     absWrap.appendChild(row);
   });
+  var absCountEl = document.getElementById('abs-count');
+  if(absCountEl){
+    var absDoneN = ABS_CIRCUIT.filter(function(a){ return !!w.abs[a.id]; }).length;
+    absCountEl.textContent = ABS_CIRCUIT.length ? (absDoneN+'/'+ABS_CIRCUIT.length) : '';
+  }
 
   var cooldownWrap = document.getElementById('cooldown-exercises');
   var cooldownSection = document.getElementById('cooldown-section');
@@ -2001,6 +2060,12 @@ document.addEventListener('change', function(e){
       state.profile.weightKg = +document.getElementById('p-weight').value || null;
       state.profile.goalWeightKg = +document.getElementById('p-goal').value || null;
       state.profile.activity = document.getElementById('p-activity').value;
+      if(state.profile.weightKg){
+        var wEntry = state.weightLog.find(function(p){ return p.date===todayISO; });
+        if(wEntry) wEntry.v = state.profile.weightKg;
+        else state.weightLog.push({date:todayISO, v:state.profile.weightKg});
+        state.weightLog.sort(function(a,b){ return a.date<b.date?-1:1; });
+      }
     });
   }
 });
@@ -2107,6 +2172,101 @@ document.getElementById('pain-note').addEventListener('input', function(e){
 });
 
 window.addEventListener('resize', function(){ renderChart(); });
+
+/* ============ BACKUP / RESTORE ============ */
+function backupStatus(msg, cls){
+  var el = document.getElementById('backup-status');
+  if(!el) return;
+  el.textContent = msg;
+  el.className = 'backup-status' + (cls ? (' '+cls) : '');
+}
+function backupJSON(){
+  return JSON.stringify(state, null, 2);
+}
+function applyBackupJSON(text){
+  var data;
+  try{ data = JSON.parse(text); }
+  catch(e){ backupStatus('Geçersiz JSON — yedek metni bozuk görünüyor.', 'err'); return false; }
+  if(!data || typeof data !== 'object'){ backupStatus('Geçersiz yedek dosyası.', 'err'); return false; }
+  state = ensureShape(data);
+  render();
+  persist();
+  backupStatus('Yedek geri yüklendi ✓', 'ok');
+  return true;
+}
+document.getElementById('backup-export-btn').addEventListener('click', function(){
+  var json = backupJSON();
+  var fname = '2mart-yedek-' + todayISO + '.json';
+  var shared = false;
+  try{
+    if(navigator.canShare && window.File){
+      var file = new File([json], fname, {type:'application/json'});
+      if(navigator.canShare({files:[file]})){
+        navigator.share({files:[file], title:'2 Mart Dönüşümü Yedek'}).catch(function(){});
+        shared = true;
+      }
+    }
+  }catch(e){}
+  if(shared){ backupStatus('Paylaşım penceresi açıldı — dosyayı Dosyalar\'a veya iCloud\'a kaydedebilirsin.', 'ok'); return; }
+  var ta = document.getElementById('backup-textarea');
+  ta.hidden = false;
+  ta.readOnly = true;
+  ta.value = json;
+  document.getElementById('backup-apply-btn').hidden = true;
+  document.getElementById('backup-file-pick-btn').hidden = true;
+  document.getElementById('backup-io-actions').hidden = false;
+  ta.focus(); ta.select();
+  try{
+    navigator.clipboard.writeText(json).then(function(){
+      backupStatus('Yedek metni panoya kopyalandı — güvenli bir yere yapıştır (Notlar vb).', 'ok');
+    }).catch(function(){
+      backupStatus('Aşağıdaki metni seçip kopyala ve güvenli bir yere kaydet.', '');
+    });
+  }catch(e){
+    backupStatus('Aşağıdaki metni seçip kopyala ve güvenli bir yere kaydet.', '');
+  }
+});
+document.getElementById('backup-import-btn').addEventListener('click', function(){
+  var ta = document.getElementById('backup-textarea');
+  ta.hidden = false;
+  ta.readOnly = false;
+  ta.value = '';
+  ta.placeholder = 'Yedek JSON metnini buraya yapıştır ve Uygula\'ya bas...';
+  document.getElementById('backup-apply-btn').hidden = false;
+  document.getElementById('backup-file-pick-btn').hidden = false;
+  document.getElementById('backup-io-actions').hidden = false;
+  ta.focus();
+  backupStatus('Yedek metnini yapıştır ve Uygula\'ya bas — ya da "Dosya Seç" ile .json dosyası aç.', '');
+});
+document.getElementById('backup-file-pick-btn').addEventListener('click', function(){
+  document.getElementById('backup-file-input').click();
+});
+document.getElementById('backup-file-input').addEventListener('change', function(e){
+  var file = e.target.files && e.target.files[0];
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(){
+    if(applyBackupJSON(String(reader.result||''))){
+      document.getElementById('backup-textarea').hidden = true;
+      document.getElementById('backup-io-actions').hidden = true;
+    }
+    e.target.value = '';
+  };
+  reader.onerror = function(){ backupStatus('Dosya okunamadı.', 'err'); e.target.value=''; };
+  reader.readAsText(file);
+});
+document.getElementById('backup-apply-btn').addEventListener('click', function(){
+  var ta = document.getElementById('backup-textarea');
+  if(applyBackupJSON(ta.value)){
+    ta.hidden = true;
+    document.getElementById('backup-io-actions').hidden = true;
+  }
+});
+document.getElementById('backup-cancel-btn').addEventListener('click', function(){
+  document.getElementById('backup-textarea').hidden = true;
+  document.getElementById('backup-io-actions').hidden = true;
+  backupStatus('', '');
+});
 
 /* ============ NOTIFICATIONS (best-effort, tab must stay open) ============ */
 var notifiedToday = {};
