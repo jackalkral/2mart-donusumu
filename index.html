@@ -2222,6 +2222,25 @@ window.addEventListener('resize', function(){ renderChart(); });
   if(progressDetails){ progressDetails.addEventListener('toggle', function(){ if(progressDetails.open) renderChart(); }); }
 })();
 
+/* iOS/WKWebView bug: position:fixed elements (tab bar, save toast) can go stale — stuck at their
+   old screen position, leaving a visible gap — when a <details> toggle changes page height without
+   a scroll event. Force a repaint of the fixed elements right after every accordion toggle.
+   'toggle' does not bubble, so this listener is attached in the CAPTURE phase on document, which
+   still sees every toggle from any nested <details> as it travels down to its target. */
+document.addEventListener('toggle', function(e){
+  if(!e.target || !e.target.matches || !e.target.matches('details.accordion')) return;
+  requestAnimationFrame(function(){
+    ['tab-bar','save-flag'].forEach(function(id){
+      var elx = document.getElementById(id);
+      if(!elx) return;
+      var prevDisplay = elx.style.display;
+      elx.style.display = 'none';
+      void elx.offsetHeight; /* force reflow */
+      elx.style.display = prevDisplay;
+    });
+  });
+}, true);
+
 /* ============ BACKUP / RESTORE ============ */
 function backupStatus(msg, cls){
   var el = document.getElementById('backup-status');
