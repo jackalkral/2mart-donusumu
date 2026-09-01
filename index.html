@@ -10,7 +10,7 @@
    response for it and is forced to fetch fresh content from the network — then this same check
    passes and the app loads normally. */
 (function(){
-  var BUILD_ID = "20260901084937";
+  var BUILD_ID = "20260901085422";
   try{
     var params = new URLSearchParams(location.search);
     if(params.get('v') !== BUILD_ID){
@@ -102,7 +102,7 @@ body{
      changes document height without a real scroll. Locking the shell to the viewport height and
      scrolling only the content pane sidesteps that bug entirely — the tab bar is normal in-flow
      layout, never viewport-fixed, so it can't go stale. */
-  height:100vh; height:100dvh; overflow:hidden;
+  height:100vh; height:100dvh; height:var(--app-height, 100dvh); overflow:hidden;
   display:flex; flex-direction:column;
 }
 .mono{ font-family:"JetBrains Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums; }
@@ -876,6 +876,23 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 <script>
 (function(){
 "use strict";
+
+/* ============ VIEWPORT HEIGHT LOCK ============
+   CSS 100dvh isn't consistently accurate in every iOS WKWebView/standalone-app version — when it's
+   off, the flex shell renders shorter than the real screen and leaves a blank strip (with the tab
+   bar sitting above it) rather than reaching the true bottom edge. window.visualViewport reports the
+   actual visible viewport directly, so measure it and drive the shell's height from that instead,
+   re-measuring on resize/orientation change/keyboard show. */
+(function(){
+  function setAppHeight(){
+    var h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    document.documentElement.style.setProperty('--app-height', h + 'px');
+  }
+  setAppHeight();
+  window.addEventListener('resize', setAppHeight);
+  window.addEventListener('orientationchange', function(){ setTimeout(setAppHeight, 50); });
+  if(window.visualViewport){ window.visualViewport.addEventListener('resize', setAppHeight); }
+})();
 
 /* ============ MOVEMENT ICON SYSTEM ============ */
 function mvLine(x1,y1,x2,y2,cls){ return '<line class="mv-line '+(cls||'')+'" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"/>'; }
