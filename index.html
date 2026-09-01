@@ -14,6 +14,7 @@
 <meta name="description" content="2 Mart Dönüşümü — 44. yaş hedefine kadar günlük antrenman, kardiyo, beslenme ve ilerleme takibi.">
 <link rel="icon" href="icon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="icon-180.png">
+</head>
 <body>
 <title>2 Mart Dönüşümü</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -566,26 +567,29 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
   </section>
 
   <section class="card" id="water-card">
-    <div class="card-head">
-      <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><path d="M12 3s6.5 7.4 6.5 12A6.5 6.5 0 1 1 5.5 15C5.5 10.4 12 3 12 3Z"></path></svg></div>
-      <div class="card-title-wrap"><div class="card-title">Su Takibi</div><div class="card-sub" id="water-target-out">–</div></div>
-    </div>
-    <div class="ring-metric-row">
-      <div class="ring-metric">
-        <svg class="ring-metric-svg" viewBox="0 0 120 120" aria-hidden="true">
-          <circle class="ring-metric-track" cx="60" cy="60" r="50"></circle>
-          <circle class="ring-metric-fill" id="water-bar" cx="60" cy="60" r="50" style="stroke:var(--violet)"></circle>
-        </svg>
-        <div class="ring-metric-center"><div class="ring-metric-value mono" id="water-current">0<span>ml</span></div></div>
-      </div>
-      <div class="ring-metric-info">
-        <div class="qty-btns">
-          <button class="qty-btn" data-water="250">+250</button>
-          <button class="qty-btn" data-water="500">+500</button>
-          <button class="qty-btn neg" data-water="-250">−250</button>
+    <details class="accordion" open>
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><path d="M12 3s6.5 7.4 6.5 12A6.5 6.5 0 1 1 5.5 15C5.5 10.4 12 3 12 3Z"></path></svg></div>
+        <div class="card-title-wrap"><div class="card-title">Su Takibi</div><div class="card-sub" id="water-target-out">–</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div class="ring-metric-row">
+        <div class="ring-metric">
+          <svg class="ring-metric-svg" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-metric-track" cx="60" cy="60" r="50"></circle>
+            <circle class="ring-metric-fill" id="water-bar" cx="60" cy="60" r="50" style="stroke:var(--violet)"></circle>
+          </svg>
+          <div class="ring-metric-center"><div class="ring-metric-value mono" id="water-current">0<span>ml</span></div></div>
+        </div>
+        <div class="ring-metric-info">
+          <div class="qty-btns">
+            <button class="qty-btn" data-water="250">+250</button>
+            <button class="qty-btn" data-water="500">+500</button>
+            <button class="qty-btn neg" data-water="-250">−250</button>
+          </div>
         </div>
       </div>
-    </div>
+    </details>
   </section>
 
   <section class="card" id="nutrition-card">
@@ -601,26 +605,29 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
   </section>
 
   <section class="card" id="steps-card">
-    <div class="card-head">
-      <div class="card-icon i-teal"><svg viewBox="0 0 24 24"><ellipse cx="9" cy="7" rx="2.3" ry="3.2" transform="rotate(-18 9 7)"></ellipse><ellipse cx="16" cy="16" rx="2.3" ry="3.2" transform="rotate(14 16 16)"></ellipse></svg></div>
-      <div class="card-title-wrap"><div class="card-title">Aktivite</div><div class="card-sub" id="steps-target-out">–</div></div>
-    </div>
-    <div class="ring-metric-row">
-      <div class="ring-metric">
-        <svg class="ring-metric-svg" viewBox="0 0 120 120" aria-hidden="true">
-          <circle class="ring-metric-track" cx="60" cy="60" r="50"></circle>
-          <circle class="ring-metric-fill" id="steps-bar" cx="60" cy="60" r="50" style="stroke:var(--teal)"></circle>
-        </svg>
-        <div class="ring-metric-center"><div class="ring-metric-value mono" id="steps-current">0<span>adım</span></div></div>
-      </div>
-      <div class="ring-metric-info">
-        <div class="qty-btns">
-          <button class="qty-btn" data-steps="1000">+1000</button>
-          <button class="qty-btn" data-steps="2000">+2000</button>
-          <button class="qty-btn neg" data-steps="-1000">−1000</button>
+    <details class="accordion" open>
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-teal"><svg viewBox="0 0 24 24"><ellipse cx="9" cy="7" rx="2.3" ry="3.2" transform="rotate(-18 9 7)"></ellipse><ellipse cx="16" cy="16" rx="2.3" ry="3.2" transform="rotate(14 16 16)"></ellipse></svg></div>
+        <div class="card-title-wrap"><div class="card-title">Aktivite</div><div class="card-sub" id="steps-target-out">–</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div class="ring-metric-row">
+        <div class="ring-metric">
+          <svg class="ring-metric-svg" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-metric-track" cx="60" cy="60" r="50"></circle>
+            <circle class="ring-metric-fill" id="steps-bar" cx="60" cy="60" r="50" style="stroke:var(--teal)"></circle>
+          </svg>
+          <div class="ring-metric-center"><div class="ring-metric-value mono" id="steps-current">0<span>adım</span></div></div>
+        </div>
+        <div class="ring-metric-info">
+          <div class="qty-btns">
+            <button class="qty-btn" data-steps="1000">+1000</button>
+            <button class="qty-btn" data-steps="2000">+2000</button>
+            <button class="qty-btn neg" data-steps="-1000">−1000</button>
+          </div>
         </div>
       </div>
-    </div>
+    </details>
   </section>
 
 
@@ -631,12 +638,15 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 <div class="page-header"><h2>Program</h2><p>Haftalık plan, çalma listesi ve tarifler</p></div>
 
 <section class="card" style="margin-bottom:16px;">
-  <div class="card-head">
-    <div class="card-icon i-grad"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="16" y1="2" x2="16" y2="6"></line></svg></div>
-    <div class="card-title-wrap"><div class="card-title">Haftalık Program</div><div class="card-sub week-range" id="week-range-out">–</div></div>
-  </div>
-  <div class="week-strip" id="week-strip"></div>
-  <div class="week-detail" id="week-detail"></div>
+  <details class="accordion" open>
+    <summary class="card-head accordion-summary">
+      <div class="card-icon i-grad"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="3"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="16" y1="2" x2="16" y2="6"></line></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Haftalık Program</div><div class="card-sub week-range" id="week-range-out">–</div></div>
+      <span class="accordion-chevron">›</span>
+    </summary>
+    <div class="week-strip" id="week-strip"></div>
+    <div class="week-detail" id="week-detail"></div>
+  </details>
 </section>
 
 <section class="card span-2" id="playlist-card" style="margin-bottom:16px;">
@@ -652,11 +662,14 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 
 <div class="grid grid-2" style="margin-bottom:16px;">
   <section class="card" id="tip-card">
-    <div class="card-head">
-      <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4.9 1 .9 1.7v.4h5.2v-.4c0-.7.3-1.3.9-1.7A6 6 0 0 0 12 3Z"></path></svg></div>
-      <div class="card-title-wrap"><div class="card-title">PT İpucu</div><div class="card-sub" id="tip-week-out">–</div></div>
-    </div>
-    <div class="tip-box" id="tip-out"></div>
+    <details class="accordion">
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4.9 1 .9 1.7v.4h5.2v-.4c0-.7.3-1.3.9-1.7A6 6 0 0 0 12 3Z"></path></svg></div>
+        <div class="card-title-wrap"><div class="card-title">PT İpucu</div><div class="card-sub" id="tip-week-out">–</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div class="tip-box" id="tip-out"></div>
+    </details>
   </section>
   <section class="card" id="recipes-card">
     <details class="accordion">
@@ -676,42 +689,51 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 
 <div class="grid grid-2" style="margin-bottom:16px;">
   <section class="card" id="progress-card">
-    <div class="card-head">
-      <div class="card-icon i-grad"><svg viewBox="0 0 24 24"><polyline points="4,17 9,10 13,14 20,5"></polyline><polyline points="14,5 20,5 20,11"></polyline></svg></div>
-      <div class="card-title-wrap"><div class="card-title">İlerleme</div><div class="card-sub">Kilo &amp; bel çevresi</div></div>
-    </div>
-    <div class="chart-seg" id="chart-seg">
-      <button data-metric="weight" class="active">Kilo</button>
-      <button data-metric="waist">Bel Çevresi</button>
-    </div>
-    <div id="chart-holder"><canvas id="chart"></canvas></div>
-    <form class="log-form" id="log-form">
-      <input type="date" id="log-date" required>
-      <input type="number" step="0.1" id="log-value" placeholder="Değer" required>
-      <span class="mono" id="log-unit-label" style="align-self:center; font-size:13px; color:var(--ink-faint);">Kilo (kg)</span>
-      <button type="submit">Ekle</button>
-    </form>
+    <details class="accordion" open>
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-grad"><svg viewBox="0 0 24 24"><polyline points="4,17 9,10 13,14 20,5"></polyline><polyline points="14,5 20,5 20,11"></polyline></svg></div>
+        <div class="card-title-wrap"><div class="card-title">İlerleme</div><div class="card-sub">Kilo &amp; bel çevresi</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div class="chart-seg" id="chart-seg">
+        <button data-metric="weight" class="active">Kilo</button>
+        <button data-metric="waist">Bel Çevresi</button>
+      </div>
+      <div id="chart-holder"><canvas id="chart"></canvas></div>
+      <form class="log-form" id="log-form">
+        <input type="date" id="log-date" required>
+        <input type="number" step="0.1" id="log-value" placeholder="Değer" required>
+        <span class="mono" id="log-unit-label" style="align-self:center; font-size:13px; color:var(--ink-faint);">Kilo (kg)</span>
+        <button type="submit">Ekle</button>
+      </form>
+    </details>
   </section>
 
   <section class="card" id="history-card">
-    <div class="card-head">
-      <div class="card-icon i-teal"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.5"></circle><path d="M12 9v4l3 2"></path><path d="M8 2.5 5 5.5M16 2.5l3 3"></path></svg></div>
-      <div class="card-title-wrap"><div class="card-title">Geçmiş</div><div class="card-sub">Günlük özet &amp; bir önceki güne göre</div></div>
-    </div>
-    <div class="week-strip" id="history-strip"></div>
-    <div class="week-detail" id="history-detail"></div>
+    <details class="accordion" open>
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-teal"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.5"></circle><path d="M12 9v4l3 2"></path><path d="M8 2.5 5 5.5M16 2.5l3 3"></path></svg></div>
+        <div class="card-title-wrap"><div class="card-title">Geçmiş</div><div class="card-sub">Günlük özet &amp; bir önceki güne göre</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div class="week-strip" id="history-strip"></div>
+      <div class="week-detail" id="history-detail"></div>
+    </details>
   </section>
 
   <section class="card" id="streak-card">
-    <div class="card-head">
-      <div class="card-icon i-ember"><svg viewBox="0 0 24 24"><path d="M12 2c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 4 4 4 7a6 6 0 0 1-12 0c0-5 3-6 6-12z" fill="currentColor" stroke="none"></path></svg></div>
-      <div class="card-title-wrap"><div class="card-title">Seri &amp; Rozetler</div><div class="card-sub">Motivasyon</div></div>
-    </div>
-    <div class="streak-hero">
-      <div class="streak-num mono" id="streak-big">0</div>
-      <div class="streak-label">gün üst üste tam tamamlanan hedef</div>
-    </div>
-    <div class="badges" id="badges"></div>
+    <details class="accordion">
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-ember"><svg viewBox="0 0 24 24"><path d="M12 2c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 4 4 4 7a6 6 0 0 1-12 0c0-5 3-6 6-12z" fill="currentColor" stroke="none"></path></svg></div>
+        <div class="card-title-wrap"><div class="card-title">Seri &amp; Rozetler</div><div class="card-sub">Motivasyon</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div class="streak-hero">
+        <div class="streak-num mono" id="streak-big">0</div>
+        <div class="streak-label">gün üst üste tam tamamlanan hedef</div>
+      </div>
+      <div class="badges" id="badges"></div>
+    </details>
   </section>
 </div>
 </div>
@@ -721,29 +743,32 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 
 <div class="grid grid-2" style="margin-bottom:16px;">
   <section class="card" id="profile-card">
-    <div class="card-head">
-      <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"></circle><path d="M4.5 20c1.5-4 4.2-6 7.5-6s6 2 7.5 6"></path></svg></div>
-      <div class="card-title-wrap"><div class="card-title">Profil</div><div class="card-sub">Hedefler buna göre hesaplanır</div></div>
-    </div>
-    <div class="profile-grid">
-      <div class="field"><label for="p-sex">Cinsiyet</label>
-        <select id="p-sex"><option value="">Seç</option><option value="male">Erkek</option><option value="female">Kadın</option></select>
+    <details class="accordion" open>
+      <summary class="card-head accordion-summary">
+        <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"></circle><path d="M4.5 20c1.5-4 4.2-6 7.5-6s6 2 7.5 6"></path></svg></div>
+        <div class="card-title-wrap"><div class="card-title">Profil</div><div class="card-sub">Hedefler buna göre hesaplanır</div></div>
+        <span class="accordion-chevron">›</span>
+      </summary>
+      <div class="profile-grid">
+        <div class="field"><label for="p-sex">Cinsiyet</label>
+          <select id="p-sex"><option value="">Seç</option><option value="male">Erkek</option><option value="female">Kadın</option></select>
+        </div>
+        <div class="field"><label for="p-age">Yaş</label><input type="number" id="p-age" min="10" max="100"></div>
+        <div class="field"><label for="p-height">Boy (cm)</label><input type="number" id="p-height" min="120" max="230"></div>
+        <div class="field"><label for="p-weight">Kilo (kg)</label><input type="number" step="0.1" id="p-weight" min="30" max="300"></div>
+        <div class="field"><label for="p-goal">Hedef Kilo (kg)</label><input type="number" step="0.1" id="p-goal" min="30" max="300"></div>
+        <div class="field"><label for="p-activity">Aktivite</label>
+          <select id="p-activity">
+            <option value="sedentary">Hareketsiz</option>
+            <option value="light">Az Hareketli</option>
+            <option value="moderate">Orta</option>
+            <option value="active">Hareketli</option>
+            <option value="veryActive">Çok Hareketli</option>
+          </select>
+        </div>
       </div>
-      <div class="field"><label for="p-age">Yaş</label><input type="number" id="p-age" min="10" max="100"></div>
-      <div class="field"><label for="p-height">Boy (cm)</label><input type="number" id="p-height" min="120" max="230"></div>
-      <div class="field"><label for="p-weight">Kilo (kg)</label><input type="number" step="0.1" id="p-weight" min="30" max="300"></div>
-      <div class="field"><label for="p-goal">Hedef Kilo (kg)</label><input type="number" step="0.1" id="p-goal" min="30" max="300"></div>
-      <div class="field"><label for="p-activity">Aktivite</label>
-        <select id="p-activity">
-          <option value="sedentary">Hareketsiz</option>
-          <option value="light">Az Hareketli</option>
-          <option value="moderate">Orta</option>
-          <option value="active">Hareketli</option>
-          <option value="veryActive">Çok Hareketli</option>
-        </select>
-      </div>
-    </div>
-    <div class="profile-out" id="profile-out"></div>
+      <div class="profile-out" id="profile-out"></div>
+    </details>
   </section>
 
   <section class="card" id="reminders-card">
@@ -761,31 +786,37 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 </div>
 
 <section class="card" id="why-card" style="margin-bottom:16px;">
-  <div class="card-head">
-    <div class="card-icon i-ember"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.5-9C1 8.4 2.3 4.9 5.7 4.1c2.1-.5 4 .5 5 2 1-1.5 2.9-2.5 5-2 3.4.8 4.7 4.3 3.2 7.9C19.4 16.6 12 21 12 21Z"></path></svg></div>
-    <div class="card-title-wrap"><div class="card-title">Neden Yapıyorum?</div><div class="card-sub">Zor günlerde buraya geri dön</div></div>
-  </div>
-  <textarea id="why-input" placeholder="44. yaş gününde nasıl hissetmek istiyorsun? Bunu neden yapıyorsun? Buraya yaz — zorlandığın anlarda oku."></textarea>
+  <details class="accordion">
+    <summary class="card-head accordion-summary">
+      <div class="card-icon i-ember"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9.5-9C1 8.4 2.3 4.9 5.7 4.1c2.1-.5 4 .5 5 2 1-1.5 2.9-2.5 5-2 3.4.8 4.7 4.3 3.2 7.9C19.4 16.6 12 21 12 21Z"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Neden Yapıyorum?</div><div class="card-sub">Zor günlerde buraya geri dön</div></div>
+      <span class="accordion-chevron">›</span>
+    </summary>
+    <textarea id="why-input" placeholder="44. yaş gününde nasıl hissetmek istiyorsun? Bunu neden yapıyorsun? Buraya yaz — zorlandığın anlarda oku."></textarea>
+  </details>
 </section>
 
 <section class="card" id="backup-card" style="margin-bottom:16px;">
-  <div class="card-head">
-    <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M4 19h16"></path></svg></div>
-    <div class="card-title-wrap"><div class="card-title">Veri Yedekleme</div><div class="card-sub">Telefon verisi silinirse kaybetme</div></div>
-  </div>
-  <p class="backup-note">Bu uygulamanın sunucusu yok — tüm verilerin sadece bu telefonda saklanıyor. iOS, ana ekrana eklenen sitelerin verisini bazen kendiliğinden temizleyebiliyor. Ara sıra yedek almanı öneririz.</p>
-  <div class="backup-actions">
-    <button class="btn btn-sm" id="backup-export-btn" type="button">Yedek Al</button>
-    <button class="btn btn-sm" id="backup-import-btn" type="button">Yedekten Geri Yükle</button>
-  </div>
-  <textarea id="backup-textarea" class="backup-textarea" hidden placeholder="Yedek JSON metnini buraya yapıştır ve Uygula'ya bas..."></textarea>
-  <div class="backup-io-actions" id="backup-io-actions" hidden>
-    <button class="btn btn-sm" id="backup-apply-btn" type="button">Uygula</button>
-    <button class="btn btn-sm" id="backup-file-pick-btn" type="button">Dosya Seç</button>
-    <button class="btn btn-sm" id="backup-cancel-btn" type="button">İptal</button>
-  </div>
-  <input type="file" id="backup-file-input" accept="application/json,.json" hidden>
-  <div class="backup-status" id="backup-status"></div>
+  <details class="accordion">
+    <summary class="card-head accordion-summary">
+      <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M4 19h16"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Veri Yedekleme</div><div class="card-sub">Telefon verisi silinirse kaybetme</div></div>
+      <span class="accordion-chevron">›</span>
+    </summary>
+    <p class="backup-note">Bu uygulamanın sunucusu yok — tüm verilerin sadece bu telefonda saklanıyor. iOS, ana ekrana eklenen sitelerin verisini bazen kendiliğinden temizleyebiliyor. Ara sıra yedek almanı öneririz.</p>
+    <div class="backup-actions">
+      <button class="btn btn-sm" id="backup-export-btn" type="button">Yedek Al</button>
+      <button class="btn btn-sm" id="backup-import-btn" type="button">Yedekten Geri Yükle</button>
+    </div>
+    <textarea id="backup-textarea" class="backup-textarea" hidden placeholder="Yedek JSON metnini buraya yapıştır ve Uygula'ya bas..."></textarea>
+    <div class="backup-io-actions" id="backup-io-actions" hidden>
+      <button class="btn btn-sm" id="backup-apply-btn" type="button">Uygula</button>
+      <button class="btn btn-sm" id="backup-file-pick-btn" type="button">Dosya Seç</button>
+      <button class="btn btn-sm" id="backup-cancel-btn" type="button">İptal</button>
+    </div>
+    <input type="file" id="backup-file-input" accept="application/json,.json" hidden>
+    <div class="backup-status" id="backup-status"></div>
+  </details>
 </section>
 
 <div class="footer-note">Bu uygulama genel bir antrenman ve beslenme rehberidir, tıbbi tavsiye yerine geçmez. Ağrı, sakatlık veya sağlık durumun varsa bir hekim/fizyoterapiste danış.</div>
@@ -2184,6 +2215,12 @@ document.getElementById('pain-note').addEventListener('input', function(e){
 });
 
 window.addEventListener('resize', function(){ renderChart(); });
+
+/* Chart canvas draws at 0 width while its accordion is collapsed — redraw once it opens. */
+(function(){
+  var progressDetails = document.querySelector('#progress-card details');
+  if(progressDetails){ progressDetails.addEventListener('toggle', function(){ if(progressDetails.open) renderChart(); }); }
+})();
 
 /* ============ BACKUP / RESTORE ============ */
 function backupStatus(msg, cls){
