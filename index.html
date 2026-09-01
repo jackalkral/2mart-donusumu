@@ -10,7 +10,7 @@
    response for it and is forced to fetch fresh content from the network — then this same check
    passes and the app loads normally. */
 (function(){
-  var BUILD_ID = "20260901085422";
+  var BUILD_ID = "20260901090149";
   try{
     var params = new URLSearchParams(location.search);
     if(params.get('v') !== BUILD_ID){
@@ -91,18 +91,26 @@
 /* ============ BASE ============ */
 *{box-sizing:border-box;}
 @media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;} }
-html{-webkit-text-size-adjust:100%; overflow-x:hidden; width:100%; height:100%; touch-action:manipulation;}
+html{
+  -webkit-text-size-adjust:100%; touch-action:manipulation;
+  /* position:fixed on html+body removes the document itself from WKWebView's native scroll/bounce
+     system — otherwise dragging from an edge can rubber-band the WHOLE page (status bar overlapping
+     content, the tab bar dragged up with it) even though nothing here is meant to scroll except the
+     content pane below. Only .wrap is ever allowed to actually scroll. */
+  position:fixed; inset:0; overflow:hidden; width:100%; height:100%; overscroll-behavior:none;
+}
 body{
   margin:0; background:var(--bg); color:var(--ink);
   font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
-  overflow-x:hidden; width:100%; touch-action:manipulation;
+  touch-action:manipulation;
   /* Fixed-height flex shell instead of a page-level scroll + position:fixed bottom bar: iOS/WKWebView
      can leave a fixed element stuck at its old spot (a visible gap under it) when a <details> toggle
      changes document height without a real scroll. Locking the shell to the viewport height and
      scrolling only the content pane sidesteps that bug entirely — the tab bar is normal in-flow
      layout, never viewport-fixed, so it can't go stale. */
-  height:100vh; height:100dvh; height:var(--app-height, 100dvh); overflow:hidden;
+  position:fixed; inset:0; overflow:hidden; overscroll-behavior:none;
+  width:100%; height:100vh; height:100dvh; height:var(--app-height, 100dvh);
   display:flex; flex-direction:column;
 }
 .mono{ font-family:"JetBrains Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums; }
@@ -114,6 +122,7 @@ button{ font-family:inherit; }
 .wrap{
   max-width:900px; margin:0 auto; padding:0 16px 28px; width:100%;
   flex:1 1 auto; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;
 }
 
 /* ============ HERO ============ */
@@ -516,14 +525,16 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 <div class="grid grid-flow" style="margin-bottom:16px;">
 
   <section class="card span-2" id="today-card">
-    <div class="card-head">
+   <details class="accordion">
+    <summary class="card-head accordion-summary">
       <div class="card-icon i-ember"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.4"></circle><circle cx="19" cy="12" r="2.4"></circle><line x1="7.4" y1="12" x2="16.6" y2="12"></line><line x1="9.5" y1="8.5" x2="9.5" y2="15.5"></line><line x1="14.5" y1="8.5" x2="14.5" y2="15.5"></line></svg></div>
       <div class="card-title-wrap">
         <div class="today-title" id="today-title">–</div>
         <div class="card-sub" id="today-focus">–</div>
       </div>
       <div class="card-head-tail" id="today-venue-pill"></div>
-    </div>
+      <span class="accordion-chevron">›</span>
+    </summary>
 
     <div class="muscle-map" id="muscle-map"></div>
 
@@ -554,6 +565,7 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
         <div class="pain-tip">Keskin veya eklem ağrısı devam ederse hareketi atla ve bir fizyoterapiste danış — antrenmanı ağrı üzerinden zorlama.</div>
       </div>
     </div>
+   </details>
   </section>
 
   <section class="card" id="cardio-card">
