@@ -10,7 +10,7 @@
    response for it and is forced to fetch fresh content from the network — then this same check
    passes and the app loads normally. */
 (function(){
-  var BUILD_ID = "20260922161630";
+  var BUILD_ID = "20260922163242";
   try{
     var params = new URLSearchParams(location.search);
     if(params.get('v') !== BUILD_ID){
@@ -1091,6 +1091,13 @@ body{
 }
 .mv-credit{ text-align:right; font-size:11px; color:var(--ink-faint); margin:-4px 0 12px; }
 .mv-approx{ font-size:12.5px; line-height:1.45; color:var(--ink-dim); background:var(--surface-2); border-radius:10px; padding:9px 11px; margin:0 0 10px; }
+/* Fotoğrafı olmayan hareketler bu dosyanın kendi çizgi figürüyle gösteriliyor.
+   Fotoğrafların beyaz zemini olduğu için onlar açık kutuda duruyor; çizim ise
+   temanın yüzeyinde, mürekkep renginde — kendi diliyle. */
+.ex-thumb-fig{ background:var(--surface-2); }
+.ex-thumb-fig .mv-icon{ width:30px; height:30px; color:var(--ink-dim); }
+.mv-media-fig{ background:var(--surface-2); aspect-ratio:1/1; max-height:240px; cursor:default; }
+.mv-media-fig .mv-icon{ width:62%; height:62%; color:var(--ink-dim); }
 .ex-thumb-x{ cursor:pointer; }
 .ex-thumb-x:active{ transform:scale(.94); }
 .mv-credit a{ color:inherit; text-decoration:underline; text-underline-offset:2px; }
@@ -1796,7 +1803,7 @@ function checkRowHTML(opts){
   var muscleTagHtml = opts.muscle ? '<span class="muscle-tag'+(opts.muscleGold?' muscle-tag-gold':'')+'">'+opts.muscle+'</span>' : '';
   return '<label class="check-row'+(opts.checked?' done':'')+'">' +
     '<input type="checkbox" '+(opts.checked?'checked':'')+' '+opts.dataAttr+'>' +
-    (opts.thumb ? thumbHTML(opts.name) : '') +
+    (opts.thumb ? thumbHTML(opts.name, opts.move) : '') +
     '<span class="check-row-body"><span class="check-row-title">'+opts.name+' '+muscleTagHtml+'</span>' +
       (opts.detail ? '<span class="detail">'+opts.detail+'</span>' : '') +
       (opts.extra||'') +
@@ -2411,7 +2418,7 @@ function renderToday(){
     warmupWrap.innerHTML = '';
     WARMUP_ROUTINE.forEach(function(item){
       var checked = !!w.warmup[item.id];
-      var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, muscleGold:true, detail:item.detail, thumb:true, dataAttr:'data-warmup="'+item.id+'"' }));
+      var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, muscleGold:true, detail:item.detail, thumb:true, move:item.move, dataAttr:'data-warmup="'+item.id+'"' }));
       warmupWrap.appendChild(row);
     });
   }
@@ -2449,7 +2456,7 @@ function renderToday(){
       if(sortedLog(logKey).length) meta += '<button type="button" class="ex-hist-btn" data-move-sheet="'+escAttr(e.name)+'">Geçmiş</button>';
       if(meta) weightBlock += '<span class="ex-meta">'+meta+'</span>';
     }
-    var row = el(checkRowHTML({ checked:checked, name:e.name, muscle:e.muscle, detail:e.detail, thumb:true, extra:weightBlock+howToLink(e.name), dataAttr:'data-ex="'+e.id+'"' }));
+    var row = el(checkRowHTML({ checked:checked, name:e.name, muscle:e.muscle, detail:e.detail, thumb:true, move:e.move, extra:weightBlock+howToLink(e.name), dataAttr:'data-ex="'+e.id+'"' }));
     exWrap.appendChild(row);
   });
   var exercisesCountEl = document.getElementById('exercises-count');
@@ -2462,7 +2469,7 @@ function renderToday(){
   absWrap.innerHTML = '';
   ABS_CIRCUIT.forEach(function(a){
     var checked = !!w.abs[a.id];
-    var row = el(checkRowHTML({ checked:checked, name:a.name, muscle:a.muscle, detail:a.detail, thumb:true, extra:howToLink(a.name), dataAttr:'data-abs="'+a.id+'"' }));
+    var row = el(checkRowHTML({ checked:checked, name:a.name, muscle:a.muscle, detail:a.detail, thumb:true, move:a.move, extra:howToLink(a.name), dataAttr:'data-abs="'+a.id+'"' }));
     absWrap.appendChild(row);
   });
   var absCountEl = document.getElementById('abs-count');
@@ -2478,7 +2485,7 @@ function renderToday(){
     cooldownWrap.innerHTML = '';
     COOLDOWN_ROUTINE.forEach(function(item){
       var checked = !!w.cooldown[item.id];
-      var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, detail:item.detail, thumb:true, dataAttr:'data-cooldown="'+item.id+'"' }));
+      var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, detail:item.detail, thumb:true, move:item.move, dataAttr:'data-cooldown="'+item.id+'"' }));
       cooldownWrap.appendChild(row);
     });
   }
@@ -3308,6 +3315,7 @@ var EX_MEDIA = {
   "Calf raise makinesi":{i:"0605-ykUOVze.jpg",g:"0605-ykUOVze.gif",t:"Baldır",e:"Makine"},
   "Şınav (gerekirse dizde)":{i:"0662-I4hDWkc.jpg",g:"0662-I4hDWkc.gif",t:"Göğüs",e:"Vücut ağırlığı"},
   "Sandalyede dips":{i:"0129-RrLske5.jpg",g:"0129-RrLske5.gif",t:"Triceps",e:"Vücut ağırlığı"},
+  "Pike şınav (omuz)":{i:"3662-XPUDTt7.jpg",g:"3662-XPUDTt7.gif",t:"Kalça",e:"Vücut ağırlığı",a:1},
   "Plank-to-push-up":{i:"3665-hCjGsRQ.jpg",g:"3665-hCjGsRQ.gif",t:"Karın",e:"Vücut ağırlığı"},
   "Lat pulldown":{i:"0579-7F1DVzn.jpg",g:"0579-7F1DVzn.gif",t:"Sırt (Lat)",e:"Makine"},
   "Oturarak sıra çekme (cable row)":{i:"0861-fUBheHs.jpg",g:"0861-fUBheHs.gif",t:"Üst Sırt",e:"Kablo"},
@@ -3350,14 +3358,17 @@ function mediaFor(name){
 }
 /* Satırdaki küçük görsel. Yüklenemezse (ağ yok, kaynak değişti) sessizce yer tutucuya
    düşüyor — kırık resim ikonu görünmüyor. */
-function thumbHTML(name){
+function thumbHTML(name, move){
   if(!state.settings.exMedia) return '';
   var m = mediaFor(name);
   // Animasyonu olmayan hareketler de dokunulabilir: sayfası yine açılıyor (set/tekrar,
   // kas etiketi, video bağlantısı). Eskiden bunlar ölü bir ikondu ve "açılmıyor" gibi
   // görünüyordu.
   var open = ' role="button" tabindex="0" data-move-sheet="'+escAttr(name)+'" aria-label="'+escAttr(name)+' — ayrıntılar"';
-  if(!m) return '<span class="ex-thumb ex-thumb-x"'+open+'><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.4"></circle><circle cx="19" cy="12" r="2.4"></circle><line x1="7.4" y1="12" x2="16.6" y2="12"></line><line x1="9.5" y1="8.5" x2="9.5" y2="15.5"></line><line x1="14.5" y1="8.5" x2="14.5" y2="15.5"></line></svg></span>';
+  // Kaynak kütüphanede fotoğrafı olmayan hareketler (çene çekme, duvar meleği, kedi-deve,
+  // nefes çalışması gibi duruş/mobilite işleri) için bu dosyanın kendi çizilmiş figürü
+  // kullanılıyor. Jenerik bir dambıl ikonu hiçbir şey anlatmıyordu.
+  if(!m) return '<span class="ex-thumb ex-thumb-fig"'+open+'>'+moveIcon(move||'', 'ink-dim')+'</span>';
   return '<span class="ex-thumb"'+open+'>'+
     '<img src="'+m.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'ex-thumb-x\');this.remove();">'+
   '</span>';
@@ -3389,6 +3400,11 @@ function openMoveSheet(name){
   var sets = parseSetCount(ex.detail), reps = parseRepCount(ex.detail);
 
   var mediaHtml = '';
+  if(!m){
+    // Fotoğrafı olmayan hareket: uygulamanın kendi figürü büyük boy, altında tek satır not.
+    mediaHtml = '<div class="mv-media mv-media-fig">'+moveIcon(ex.move||'', 'ink-dim')+'</div>'+
+      '<div class="mv-approx">Bu duruş/mobilite hareketinin hazır animasyonu yok; yukarıdaki çizim pozisyonu gösteriyor. Doğru form için videoya bak.</div>';
+  }
   if(m){
     mediaHtml = '<div class="mv-media" data-move-media>'+
       '<img src="'+m.gif+'" data-gif="'+m.gif+'" data-still="'+m.img+'" alt="'+escAttr(name)+'" decoding="async" onerror="this.closest(\'.mv-media\').remove();">'+
@@ -3445,7 +3461,6 @@ function openMoveSheet(name){
     mediaHtml +
     '<h3>'+name+'</h3>'+
     '<div class="sheet-sub">'+sub+'</div>'+
-    (m ? '' : '<div class="mv-approx" style="margin-top:12px;">Bu hareketin animasyonu yok — kaynak kütüphanede birebir karşılığı bulunmuyor. Aşağıdaki video bağlantısı doğru formu gösterir.</div>')+
     '<div class="ex-meta" style="margin-top:10px;">'+tags+'</div>'+
     tiles + histHtml +
     '<a class="howto-link" style="display:inline-block;margin-top:14px;" href="https://www.youtube.com/results?search_query='+encodeURIComponent(name+' doğru form nasıl yapılır')+'" target="_blank" rel="noopener">Videoyu izle</a>'+
