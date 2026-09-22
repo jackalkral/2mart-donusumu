@@ -10,7 +10,7 @@
    response for it and is forced to fetch fresh content from the network — then this same check
    passes and the app loads normally. */
 (function(){
-  var BUILD_ID = "20260922104722";
+  var BUILD_ID = "20260922133413";
   try{
     var params = new URLSearchParams(location.search);
     if(params.get('v') !== BUILD_ID){
@@ -1061,6 +1061,41 @@ body{
 .hist-row .kg{ font-family:inherit; font-weight:500; font-size:17px; }
 .hist-row .d{ font-size:15px; }
 .hist-row .delta.up{ color:var(--acc); } .hist-row .delta.down{ color:var(--red); }
+/* ---- hareket görselleri (openGym'in Thumb + Media bileşenleri) ---- */
+/* Kaynak GIF/JPG'lerin zemini beyaz; koyu temada siyah bir kartın üstünde yüzmesinler
+   diye kendi açık renkli yüzeylerinde duruyorlar. */
+.ex-thumb{
+  width:46px; height:46px; flex:0 0 auto; border-radius:9px; overflow:hidden;
+  background:#fff; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:transform var(--fast) var(--ease);
+}
+.ex-thumb:active{ transform:scale(.94); }
+.ex-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.ex-thumb-x{ background:var(--surface-2); cursor:default; }
+.ex-thumb-x svg{ width:22px; height:22px; stroke:var(--ink-faint); fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+.ex-thumb-x:active{ transform:none; }
+/* Satırda görsel varken ayraç, metin sütununun hizasından başlasın — liste tek nesne
+   gibi okunsun diye (openGym'in ikon rayı kuralı). */
+.check-row:has(.ex-thumb) + .check-row:has(.ex-thumb)::before{ left:58px; }
+
+.mv-media{
+  position:relative; width:100%; aspect-ratio:1/1; max-height:320px; margin:0 auto 8px;
+  border-radius:14px; overflow:hidden; background:#fff; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.mv-media img{ width:100%; height:100%; object-fit:contain; display:block; }
+.mv-media-hint{
+  position:absolute; left:50%; bottom:10px; transform:translateX(-50%);
+  background:rgba(0,0,0,.55); color:#fff; font-size:12px; font-weight:500;
+  padding:5px 11px; border-radius:999px; backdrop-filter:blur(6px); pointer-events:none;
+}
+.mv-credit{ text-align:right; font-size:11px; color:var(--ink-faint); margin:-4px 0 12px; }
+.mv-credit a{ color:inherit; text-decoration:underline; text-underline-offset:2px; }
+
+.mv-tiles{ display:flex; gap:10px; margin-top:14px; }
+.mv-tile{ flex:1; background:var(--surface-2); border-radius:12px; padding:12px 8px; text-align:center; min-width:0; }
+.mv-tile .v{ font-size:22px; font-weight:600; letter-spacing:-.021em; line-height:1.15; }
+.mv-tile .l{ font-size:12px; color:var(--ink-dim); font-weight:400; margin-top:2px; }
 </style>
 
 <main class="wrap">
@@ -1486,6 +1521,11 @@ body{
     </div>
 
     <div class="set-row">
+      <div class="set-row-txt"><div class="t">Hareket görselleri</div><div class="s">Her hareketin yanında küçük bir görsel; dokununca animasyonlu gösterim açılır. Görseller internetten çekilir (© Gym visual).</div></div>
+      <label class="switch"><input type="checkbox" id="set-ex-media"><span class="track"></span></label>
+    </div>
+
+    <div class="set-row">
       <div class="set-row-txt"><div class="t">Antrenmanda ekran açık kalsın</div><div class="s">Setler arasında telefonu tekrar açmak zorunda kalma. Antrenmanı bitirince kendiliğinden bırakılır.</div></div>
       <label class="switch"><input type="checkbox" id="set-wakelock"><span class="track"></span></label>
     </div>
@@ -1753,6 +1793,7 @@ function checkRowHTML(opts){
   var muscleTagHtml = opts.muscle ? '<span class="muscle-tag'+(opts.muscleGold?' muscle-tag-gold':'')+'">'+opts.muscle+'</span>' : '';
   return '<label class="check-row'+(opts.checked?' done':'')+'">' +
     '<input type="checkbox" '+(opts.checked?'checked':'')+' '+opts.dataAttr+'>' +
+    (opts.thumb ? thumbHTML(opts.name) : '') +
     '<span class="check-row-body"><span class="check-row-title">'+opts.name+' '+muscleTagHtml+'</span>' +
       (opts.detail ? '<span class="detail">'+opts.detail+'</span>' : '') +
       (opts.extra||'') +
@@ -2000,7 +2041,7 @@ var DEFAULT_STATE = {
   ],
   whyNote:'',
   /* v2: antrenman + görünüm tercihleri (openGym'in Settings ekranından uyarlandı) */
-  settings:{ restAuto:true, restSecs:90, restSound:true, wakeLock:true, theme:'dark', accent:'lime' }
+  settings:{ restAuto:true, restSecs:90, restSound:true, wakeLock:true, exMedia:true, theme:'dark', accent:'lime' }
 };
 
 /* ============ DATE HELPERS ============ */
@@ -2367,7 +2408,7 @@ function renderToday(){
     warmupWrap.innerHTML = '';
     WARMUP_ROUTINE.forEach(function(item){
       var checked = !!w.warmup[item.id];
-      var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, muscleGold:true, detail:item.detail, dataAttr:'data-warmup="'+item.id+'"' }));
+      var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, muscleGold:true, detail:item.detail, thumb:true, dataAttr:'data-warmup="'+item.id+'"' }));
       warmupWrap.appendChild(row);
     });
   }
@@ -2402,10 +2443,10 @@ function renderToday(){
       var meta = '';
       if(one) meta += '<span class="e1rm-tag">1RM ~'+one.est+' kg</span>';
       if(pr) meta += '<span class="pr-tag">🏆 en ağır '+pr.kg+' kg</span>';
-      if(sortedLog(logKey).length) meta += '<button type="button" class="ex-hist-btn" data-ex-sheet="'+logKey+'">Geçmiş</button>';
+      if(sortedLog(logKey).length) meta += '<button type="button" class="ex-hist-btn" data-move-sheet="'+escAttr(e.name)+'">Geçmiş</button>';
       if(meta) weightBlock += '<span class="ex-meta">'+meta+'</span>';
     }
-    var row = el(checkRowHTML({ checked:checked, name:e.name, muscle:e.muscle, detail:e.detail, extra:weightBlock+howToLink(e.name), dataAttr:'data-ex="'+e.id+'"' }));
+    var row = el(checkRowHTML({ checked:checked, name:e.name, muscle:e.muscle, detail:e.detail, thumb:true, extra:weightBlock+howToLink(e.name), dataAttr:'data-ex="'+e.id+'"' }));
     exWrap.appendChild(row);
   });
   var exercisesCountEl = document.getElementById('exercises-count');
@@ -2418,7 +2459,7 @@ function renderToday(){
   absWrap.innerHTML = '';
   ABS_CIRCUIT.forEach(function(a){
     var checked = !!w.abs[a.id];
-    var row = el(checkRowHTML({ checked:checked, name:a.name, muscle:a.muscle, detail:a.detail, extra:howToLink(a.name), dataAttr:'data-abs="'+a.id+'"' }));
+    var row = el(checkRowHTML({ checked:checked, name:a.name, muscle:a.muscle, detail:a.detail, thumb:true, extra:howToLink(a.name), dataAttr:'data-abs="'+a.id+'"' }));
     absWrap.appendChild(row);
   });
   var absCountEl = document.getElementById('abs-count');
@@ -2434,7 +2475,7 @@ function renderToday(){
     cooldownWrap.innerHTML = '';
     COOLDOWN_ROUTINE.forEach(function(item){
       var checked = !!w.cooldown[item.id];
-      var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, detail:item.detail, dataAttr:'data-cooldown="'+item.id+'"' }));
+      var row = el(checkRowHTML({ checked:checked, name:item.name, muscle:item.muscle, detail:item.detail, thumb:true, dataAttr:'data-cooldown="'+item.id+'"' }));
       cooldownWrap.appendChild(row);
     });
   }
@@ -2906,7 +2947,10 @@ function parseSetCount(detail){
   return m ? +m[1] : 0;
 }
 function parseRepCount(detail){
-  var m = /×\s*(\d+)(?:\s*-\s*(\d+))?\s*tekrar/i.exec(detail||'');
+  var d = detail || '';
+  var m = /×\s*(\d+)(?:\s*-\s*(\d+))?\s*tekrar/i.exec(d);
+  // Isınma/soğuma satırlarında "10-12 tekrar" gibi × içermeyen yazım da var.
+  if(!m) m = /(\d+)(?:\s*-\s*(\d+))?\s*tekrar/i.exec(d);
   return m ? +m[1] : 0;
 }
 
@@ -3214,7 +3258,7 @@ function renderRecords(){
       '<div class="ex-meta">'+
         '<span class="pr-tag">🏆 en ağır '+r.best.kg+' kg</span>'+
         (r.one ? '<span class="e1rm-tag">1RM ~'+r.one.est+' kg</span>' : '')+
-        '<button type="button" class="ex-hist-btn" data-ex-sheet="'+r.ex.key+'">Geçmiş</button>'+
+        '<button type="button" class="ex-hist-btn" data-move-sheet="'+escAttr(r.ex.name)+'">Detay</button>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -3225,65 +3269,171 @@ function closeSheet(){
   var b = document.getElementById('sheet-backdrop');
   if(b) b.remove();
 }
-function openExerciseSheet(key){
-  var ex = weightedExercises().find(function(e){ return e.key===key; });
-  if(!ex) return;
-  var log = sortedLog(key);
-  var one = best1RMFor(key, ex.detail);
-  var reps = parseRepCount(ex.detail);
-  var best = bestLift(key);
 
-  // Basit kıvılcım grafiği — kaydedilen ağırlıkların zaman içindeki seyri.
-  var spark = '';
-  if(log.length >= 2){
-    var vals = log.map(function(p){ return p.kg; });
-    var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
-    var span = (mx - mn) || 1;
-    var W = 300, H = 74, pad = 6;
-    var pts = log.map(function(p,i){
-      var x = pad + (i/(log.length-1))*(W-pad*2);
-      var y = H-pad - ((p.kg-mn)/span)*(H-pad*2);
-      return Math.round(x*10)/10 + ',' + Math.round(y*10)/10;
-    }).join(' ');
-    var firstX = pad, lastX = pad + (W-pad*2);
-    var lastPt = log[log.length-1];
-    var lastY = H-pad - ((lastPt.kg-mn)/span)*(H-pad*2);
-    spark = '<svg class="spark" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" aria-hidden="true">'+
-      '<polygon points="'+firstX+','+(H-pad)+' '+pts+' '+lastX+','+(H-pad)+'" fill="var(--grad-a)" opacity=".12"/>'+
-      // vector-effect: viewBox yatayda esnetildiği için çizgi kalınlığı da esnerdi.
-      '<polyline points="'+pts+'" fill="none" stroke="var(--grad-a)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'+
-      '<circle cx="'+lastX+'" cy="'+(Math.round(lastY*10)/10)+'" r="3.5" fill="var(--grad-a)" vector-effect="non-scaling-stroke"/>'+
-    '</svg>';
+/* ==================================================================================
+   HAREKET GÖRSELLERİ (openGym'deki gibi)
+   ----------------------------------------------------------------------------------
+   Kaynak: github.com/hasaneyldrm/exercises-dataset — 1.324 hareketlik veri kümesi.
+   Görseller oradan doğrudan çekiliyor, bu depoya KOPYALANMIYOR.
+
+   LİSANS UYARISI: veri kümesinin kodu ve metinleri MIT, ama images/ ve videos/
+   klasörlerindeki görseller MIT DEĞİL — © Gym visual (gymvisual.com), o depoda hak
+   sahibinin yazılı izniyle bulunuyor. Lisans açıkça şunu diyor: "Bu depoyu klonlamak
+   size görseller için herhangi bir lisans vermez; kendi lisansınızı Gym visual'dan
+   alın." Ayrıca "© Gym visual — https://gymvisual.com/" atfının korunması şart.
+   Bu yüzden: atıf her görselin yanında gösteriliyor, görseller depoya kopyalanmıyor
+   ve Profil → Antrenman Ayarları'ndan tek dokunuşla kapatılabiliyor. Uygulamayı
+   herkese açık yayımlamaya devam edeceksen Gym visual'dan kendi lisansını al ya da
+   bu özelliği kapalı tut.
+
+   Başka bir kaynağa geçmek istersen sadece MEDIA_IMG / MEDIA_GIF'i değiştir. */
+var MEDIA_REF = 'https://raw.githubusercontent.com/hasaneyldrm/exercises-dataset/7455efae41b330c265e7cd4b78dfa848e7ce5ebd/';
+var MEDIA_IMG = MEDIA_REF + 'images/';
+var MEDIA_GIF = MEDIA_REF + 'videos/';
+var MEDIA_CREDIT = '© Gym visual';
+var MEDIA_CREDIT_URL = 'https://gymvisual.com/';
+
+/* Kendi hareket adlarımız → veri kümesindeki kayıt. Elle eşleştirildi; karşılığı
+   dürüstçe bulunamayanlar (pike şınav, duvar squat, plank-to-push-up, chin tuck,
+   wall angel, kedi-deve) bilerek listede YOK — yanlış bir animasyon göstermektense
+   hiç göstermemek doğru. Onlarda yer tutucu ikon görünüyor. */
+var EX_MEDIA = {
+  "Leg press ya da squat (bar/dambıl)":{i:"0739-10Z2DXU.jpg",g:"0739-10Z2DXU.gif",t:"Kalça",e:"Makine"},
+  "Leg curl makinesi":{i:"0586-17lJ1kr.jpg",g:"0586-17lJ1kr.gif",t:"Hamstring",e:"Makine"},
+  "Hip thrust (bar ile)":{i:"1409-qKBpF7I.jpg",g:"1409-qKBpF7I.gif",t:"Kalça",e:"Bar"},
+  "Bacak ekstansiyon makinesi":{i:"0585-my33uHU.jpg",g:"0585-my33uHU.gif",t:"Quadriceps",e:"Makine"},
+  "Calf raise makinesi":{i:"0605-ykUOVze.jpg",g:"0605-ykUOVze.gif",t:"Baldır",e:"Makine"},
+  "Şınav (gerekirse dizde)":{i:"0662-I4hDWkc.jpg",g:"0662-I4hDWkc.gif",t:"Göğüs",e:"Vücut ağırlığı"},
+  "Sandalyede dips":{i:"0129-RrLske5.jpg",g:"0129-RrLske5.gif",t:"Triceps",e:"Vücut ağırlığı"},
+  "Lat pulldown":{i:"0579-7F1DVzn.jpg",g:"0579-7F1DVzn.gif",t:"Sırt (Lat)",e:"Makine"},
+  "Oturarak sıra çekme (cable row)":{i:"0861-fUBheHs.jpg",g:"0861-fUBheHs.gif",t:"Üst Sırt",e:"Kablo"},
+  "Face pull":{i:"0233-ZfyAGhK.jpg",g:"0233-ZfyAGhK.gif",t:"Omuz",e:"Kablo"},
+  "Dambıl biceps curl":{i:"0294-NbVPDMW.jpg",g:"0294-NbVPDMW.gif",t:"Biceps",e:"Dambıl"},
+  "Squat":{i:"0043-qXTaZnJ.jpg",g:"0043-qXTaZnJ.gif",t:"Kalça",e:"Bar"},
+  "Bulgar split squat":{i:"2368-9E25EOx.jpg",g:"2368-9E25EOx.gif",t:"Quadriceps",e:"Vücut ağırlığı"},
+  "Glute bridge":{i:"3013-u0cNiij.jpg",g:"3013-u0cNiij.gif",t:"Kalça",e:"Vücut ağırlığı"},
+  "Reverse lunge":{i:"0381-SSsBDwB.jpg",g:"0381-SSsBDwB.gif",t:"Kalça",e:"Dambıl"},
+  "Romanian deadlift (bar/dambıl)":{i:"0085-wQ2c4XD.jpg",g:"0085-wQ2c4XD.gif",t:"Kalça",e:"Bar"},
+  "Kettlebell/dambıl swing":{i:"0549-UHJlbu3.jpg",g:"0549-UHJlbu3.gif",t:"Kalça",e:"Kettlebell"},
+  "Göğüs presi makinesi":{i:"0577-T0yTjgW.jpg",g:"0577-T0yTjgW.gif",t:"Göğüs",e:"Makine"},
+  "Farmer carry":{i:"2133-qPEzJjA.jpg",g:"2133-qPEzJjA.gif",t:"Quadriceps",e:"Dambıl"},
+  "Mountain climber":{i:"0630-RJgzwny.jpg",g:"0630-RJgzwny.gif",t:"Kardiyo",e:"Vücut ağırlığı"},
+  "Squat to press (su şişesi/dambıl)":{i:"0550-yWxMvB5.jpg",g:"0550-yWxMvB5.gif",t:"Omuz",e:"Kettlebell"},
+  "Superman":{i:"1352-ANbbry2.jpg",g:"1352-ANbbry2.gif",t:"Omurga",e:"Vücut ağırlığı"},
+  "Plank hold":{i:"3665-hCjGsRQ.jpg",g:"3665-hCjGsRQ.gif",t:"Karın",e:"Vücut ağırlığı"},
+  "Plank":{i:"3665-hCjGsRQ.jpg",g:"3665-hCjGsRQ.gif",t:"Karın",e:"Vücut ağırlığı"},
+  "Bicycle crunch":{i:"0003-1ZFqTDN.jpg",g:"0003-1ZFqTDN.gif",t:"Karın",e:"Vücut ağırlığı"},
+  "Bacak kaldırma (leg raise)":{i:"0865-9IxJdtC.jpg",g:"0865-9IxJdtC.gif",t:"Karın",e:"Vücut ağırlığı"},
+  "Russian twist":{i:"0687-XVDdcoj.jpg",g:"0687-XVDdcoj.gif",t:"Karın",e:"Vücut ağırlığı"},
+  "Side plank":{i:"0705-RKjH6Lt.jpg",g:"0705-RKjH6Lt.gif",t:"Karın",e:"Vücut ağırlığı"},
+  "Mountain climber (kor)":{i:"0630-RJgzwny.jpg",g:"0630-RJgzwny.gif",t:"Kardiyo",e:"Vücut ağırlığı"},
+  "Ayakta hamstring esnetme":{i:"1511-99rWm7w.jpg",g:"1511-99rWm7w.gif",t:"Hamstring",e:"Vücut ağırlığı"},
+  "Ayakta quadriceps esnetme":{i:"0613-BWnJR72.jpg",g:"0613-BWnJR72.gif",t:"Quadriceps",e:"Vücut ağırlığı"},
+  "Kapıda/duvar göğüs esnetme":{i:"1271-Uto7l43.jpg",g:"1271-Uto7l43.gif",t:"Göğüs",e:"Vücut ağırlığı"},
+  "Kapıda göğüs esnetme":{i:"1271-Uto7l43.jpg",g:"1271-Uto7l43.gif",t:"Göğüs",e:"Vücut ağırlığı"},
+  "Kürek çekme hareketi (bantsız)":{i:"3166-wd4ds3s.jpg",g:"3166-wd4ds3s.gif",t:"Üst Sırt",e:"Vücut ağırlığı"}
+};
+
+function mediaFor(name){
+  var m = EX_MEDIA[name];
+  if(!m || !state.settings.exMedia) return null;
+  return { img:MEDIA_IMG + m.i, gif:MEDIA_GIF + m.g, target:m.t, equip:m.e };
+}
+/* Satırdaki küçük görsel. Yüklenemezse (ağ yok, kaynak değişti) sessizce yer tutucuya
+   düşüyor — kırık resim ikonu görünmüyor. */
+function thumbHTML(name){
+  if(!state.settings.exMedia) return '';
+  var m = mediaFor(name);
+  if(!m) return '<span class="ex-thumb ex-thumb-x" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.4"></circle><circle cx="19" cy="12" r="2.4"></circle><line x1="7.4" y1="12" x2="16.6" y2="12"></line><line x1="9.5" y1="8.5" x2="9.5" y2="15.5"></line><line x1="14.5" y1="8.5" x2="14.5" y2="15.5"></line></svg></span>';
+  return '<span class="ex-thumb" role="button" tabindex="0" data-move-sheet="'+escAttr(name)+'" aria-label="'+escAttr(name)+' — animasyonu göster">'+
+    '<img src="'+m.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'ex-thumb-x\');this.remove();">'+
+  '</span>';
+}
+function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+/* Hareket sayfası: büyük animasyon + etiketler + set/tekrar/ağırlık + (varsa) 1RM ve geçmiş.
+   openGym'in rehberli antrenman ekranının bu uygulamadaki karşılığı. */
+function findMove(name){
+  var hit = null;
+  SPLIT.forEach(function(day, dow){
+    (day.exercises||[]).forEach(function(e){
+      if(e.name===name && !hit) hit = { ex:e, dow:dow, dayKey:day.key, logKey:e.logWeight ? exKey(day.key,e.id) : null };
+    });
+  });
+  if(hit) return hit;
+  [ABS_CIRCUIT, POSTURE_ROUTINE, WARMUP_ROUTINE, COOLDOWN_ROUTINE].forEach(function(list){
+    list.forEach(function(e){ if(e.name===name && !hit) hit = { ex:e, dow:null, dayKey:null, logKey:null }; });
+  });
+  return hit;
+}
+function tileHTML(v, l){ return '<div class="mv-tile"><div class="v">'+v+'</div><div class="l">'+l+'</div></div>'; }
+
+function openMoveSheet(name){
+  var hit = findMove(name);
+  if(!hit) return;
+  var ex = hit.ex;
+  var m = mediaFor(name);
+  var sets = parseSetCount(ex.detail), reps = parseRepCount(ex.detail);
+
+  var mediaHtml = '';
+  if(m){
+    mediaHtml = '<div class="mv-media" data-move-media>'+
+      '<img src="'+m.gif+'" data-gif="'+m.gif+'" data-still="'+m.img+'" alt="'+escAttr(name)+'" decoding="async" onerror="this.closest(\'.mv-media\').remove();">'+
+      '<span class="mv-media-hint">duraklatmak için dokun</span>'+
+    '</div>'+
+    '<div class="mv-credit"><a href="'+MEDIA_CREDIT_URL+'" target="_blank" rel="noopener">'+MEDIA_CREDIT+'</a></div>';
   }
 
-  var runningBest = -Infinity;
-  var rowsHtml = log.slice().reverse().map(function(p, idx, arr){
-    var prev = arr[idx+1];
-    var diff = prev ? Math.round((p.kg - prev.kg)*10)/10 : 0;
-    var deltaCls = diff>0 ? 'up' : (diff<0 ? 'down' : '');
-    var deltaTxt = diff===0 ? '' : (diff>0?'+':'')+diff;
-    var isPr = best && p.date===best.date && p.kg===best.kg;
-    return '<div class="hist-row'+(isPr?' is-pr':'')+'">'+
-      '<span class="d">'+fmtDate(p.date)+(isPr?' · 🏆 rekor':'')+'</span>'+
-      '<span class="kg">'+p.kg+' kg</span>'+
-      '<span class="delta '+deltaCls+'">'+deltaTxt+'</span>'+
+  // Kendi kas adımız veri kümesinin hedef kasıyla aynı olabiliyor ("Üst Sırt" iki kez).
+  var tagVals = [];
+  [ex.muscle, m && m.target, m && m.equip].forEach(function(v){
+    if(v && tagVals.indexOf(v) === -1) tagVals.push(v);
+  });
+  var tags = tagVals.map(function(v){ return '<span class="muscle-tag">'+v+'</span>'; }).join('');
+
+  var tiles = '';
+  if(sets || reps || hit.logKey){
+    var kgNow = hit.logKey ? (todaysEntry(hit.logKey) ? todaysEntry(hit.logKey).kg : (suggestedWeight(hit.logKey).val)) : null;
+    tiles = '<div class="mv-tiles">'+
+      (sets ? tileHTML(sets, 'Set') : '') +
+      (reps ? tileHTML(reps, 'Tekrar') : '') +
+      (hit.logKey ? tileHTML((kgNow!==null && kgNow!==undefined ? kgNow : '–') + ' kg', 'Ağırlık') : '') +
     '</div>';
-  }).join('');
+  }
 
-  var oneHtml = one
-    ? '<div class="sheet-1rm"><span class="v mono">'+one.est+'</span><span class="u">kg tahmini 1RM</span></div>'+
-      '<div class="sheet-1rm-note">'+one.kg+' kg × '+one.reps+' tekrar kaydından (Epley). '+ONERM_REP_CAP+' tekrarın üstünde tahmin yapılmaz.</div>'
-    : '<div class="sheet-1rm-note" style="margin-top:14px;">Tahmini 1RM için bu hareketin tekrar sayısı gerekiyor'+(reps?'':' (programda tanımlı değil)')+'.</div>';
+  var histHtml = '';
+  if(hit.logKey){
+    var log = sortedLog(hit.logKey);
+    var one = best1RMFor(hit.logKey, ex.detail);
+    var best = bestLift(hit.logKey);
+    if(one) histHtml += '<div class="sheet-1rm"><span class="v mono">'+one.est+'</span><span class="u">kg tahmini 1RM</span></div>'+
+      '<div class="sheet-1rm-note">'+one.kg+' kg × '+one.reps+' tekrar kaydından (Epley). '+ONERM_REP_CAP+' tekrarın üstünde tahmin yapılmaz.</div>';
+    if(log.length){
+      histHtml += '<div class="hist-list">' + log.slice().reverse().map(function(p, idx, arr){
+        var prev = arr[idx+1];
+        var diff = prev ? Math.round((p.kg - prev.kg)*10)/10 : 0;
+        var isPr = best && p.date===best.date && p.kg===best.kg;
+        return '<div class="hist-row'+(isPr?' is-pr':'')+'">'+
+          '<span class="d">'+fmtDate(p.date)+(isPr?' · 🏆 rekor':'')+'</span>'+
+          '<span class="kg">'+p.kg+' kg</span>'+
+          '<span class="delta '+(diff>0?'up':(diff<0?'down':''))+'">'+(diff===0?'':(diff>0?'+':'')+diff)+'</span>'+
+        '</div>';
+      }).join('') + '</div>';
+    }
+  }
 
+  var sub = (hit.dow!==null ? DOW_NAMES[hit.dow]+' · ' : '') + ex.detail;
   var wrap = document.createElement('div');
   wrap.id = 'sheet-backdrop';
   wrap.className = 'sheet-backdrop';
   wrap.innerHTML = '<div class="sheet" role="dialog" aria-modal="true">'+
     '<div class="sheet-grip"></div>'+
-    '<h3>'+ex.name+'</h3>'+
-    '<div class="sheet-sub">'+DOW_NAMES[ex.dow]+' · '+ex.detail+'</div>'+
-    oneHtml + spark +
-    '<div class="hist-list">'+rowsHtml+'</div>'+
+    mediaHtml +
+    '<h3>'+name+'</h3>'+
+    '<div class="sheet-sub">'+sub+'</div>'+
+    '<div class="ex-meta" style="margin-top:10px;">'+tags+'</div>'+
+    tiles + histHtml +
+    '<a class="howto-link" style="display:inline-block;margin-top:14px;" href="https://www.youtube.com/results?search_query='+encodeURIComponent(name+' doğru form nasıl yapılır')+'" target="_blank" rel="noopener">Videoyu izle</a>'+
     '<button type="button" class="sheet-close" data-sheet-close>Kapat</button>'+
   '</div>';
   wrap.addEventListener('click', function(e){ if(e.target===wrap) closeSheet(); });
@@ -3417,6 +3567,7 @@ function renderSettingsUI(){
   var a = document.getElementById('set-rest-auto'); if(a) a.checked = !!s.restAuto;
   var so = document.getElementById('set-rest-sound'); if(so) so.checked = !!s.restSound;
   var wl = document.getElementById('set-wakelock'); if(wl) wl.checked = !!s.wakeLock;
+  var em = document.getElementById('set-ex-media'); if(em) em.checked = !!s.exMedia;
   var note = document.getElementById('wakelock-note'); if(note) note.hidden = wakeLockSupported();
   document.querySelectorAll('#set-rest-secs button').forEach(function(b){
     b.classList.toggle('active', +b.dataset.secs === s.restSecs);
@@ -3536,6 +3687,7 @@ document.addEventListener('change', function(e){
   if(t.id==='set-rest-auto'){ mutate(function(){ state.settings.restAuto = t.checked; }); return; }
   if(t.id==='set-rest-sound'){ mutate(function(){ state.settings.restSound = t.checked; }); if(t.checked) restAlert(); return; }
   if(t.id==='set-wakelock'){ mutate(function(){ state.settings.wakeLock = t.checked; }); syncWakeLock(); return; }
+  if(t.id==='set-ex-media'){ mutate(function(){ state.settings.exMedia = t.checked; }); return; }
 });
 
 document.addEventListener('click', function(e){
@@ -3565,8 +3717,23 @@ document.addEventListener('click', function(e){
   var per = e.target.closest('#balance-seg button');
   if(per){ balancePeriod = +per.dataset.period; renderBalance(); return; }
 
-  var sheet = e.target.closest('[data-ex-sheet]');
-  if(sheet){ openExerciseSheet(sheet.dataset.exSheet); return; }
+  // Küçük görsel bir <label> içinde duruyor; preventDefault olmadan dokunmak işaret
+  // kutusunu da açıp kapatırdı.
+  var mv = e.target.closest('[data-move-sheet]');
+  if(mv){ e.preventDefault(); openMoveSheet(mv.dataset.moveSheet); return; }
+
+  // Animasyona dokunmak duraklatır (hareketsiz kareye geçer), tekrar dokunmak oynatır.
+  var med = e.target.closest('[data-move-media]');
+  if(med){
+    var im = med.querySelector('img');
+    if(im){
+      var playing = im.getAttribute('src') === im.dataset.gif;
+      im.setAttribute('src', playing ? im.dataset.still : im.dataset.gif);
+      var hint = med.querySelector('.mv-media-hint');
+      if(hint) hint.textContent = playing ? 'oynatmak için dokun' : 'duraklatmak için dokun';
+    }
+    return;
+  }
 
   if(e.target.closest('[data-sheet-close]')){ closeSheet(); return; }
 });
