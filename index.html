@@ -160,7 +160,37 @@ button{ font-family:inherit; }
 .hstat{ display:flex; flex-direction:column; gap:3px; }
 .hstat-n{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:27px; line-height:1; }
 .hstat-l{ font-size:12.5px; color:rgba(255,255,255,.82); letter-spacing:.04em; text-transform:uppercase; }
+/* v2: kahraman bloğundaki "bugün" eylem satırı (openGym ana ekranı) */
+.hero-today{ display:flex; align-items:center; gap:13px; width:100%; text-align:left; margin-bottom:20px; padding:13px 14px; border-radius:17px; background:rgba(255,255,255,.17); border:1px solid rgba(255,255,255,.3); backdrop-filter:blur(8px); color:#fff; font-family:inherit; cursor:pointer; min-height:44px; transition:transform .12s, background .2s; }
+.hero-today:active{ transform:scale(.985); background:rgba(255,255,255,.24); }
+.hero-today .ht-ico{ flex:0 0 auto; width:42px; height:42px; border-radius:13px; background:rgba(255,255,255,.22); display:flex; align-items:center; justify-content:center; }
+.hero-today .ht-ico svg{ width:23px; height:23px; stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.hero-today .ht-txt{ flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; }
+.hero-today .ht-eyebrow{ font-size:10.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.78); }
+.hero-today .ht-title{ font-size:15.5px; font-weight:800; line-height:1.25; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.hero-today .ht-sub{ font-size:12.5px; font-weight:600; color:rgba(255,255,255,.82); }
+.hero-today .ht-cta{ flex:0 0 auto; font-size:13.5px; font-weight:800; padding:9px 15px; border-radius:11px; background:#fff; color:var(--grad-a); }
+.hero-today.is-done .ht-cta{ background:rgba(255,255,255,.22); color:#fff; }
+
 .hero-quote{ margin:0; padding-top:18px; border-top:1px solid rgba(255,255,255,.25); }
+
+/* v2: telefonda kahraman bloğu ekranın tamamını yiyordu; bugünün antrenmanı ve hafta
+   şeridi kaydırmadan görünsün diye dar ekranlarda sıkıştırılıyor. Masaüstü aynı kalıyor. */
+@media (max-width:560px){
+  .hero{ padding-top:max(22px, calc(env(safe-area-inset-top) + 10px)); padding-bottom:24px; margin-bottom:14px; }
+  .hero-top{ margin-bottom:10px; }
+  .hero-title{ font-size:clamp(30px,8vw,42px); margin-bottom:16px; }
+  .hero-main{ gap:16px; margin-bottom:16px; flex-wrap:nowrap; align-items:center; }
+  .ring-wrap{ width:118px; height:118px; }
+  .ring-num{ font-size:33px; }
+  .ring-label{ font-size:10.5px; letter-spacing:.06em; }
+  .hero-stats{ flex:1; min-width:0; display:grid; grid-template-columns:1fr 1fr; gap:10px 12px; }
+  .hstat-n{ font-size:21px; }
+  .hstat-l{ font-size:10.5px; }
+  .hero-today{ margin-bottom:16px; }
+  .hero-quote{ padding-top:14px; font-size:14px; }
+  .daystrip{ margin-top:-4px; margin-bottom:14px; gap:5px; }
+}
 .hero-quote p{ font-size:16px; font-style:italic; font-weight:500; line-height:1.5; }
 .hero-quote cite{ display:block; margin-top:6px; font-size:13.5px; font-style:normal; font-weight:700; letter-spacing:.03em; color:rgba(255,255,255,.85); }
 
@@ -485,6 +515,162 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 .tab-btn-icon svg{ width:23px; height:23px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .tab-btn.active{ color:var(--ink); }
 .tab-btn.active .tab-btn-icon{ background:linear-gradient(135deg,var(--grad-a),var(--grad-b)); color:#fff; }
+/* ============ v2: AYARLANABİLİR VURGU RENGİ ============
+   openGym'in "8 accent color" fikri. Anlamı olan renkler (kırmızı=tehlike, yeşil=tamam)
+   her temada sabit kalsın diye yalnızca marka gradyanı ve odak rengi değişiyor.
+   Seçici `html:root[...]` — düz `:root[...]` yukarıdaki koyu tema bloğuyla aynı
+   özgüllükte kalır ve koyu temada vurgu rengi geri indigoya dönerdi. */
+html:root[data-accent="indigo"]{ --grad-a:#4F46E5; --grad-b:#06B6D4; --focus:#4F46E5; }
+html:root[data-accent="ember"] { --grad-a:#F4511F; --grad-b:#F0A319; --focus:#F4511F; }
+html:root[data-accent="teal"]  { --grad-a:#0FA76F; --grad-b:#22D3EE; --focus:#0FA76F; }
+html:root[data-accent="violet"]{ --grad-a:#7C5CFC; --grad-b:#D946EF; --focus:#7C5CFC; }
+html:root[data-accent="rose"]  { --grad-a:#E11D63; --grad-b:#FB7185; --focus:#E11D63; }
+html:root[data-accent="slate"] { --grad-a:#3F4C63; --grad-b:#7C8AA5; --focus:#3F4C63; }
+/* Koyu temada aynı aile, biraz açılmış tonlar — koyu zeminde okunurluk için. */
+@media (prefers-color-scheme: dark){
+  html:root[data-accent="indigo"]:not([data-theme="light"]){ --grad-a:#6366F1; --grad-b:#22D3EE; --focus:#8B92FF; }
+  html:root[data-accent="ember"]:not([data-theme="light"]) { --grad-a:#FF7043; --grad-b:#FBBF48; --focus:#FF7043; }
+  html:root[data-accent="teal"]:not([data-theme="light"])  { --grad-a:#34D399; --grad-b:#22D3EE; --focus:#34D399; }
+  html:root[data-accent="violet"]:not([data-theme="light"]){ --grad-a:#A78BFA; --grad-b:#E879F9; --focus:#A78BFA; }
+  html:root[data-accent="rose"]:not([data-theme="light"])  { --grad-a:#FB7185; --grad-b:#FDA4AF; --focus:#FB7185; }
+  html:root[data-accent="slate"]:not([data-theme="light"]) { --grad-a:#7C8AA5; --grad-b:#A9B5C9; --focus:#A9B5C9; }
+}
+html:root[data-theme="dark"][data-accent="indigo"]{ --grad-a:#6366F1; --grad-b:#22D3EE; --focus:#8B92FF; }
+html:root[data-theme="dark"][data-accent="ember"] { --grad-a:#FF7043; --grad-b:#FBBF48; --focus:#FF7043; }
+html:root[data-theme="dark"][data-accent="teal"]  { --grad-a:#34D399; --grad-b:#22D3EE; --focus:#34D399; }
+html:root[data-theme="dark"][data-accent="violet"]{ --grad-a:#A78BFA; --grad-b:#E879F9; --focus:#A78BFA; }
+html:root[data-theme="dark"][data-accent="rose"]  { --grad-a:#FB7185; --grad-b:#FDA4AF; --focus:#FB7185; }
+html:root[data-theme="dark"][data-accent="slate"] { --grad-a:#7C8AA5; --grad-b:#A9B5C9; --focus:#A9B5C9; }
+
+/* ============ v2: İSTATİSTİK KUTULARI (openGym "Stats" tiles) ============ */
+.stat-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+.stat-tile{ background:var(--surface-2); border-radius:14px; padding:13px 14px; min-width:0; }
+.stat-tile-head{ display:flex; align-items:center; gap:7px; color:var(--ink-dim); font-size:12.5px; font-weight:700; }
+.stat-tile-head svg{ width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto; }
+.stat-v{ font-family:"JetBrains Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums; font-size:25px; font-weight:700; line-height:1.15; margin-top:5px; letter-spacing:-.02em; }
+.stat-v.good{ color:var(--teal); } .stat-v.bad{ color:var(--danger); }
+.stat-sub{ font-size:11.5px; color:var(--ink-faint); font-weight:650; margin-top:2px; }
+
+/* ============ v2: YIL ISI HARİTASI (openGym activity heatmap) ============ */
+.hm-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; }
+.hm-wrap::-webkit-scrollbar{ display:none; }
+.hm-months{ display:flex; margin-left:30px; margin-bottom:5px; }
+.hm-months span{ flex:none; width:14px; font-size:10.5px; color:var(--ink-faint); font-weight:700; white-space:nowrap; overflow:visible; }
+.hm-body{ display:flex; }
+.hm-days{ display:flex; flex-direction:column; gap:3px; flex:none; width:30px; }
+.hm-days span{ height:11px; font-size:9.5px; color:var(--ink-faint); font-weight:700; line-height:11px; }
+.hm-grid{ display:flex; gap:3px; }
+.hm-col{ display:flex; flex-direction:column; gap:3px; }
+.hm-c{ width:11px; height:11px; border-radius:3px; background:var(--surface-3); flex:none; }
+.hm-c.l1{ background:color-mix(in srgb, var(--grad-a) 26%, var(--surface-3)); }
+.hm-c.l2{ background:color-mix(in srgb, var(--grad-a) 50%, var(--surface-3)); }
+.hm-c.l3{ background:color-mix(in srgb, var(--grad-a) 74%, var(--surface-3)); }
+.hm-c.l4{ background:var(--grad-a); }
+.hm-c.today{ box-shadow:0 0 0 1.5px var(--grad-b); }
+.hm-c.future{ opacity:.32; }
+.hm-legend{ display:flex; align-items:center; justify-content:flex-end; gap:4px; font-size:11.5px; color:var(--ink-faint); font-weight:650; margin-top:9px; }
+.hm-legend .hm-c{ width:10px; height:10px; }
+
+/* ============ v2: KAS DENGESİ (openGym muscle balance) ============ */
+.mb-figs{ display:flex; justify-content:center; gap:18px; padding:8px 0 4px; }
+.mb-figs .muscle-map-figures{ width:150px; height:136px; }
+.mb-figs [data-region]{ fill:var(--surface-3); }
+.mb-figs [data-region].lv1{ fill:color-mix(in srgb, var(--grad-a) 30%, var(--surface-3)); }
+.mb-figs [data-region].lv2{ fill:color-mix(in srgb, var(--grad-a) 58%, var(--surface-3)); }
+.mb-figs [data-region].lv3{ fill:color-mix(in srgb, var(--grad-a) 80%, var(--surface-3)); }
+.mb-figs [data-region].lv4{ fill:var(--grad-a); }
+.mb-missing{ font-size:13px; color:var(--ink-dim); line-height:1.6; font-weight:600; background:var(--surface-2); border-radius:12px; padding:11px 13px; margin-top:10px; }
+.mb-missing b{ color:var(--gold-ink); }
+.mb-rank{ display:flex; flex-direction:column; gap:7px; margin-top:12px; }
+.mb-rank-row{ display:flex; align-items:center; gap:9px; font-size:13px; font-weight:700; }
+.mb-rank-row .lbl{ flex:0 0 96px; color:var(--ink-dim); font-weight:700; }
+.mb-rank-row .bar{ flex:1; height:7px; border-radius:99px; background:var(--surface-3); overflow:hidden; }
+.mb-rank-row .bar i{ display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,var(--grad-a),var(--grad-b)); }
+.mb-rank-row .n{ flex:0 0 auto; font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--ink-faint); }
+
+/* ============ v2: DİNLENME SAYACI (openGym RestTimer) ============
+   position:fixed DEĞİL — sayfanın geri kalanı gibi akışta bir flex çocuğu. iOS'ta sabit
+   konumlu çubuğun eski yerinde takılı kalma hatası bu dosyada zaten böyle çözülmüştü. */
+#rest-bar{ flex:0 0 auto; z-index:31; background:var(--surface); border-top:1px solid var(--border); padding:11px 16px 12px; display:flex; flex-direction:column; gap:9px; box-shadow:0 -12px 30px -16px rgba(21,26,74,.28); animation:restIn .28s cubic-bezier(.2,.9,.25,1) both; }
+#rest-bar[hidden]{ display:none; }
+@keyframes restIn{ from{ transform:translateY(14px); opacity:0; } to{ transform:none; opacity:1; } }
+#rest-bar .rest-head{ display:flex; align-items:center; gap:13px; }
+#rest-bar .rest-t{ font-family:"JetBrains Mono",monospace; font-variant-numeric:tabular-nums; font-size:27px; font-weight:700; letter-spacing:-.02em; min-width:74px; }
+#rest-bar .rest-lbl{ font-size:12px; font-weight:750; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; }
+#rest-bar .rest-bar-track{ flex:1; height:5px; border-radius:99px; background:var(--surface-3); overflow:hidden; }
+#rest-bar .rest-bar-track i{ display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,var(--grad-a),var(--grad-b)); transition:width 1s linear; }
+#rest-bar .rest-acts{ display:flex; align-items:center; gap:8px; }
+#rest-bar .rest-acts button{ background:var(--surface-2); color:var(--ink); border:1.5px solid var(--border); border-radius:11px; padding:11px 14px; font-weight:800; font-size:14px; cursor:pointer; min-height:44px; }
+#rest-bar .rest-acts button:active{ transform:scale(.97); }
+#rest-bar .rest-acts .rest-skip{ margin-left:auto; min-width:92px; background:linear-gradient(135deg,var(--grad-a),var(--grad-b)); color:#fff; border-color:transparent; }
+
+/* ============ v2: GÜN ŞERİDİ (openGym home week strip) ============ */
+.daystrip{ display:flex; gap:6px; margin:-8px 0 18px; }
+.daystrip-d{ flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; background:var(--surface); border:1.5px solid var(--border); border-radius:14px; padding:9px 2px 8px; min-width:0; }
+.daystrip-d .dow{ font-size:10.5px; font-weight:800; color:var(--ink-faint); letter-spacing:.03em; }
+.daystrip-d .num{ font-family:"JetBrains Mono",monospace; font-size:16px; font-weight:700; }
+.daystrip-d .dot{ width:6px; height:6px; border-radius:50%; background:var(--surface-3); }
+.daystrip-d .dot.part{ background:var(--gold); }
+.daystrip-d .dot.full{ background:var(--teal); }
+.daystrip-d .dot.rest{ background:transparent; border:1.5px solid var(--border); }
+.daystrip-d.is-today{ border-color:transparent; background:linear-gradient(135deg,var(--grad-a),var(--grad-b)); color:#fff; box-shadow:var(--shadow-md); }
+.daystrip-d.is-today .dow{ color:rgba(255,255,255,.82); }
+.daystrip-d.is-future{ opacity:.5; }
+
+/* ============ v2: 1RM / PR / HAREKET GEÇMİŞİ ============ */
+.ex-meta{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:7px; }
+.rec-row{ padding:13px 2px; border-bottom:1px solid var(--border); }
+.rec-row:last-child{ border-bottom:none; }
+.rec-name{ font-size:15px; font-weight:750; line-height:1.35; }
+.rec-sub{ font-size:12px; color:var(--ink-faint); font-weight:650; margin-top:2px; }
+.e1rm-tag{ font-size:11.5px; font-weight:800; letter-spacing:.02em; padding:3px 9px; border-radius:999px; background:var(--violet-soft); color:var(--violet); }
+.pr-tag{ font-size:11.5px; font-weight:800; letter-spacing:.02em; padding:3px 9px; border-radius:999px; background:var(--gold-soft); color:var(--gold-ink); }
+.ex-hist-btn{ font-size:11.5px; font-weight:800; letter-spacing:.02em; padding:3px 9px; border-radius:999px; background:var(--surface-3); color:var(--ink-dim); border:none; cursor:pointer; font-family:inherit; }
+.ex-hist-btn:active{ transform:scale(.96); }
+
+/* Hareket geçmişi alt sayfası */
+.sheet-backdrop{ position:fixed; inset:0; background:rgba(10,14,40,.5); backdrop-filter:blur(3px); z-index:60; display:flex; align-items:flex-end; justify-content:center; animation:fadeIn .2s both; }
+@keyframes fadeIn{ from{opacity:0} to{opacity:1} }
+.sheet{ width:100%; max-width:560px; max-height:82vh; overflow-y:auto; background:var(--surface); border-radius:22px 22px 0 0; padding:20px 20px calc(24px + env(safe-area-inset-bottom)); animation:sheetUp .3s cubic-bezier(.2,.9,.25,1) both; }
+@keyframes sheetUp{ from{ transform:translateY(24px); opacity:.4 } to{ transform:none; opacity:1 } }
+.sheet-grip{ width:40px; height:4px; border-radius:99px; background:var(--surface-3); margin:0 auto 14px; }
+.sheet h3{ font-family:"Big Shoulders Display",sans-serif; font-weight:800; font-size:23px; text-transform:uppercase; letter-spacing:.01em; }
+.sheet-sub{ font-size:13.5px; color:var(--ink-dim); font-weight:600; margin-top:3px; }
+.sheet-close{ width:100%; margin-top:18px; background:var(--surface-2); color:var(--ink); border:1.5px solid var(--border); border-radius:13px; padding:13px; font-weight:800; font-size:15px; font-family:inherit; cursor:pointer; min-height:44px; }
+.sheet-1rm{ display:flex; align-items:baseline; gap:9px; margin:16px 0 4px; }
+.sheet-1rm .v{ font-family:"JetBrains Mono",monospace; font-size:32px; font-weight:700; letter-spacing:-.02em; }
+.sheet-1rm .u{ font-size:14px; color:var(--ink-dim); font-weight:700; }
+.sheet-1rm-note{ font-size:12.5px; color:var(--ink-faint); font-weight:650; }
+.hist-list{ display:flex; flex-direction:column; margin-top:14px; }
+.hist-row{ display:flex; align-items:center; gap:10px; padding:11px 2px; border-bottom:1px solid var(--border); font-size:14.5px; }
+.hist-row:last-child{ border-bottom:none; }
+.hist-row .d{ flex:1; color:var(--ink-dim); font-weight:650; font-size:13.5px; }
+.hist-row .kg{ font-family:"JetBrains Mono",monospace; font-weight:700; }
+.hist-row .delta{ font-size:12px; font-weight:800; min-width:44px; text-align:right; }
+.hist-row .delta.up{ color:var(--teal); } .hist-row .delta.down{ color:var(--danger); }
+.hist-row.is-pr .kg{ color:var(--gold-ink); }
+.spark{ width:100%; height:74px; display:block; margin-top:12px; }
+
+/* ============ v2: AYAR SATIRLARI ============ */
+.set-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:13px 2px; border-bottom:1px solid var(--border); min-height:44px; flex-wrap:wrap; }
+/* Dar telefonlarda segment düğmeleri etiketi ezmesin — kendi satırına insin. */
+@media (max-width:430px){ .set-row:has(.seg-mini){ flex-direction:column; align-items:stretch; gap:10px; } .set-row .seg-mini{ align-self:flex-start; } }
+.set-row:last-of-type{ border-bottom:none; }
+.set-row-txt{ min-width:0; }
+.set-row-txt .t{ font-size:15px; font-weight:700; }
+.set-row-txt .s{ font-size:12.5px; color:var(--ink-faint); font-weight:600; margin-top:2px; line-height:1.45; }
+.switch{ position:relative; flex:0 0 auto; width:50px; height:30px; }
+.switch input{ position:absolute; opacity:0; width:100%; height:100%; margin:0; cursor:pointer; z-index:1; }
+.switch .track{ display:block; width:100%; height:100%; border-radius:999px; background:var(--surface-3); transition:.2s; }
+.switch .track::after{ content:""; position:absolute; top:3px; left:3px; width:24px; height:24px; border-radius:50%; background:#fff; box-shadow:var(--shadow-sm); transition:.2s; }
+.switch input:checked + .track{ background:linear-gradient(135deg,var(--grad-a),var(--grad-b)); }
+.switch input:checked + .track::after{ transform:translateX(20px); }
+.swatches{ display:flex; gap:9px; flex-wrap:wrap; padding:4px 0 2px; }
+.swatch{ width:34px; height:34px; border-radius:50%; border:2.5px solid transparent; cursor:pointer; padding:0; }
+.swatch.on{ border-color:var(--ink); }
+.seg-mini{ display:inline-flex; background:var(--surface-2); border-radius:11px; padding:3px; gap:2px; flex:0 0 auto; }
+.seg-mini button{ border:none; background:none; color:var(--ink-dim); font-family:inherit; font-weight:750; font-size:13px; padding:8px 11px; border-radius:9px; cursor:pointer; min-height:38px; }
+.seg-mini button.active{ background:var(--surface); color:var(--ink); box-shadow:var(--shadow-sm); }
 </style>
 
 <main class="wrap">
@@ -515,12 +701,26 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
         <div class="hstat"><span class="hstat-n mono" id="stat-streak">–</span><span class="hstat-l">Seri</span></div>
       </div>
     </div>
+    <!-- openGym'in ana ekranından: kahraman bloğu sadece bakılan bir şey olmasın, bugünün
+         antrenmanını ve "başla" düğmesini de taşısın. -->
+    <button type="button" class="hero-today" id="hero-today">
+      <span class="ht-ico" id="ht-ico"></span>
+      <span class="ht-txt">
+        <span class="ht-eyebrow">Bugün</span>
+        <span class="ht-title" id="ht-title">–</span>
+        <span class="ht-sub" id="ht-sub">–</span>
+      </span>
+      <span class="ht-cta" id="ht-cta">Başla</span>
+    </button>
+
     <blockquote class="hero-quote">
       <p id="quote-out">""</p>
       <cite id="quote-author-out"></cite>
     </blockquote>
   </div>
 </header>
+
+<div class="daystrip" id="daystrip"></div>
 
 <div class="grid grid-flow" style="margin-bottom:16px;">
 
@@ -725,7 +925,49 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 </div>
 
 <div class="tab-page" data-tab="progress" hidden>
-<div class="page-header"><h2>İlerleme</h2><p>Seri, rozetler ve ölçüm grafiği</p></div>
+<div class="page-header"><h2>İlerleme</h2><p>Özet, aktivite haritası ve ölçüm grafiği</p></div>
+
+<!-- Bir bakışta özet: openGym'in Stats sekmesindeki dört kutu. Akordeon DEĞİL —
+     sekmeyi açtığında rakamların hemen görünmesi bütün fikir. -->
+<div class="stat-grid" id="stat-grid" style="margin-bottom:16px;"></div>
+
+<section class="card" id="heatmap-card" style="margin-bottom:16px;">
+  <details class="accordion" open>
+    <summary class="card-head accordion-summary">
+      <div class="card-icon i-grad"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="3"></rect><line x1="3" y1="9.5" x2="21" y2="9.5"></line><line x1="8" y1="2.5" x2="8" y2="6.5"></line><line x1="16" y1="2.5" x2="16" y2="6.5"></line></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Aktivite Haritası</div><div class="card-sub">Son 12 ay · günlük tamamlama yoğunluğu</div></div>
+      <span class="accordion-chevron">›</span>
+    </summary>
+    <div id="heatmap-holder"></div>
+  </details>
+</section>
+
+<section class="card" id="balance-card" style="margin-bottom:16px;">
+  <details class="accordion">
+    <summary class="card-head accordion-summary">
+      <div class="card-icon i-ember"><svg viewBox="0 0 24 24"><circle cx="12" cy="4.6" r="2.2"></circle><path d="M12 7v7"></path><path d="M12 8.5 7 11M12 8.5l5 2.5"></path><path d="M12 14l-3 6M12 14l3 6"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Kas Dengesi</div><div class="card-sub">Hangi bölgeyi ne kadar çalıştın</div></div>
+      <span class="accordion-chevron">›</span>
+    </summary>
+    <div class="chart-seg" id="balance-seg">
+      <button data-period="7" class="active">Hafta</button>
+      <button data-period="30">30 Gün</button>
+      <button data-period="0">Tümü</button>
+    </div>
+    <div id="balance-holder"></div>
+  </details>
+</section>
+
+<section class="card" id="records-card" style="margin-bottom:16px;">
+  <details class="accordion">
+    <summary class="card-head accordion-summary">
+      <div class="card-icon i-gold"><svg viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0V4Z"></path><path d="M7 5.5H4.5V7a3 3 0 0 0 3 3M17 5.5h2.5V7a3 3 0 0 1-3 3"></path><path d="M12 13v4M9 20h6"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Rekorlar &amp; Tahmini 1RM</div><div class="card-sub">Ağırlık girdiğin hareketler</div></div>
+      <span class="accordion-chevron">›</span>
+    </summary>
+    <div id="records-holder"></div>
+  </details>
+</section>
 
 <div class="grid grid-2" style="margin-bottom:16px;">
   <section class="card" id="progress-card">
@@ -825,6 +1067,66 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
   </section>
 </div>
 
+<section class="card" id="training-settings-card" style="margin-bottom:16px;">
+  <details class="accordion">
+    <summary class="card-head accordion-summary">
+      <div class="card-icon i-teal"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"></circle><path d="M12 9.5V13l2.5 1.6"></path><path d="M9 2.5h6"></path><path d="M12 2.5V5"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Antrenman Ayarları</div><div class="card-sub">Dinlenme sayacı ve ekran</div></div>
+      <span class="accordion-chevron">›</span>
+    </summary>
+
+    <div class="set-row">
+      <div class="set-row-txt"><div class="t">Otomatik dinlenme sayacı</div><div class="s">Bir hareketi işaretlediğinde sayaç kendiliğinden başlar.</div></div>
+      <label class="switch"><input type="checkbox" id="set-rest-auto"><span class="track"></span></label>
+    </div>
+
+    <div class="set-row">
+      <div class="set-row-txt"><div class="t">Dinlenme süresi</div><div class="s">Setler arası varsayılan süre.</div></div>
+      <div class="seg-mini" id="set-rest-secs">
+        <button type="button" data-secs="60">60sn</button>
+        <button type="button" data-secs="90">90sn</button>
+        <button type="button" data-secs="120">2dk</button>
+        <button type="button" data-secs="180">3dk</button>
+      </div>
+    </div>
+
+    <div class="set-row">
+      <div class="set-row-txt"><div class="t">Sayaç bitince uyar</div><div class="s">Kısa bir bip sesi ve titreşim.</div></div>
+      <label class="switch"><input type="checkbox" id="set-rest-sound"><span class="track"></span></label>
+    </div>
+
+    <div class="set-row">
+      <div class="set-row-txt"><div class="t">Antrenmanda ekran açık kalsın</div><div class="s">Setler arasında telefonu tekrar açmak zorunda kalma. Antrenmanı bitirince kendiliğinden bırakılır.</div></div>
+      <label class="switch"><input type="checkbox" id="set-wakelock"><span class="track"></span></label>
+    </div>
+    <div class="profile-note" id="wakelock-note" hidden>Bu tarayıcı ekranı açık tutmayı desteklemiyor.</div>
+  </details>
+</section>
+
+<section class="card" id="appearance-card" style="margin-bottom:16px;">
+  <details class="accordion">
+    <summary class="card-head accordion-summary">
+      <div class="card-icon i-violet"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 3.5v17"></path><path d="M12 8.5h8M12 15.5h8"></path></svg></div>
+      <div class="card-title-wrap"><div class="card-title">Görünüm</div><div class="card-sub">Tema ve vurgu rengi</div></div>
+      <span class="accordion-chevron">›</span>
+    </summary>
+
+    <div class="set-row">
+      <div class="set-row-txt"><div class="t">Tema</div><div class="s">Varsayılan, telefonun sistem ayarını izler.</div></div>
+      <div class="seg-mini" id="set-theme">
+        <button type="button" data-theme-val="auto">Otomatik</button>
+        <button type="button" data-theme-val="light">Açık</button>
+        <button type="button" data-theme-val="dark">Koyu</button>
+      </div>
+    </div>
+
+    <div class="set-row" style="display:block;">
+      <div class="set-row-txt" style="margin-bottom:10px;"><div class="t">Vurgu rengi</div><div class="s">Başlık gradyanı, sekmeler ve grafikler.</div></div>
+      <div class="swatches" id="set-accent"></div>
+    </div>
+  </details>
+</section>
+
 <section class="card" id="why-card" style="margin-bottom:16px;">
   <details class="accordion">
     <summary class="card-head accordion-summary">
@@ -863,6 +1165,21 @@ textarea#why-input{ width:100%; min-height:90px; resize:vertical; border-radius:
 
 </div>
 </main>
+
+<div id="rest-bar" hidden>
+  <div class="rest-head">
+    <div>
+      <div class="rest-lbl" id="rest-label">Dinlenme</div>
+      <div class="rest-t mono" id="rest-clock">1:30</div>
+    </div>
+    <div class="rest-bar-track"><i id="rest-fill" style="width:100%"></i></div>
+  </div>
+  <div class="rest-acts">
+    <button type="button" data-rest-add="-15">−15 sn</button>
+    <button type="button" data-rest-add="15">+15 sn</button>
+    <button type="button" class="rest-skip" data-rest-skip>Geç</button>
+  </div>
+</div>
 
 <nav class="tab-bar" id="tab-bar">
   <button class="tab-btn active" data-goto-tab="today" type="button">
@@ -1273,7 +1590,7 @@ var BADGES = [
 ];
 
 var DEFAULT_STATE = {
-  schemaVersion:3,
+  schemaVersion:4,
   profile:{ sex:'', age:43, heightCm:182, weightKg:105, goalWeightKg:null, activity:'moderate' },
   stepGoal:8000,
   water:{}, steps:{}, workout:{}, nutrition:{}, posture:{}, cardio:{}, jumprope:{}, exerciseLog:{}, painLog:{},
@@ -1287,7 +1604,9 @@ var DEFAULT_STATE = {
     {id:'r2', label:'Antrenman zamanı', time:'18:30', enabled:true},
     {id:'r3', label:'Akşam atıştırma yok, uyku vakti', time:'22:30', enabled:true}
   ],
-  whyNote:''
+  whyNote:'',
+  /* v2: antrenman + görünüm tercihleri (openGym'in Settings ekranından uyarlandı) */
+  settings:{ restAuto:true, restSecs:90, restSound:true, wakeLock:true, theme:'auto', accent:'indigo' }
 };
 
 /* ============ DATE HELPERS ============ */
@@ -1331,7 +1650,29 @@ function ensureShape(s){
     });
     s.reminders = newReminders;
   }
-  s.schemaVersion = 3;
+  s.settings = Object.assign(deepClone(DEFAULT_STATE.settings), s.settings || {});
+  if(incomingVersion < 4){
+    /* Göç: ağırlık kaydı anahtarları gün koduyla ayrıştırılıyor ('e0' → 'mon:e0').
+       Eskiden 'e0' pazartesi leg press, çarşamba lat pulldown ve cuma RDL'i aynı kutuya
+       yazıyordu; "geçen seferki ağırlık" bu yüzden başka hareketinkini gösterebiliyordu.
+       Her kaydın tarihi hangi güne düşüyorsa o günün hareketine taşınıyor — veri kaybı yok. */
+    var migrated = {};
+    Object.keys(s.exerciseLog).forEach(function(oldKey){
+      var entries = s.exerciseLog[oldKey] || [];
+      if(oldKey.indexOf(':') !== -1){ migrated[oldKey] = entries; return; }
+      entries.forEach(function(entry){
+        if(!entry || !entry.date) return;
+        var dayKey = SPLIT[dowIndex(entry.date)].key;
+        var nk = dayKey + ':' + oldKey;
+        (migrated[nk] = migrated[nk] || []).push(entry);
+      });
+    });
+    Object.keys(migrated).forEach(function(k){
+      migrated[k].sort(function(a,b){ return a.date<b.date?-1:1; });
+    });
+    s.exerciseLog = migrated;
+  }
+  s.schemaVersion = 4;
   if (typeof s.whyNote !== 'string') s.whyNote = '';
   if (typeof s.stepGoal !== 'number') s.stepGoal = 8000;
   return s;
@@ -1502,6 +1843,7 @@ function loadState(){
     })
     .then(function(data){
       state = ensureShape(data);
+      applyAppearance();   // tema/vurgu ilk boyamadan önce, renk sıçraması olmasın
       render();
     });
 }
@@ -1569,7 +1911,7 @@ function showTab(tab){
   activeTab = tab;
   document.querySelectorAll('.tab-page').forEach(function(p){ p.hidden = (p.dataset.tab !== tab); });
   document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.gotoTab===tab); });
-  if(tab==='progress'){ renderChart(); }
+  if(tab==='progress'){ renderChart(); scrollHeatmapToNow(); }
   var wrapEl = document.querySelector('main.wrap');
   if(wrapEl) wrapEl.scrollTop = 0;
 }
@@ -1636,21 +1978,32 @@ function renderToday(){
     var checked = !!w.ex[e.id];
     var weightBlock = '';
     if(e.logWeight){
-      var entry = todaysEntry(e.id);
-      var suggestion = suggestedWeight(e.id);
+      // Kayıt anahtarı gün koduyla ayrışık ('wed:e0'), yoksa aynı sıra numarası farklı
+      // günlerin hareketlerini aynı kutuya yazardı. Bkz. ensureShape v4 göçü.
+      var logKey = exKey(day.key, e.id);
+      var entry = todaysEntry(logKey);
+      var suggestion = suggestedWeight(logKey);
       var autoFilled = !entry && suggestion.val!==null;
       var shownVal = entry ? entry.kg : (suggestion.val!==null ? suggestion.val : '');
       var shownRpe = entry ? (entry.rpe||'') : '';
       var hintText = autoFilled ? (suggestion.bumped ? 'geçen sefer kolaydı, +2.5 kg önerildi' : 'geçen seferden') : '';
       weightBlock = '<span class="weight-log">' +
-        '<span class="wt-field'+(autoFilled?' auto':'')+'"><input type="number" step="0.5" min="0" class="wt-input" data-wt="'+e.id+'" value="'+shownVal+'" placeholder="0"><span class="wt-field-unit">kg</span></span>' +
-        '<span class="rpe-group" data-rpe="'+e.id+'">' +
+        '<span class="wt-field'+(autoFilled?' auto':'')+'"><input type="number" step="0.5" min="0" class="wt-input" data-wt="'+logKey+'" value="'+shownVal+'" placeholder="0"><span class="wt-field-unit">kg</span></span>' +
+        '<span class="rpe-group" data-rpe="'+logKey+'">' +
           '<button type="button" class="rpe-pill'+(shownRpe==='easy'?' active':'')+'" data-rpe-val="easy" title="Kolay">😌</button>' +
           '<button type="button" class="rpe-pill'+(shownRpe==='ok'?' active':'')+'" data-rpe-val="ok" title="Uygun">👍</button>' +
           '<button type="button" class="rpe-pill'+(shownRpe==='hard'?' active':'')+'" data-rpe-val="hard" title="Zor">😣</button>' +
         '</span>' +
         (hintText ? '<span class="wt-hint">'+hintText+'</span>' : '') +
       '</span>';
+      // v2: tahmini 1RM, rekor rozeti ve geçmiş düğmesi — openGym'in hareket ekranından.
+      var pr = bestLift(logKey);
+      var one = best1RMFor(logKey, e.detail);
+      var meta = '';
+      if(one) meta += '<span class="e1rm-tag">1RM ~'+one.est+' kg</span>';
+      if(pr) meta += '<span class="pr-tag">🏆 en ağır '+pr.kg+' kg</span>';
+      if(sortedLog(logKey).length) meta += '<button type="button" class="ex-hist-btn" data-ex-sheet="'+logKey+'">Geçmiş</button>';
+      if(meta) weightBlock += '<span class="ex-meta">'+meta+'</span>';
     }
     var row = el(checkRowHTML({ checked:checked, name:e.name, muscle:e.muscle, detail:e.detail, extra:weightBlock+howToLink(e.name), dataAttr:'data-ex="'+e.id+'"' }));
     exWrap.appendChild(row);
@@ -2120,8 +2473,709 @@ function render(){
   renderPlaylist();
   renderTip();
   renderRecipes();
+  renderV2();
   document.getElementById('log-date').value = todayISO;
 }
+
+/* ==================================================================================
+   v2 — openGym'den uyarlanan bölüm
+   ----------------------------------------------------------------------------------
+   openGym (github.com/DuarteSantos8/openGym, AGPL-3.0) bu uygulamadan çok daha büyük
+   bir proje: React + Node backend, 1.324 hareketlik kütüphane, passkey girişi. Oradan
+   kopyalanan kod yok; alınan şey FİKİRLER — bu tek dosyalık, sunucusuz yapıya kendi
+   diliyle yeniden yazıldı:
+     · setler arası dinlenme sayacı        · antrenman boyunca ekranı açık tutma
+     · GitHub tarzı yıllık aktivite ısı haritası
+     · bir bakışta özet kutuları           · zaman aralıklı kas dengesi haritası
+     · tahmini 1RM (Epley) + kişisel rekor yakalama + hareket geçmişi
+     · elle tema seçimi + vurgu rengi
+   ================================================================================== */
+
+/* ---------- Hareket kayıt anahtarı ----------
+   Eski sürümde ağırlık kaydı sadece 'e0', 'e1' gibi gün-içi sıra numarasıyla tutuluyordu.
+   Ama 'e0' pazartesi leg press, çarşamba lat pulldown, cuma RDL demek — hepsi aynı kutuya
+   yazıyor, "geçen seferki ağırlık" başka bir hareketinkini gösteriyordu. Anahtar artık
+   gün koduyla birlikte: 'mon:e0'. Eski veri ensureShape içinde kaydın tarihine bakılarak
+   doğru güne dağıtılıyor, hiçbir şey kaybolmuyor. */
+function exKey(dayKey, exId){ return dayKey + ':' + exId; }
+
+/* "4 set × 10-12 tekrar" gibi metinlerden sayı çıkarır. Aralık verilmişse alt sınır:
+   1RM tahmini aşağı yuvarlansın, uydurma rekor çıkmasın. */
+function parseSetCount(detail){
+  var m = /(\d+)\s*set/i.exec(detail||'');
+  return m ? +m[1] : 0;
+}
+function parseRepCount(detail){
+  var m = /×\s*(\d+)(?:\s*-\s*(\d+))?\s*tekrar/i.exec(detail||'');
+  return m ? +m[1] : 0;
+}
+
+/* Tahmini 1RM — Epley (1985): w · (1 + r/30).
+   12 tekrarın üstünde formüller birbirinden kopar ve sonuç dayanıklılığı ölçmeye başlar,
+   maksimum kuvveti değil; orada tahmin yapmaktansa hiç yapmamak doğru. */
+var ONERM_REP_CAP = 12;
+function estimate1RM(kg, reps){
+  kg = Number(kg); reps = Math.round(Number(reps));
+  if(!isFinite(kg) || !isFinite(reps)) return null;
+  if(kg <= 0 || reps < 1 || reps > ONERM_REP_CAP) return null;
+  var est = reps === 1 ? kg : kg * (1 + reps/30);
+  return Math.round(est*10)/10;
+}
+
+/* Programda ağırlık girilen bütün hareketler, kayıt anahtarlarıyla. */
+function weightedExercises(){
+  var out = [];
+  SPLIT.forEach(function(day){
+    (day.exercises||[]).forEach(function(e){
+      if(e.logWeight) out.push({ key:exKey(day.key,e.id), name:e.name, muscle:e.muscle, detail:e.detail, dayKey:day.key, dow:SPLIT.indexOf(day) });
+    });
+  });
+  return out;
+}
+function sortedLog(key){
+  var log = state.exerciseLog[key];
+  if(!log || !log.length) return [];
+  return log.filter(function(p){ return p.kg!==null && p.kg!==undefined; })
+            .slice().sort(function(a,b){ return a.date<b.date?-1:1; });
+}
+/* Bir hareketin tüm zamanların en ağır kaydı. */
+function bestLift(key, beforeISO){
+  var best = null;
+  sortedLog(key).forEach(function(p){
+    if(beforeISO && p.date >= beforeISO) return;
+    if(!best || p.kg > best.kg) best = p;
+  });
+  return best;
+}
+function best1RMFor(key, detail){
+  var reps = parseRepCount(detail);
+  var b = bestLift(key);
+  if(!b || !reps) return null;
+  var est = estimate1RM(b.kg, reps);
+  return est===null ? null : { est:est, kg:b.kg, reps:reps, date:b.date };
+}
+
+/* ---------- Günlük aktivite puanı (ısı haritası + gün şeridi) ----------
+   dayWorkout()/dayNutrition() çağırmıyor: onlar state'e boş kayıt yazar ve 365 günü
+   taramak yedeği şişirirdi. Burada her şey salt okunur. */
+function dayScoreRaw(iso){
+  var dow = dowIndex(iso);
+  var day = SPLIT[dow];
+  var w = state.workout[iso];
+  var exTotal = day.venue==='rest' ? 0 : day.exercises.length + ABS_CIRCUIT.length;
+  var exDone = 0;
+  if(w){
+    if(w.ex) day.exercises.forEach(function(e){ if(w.ex[e.id]) exDone++; });
+    if(w.abs) ABS_CIRCUIT.forEach(function(a){ if(w.abs[a.id]) exDone++; });
+  }
+  var pts = 0;
+  if(exTotal){ pts += (exDone>=exTotal) ? 2 : (exDone>0 ? 1 : 0); }
+  if(state.cardio[iso]) pts += 1;
+  if((state.water[iso]||0) >= waterTargetMl()) pts += 1;
+  var nut = state.nutrition[iso];
+  if(nut && nut.length && nut.every(Boolean)) pts += 1;
+  if((state.steps[iso]||0) >= (state.stepGoal||8000)) pts += 1;
+  return { pts:pts, max:6, exDone:exDone, exTotal:exTotal, rest:day.venue==='rest' };
+}
+function scoreLevel(pts){
+  if(pts<=0) return 0;
+  if(pts<=2) return 1;
+  if(pts<=3) return 2;
+  if(pts<=5) return 3;
+  return 4;
+}
+
+/* ---------- Gün şeridi ----------
+   openGym'in ana ekranı: açılışta ilk gördüğün şey bu haftanın günleri ve bugün.
+   Buradaki kahraman blok güzel ama tek başına bütün ekranı yiyordu; şerit onun hemen
+   altında haftayı bir bakışta veriyor. */
+function renderDaystrip(){
+  var wrap = document.getElementById('daystrip');
+  if(!wrap) return;
+  var todayDow = dowIndex(todayISO);
+  var monday = parseISO(todayISO); monday.setDate(monday.getDate() - todayDow);
+  var html = '';
+  for(var i=0;i<7;i++){
+    var d = new Date(monday); d.setDate(monday.getDate()+i);
+    var iso = toISO(d);
+    var isToday = iso === todayISO;
+    var isFuture = iso > todayISO;
+    var sc = dayScoreRaw(iso);
+    var dotCls = sc.rest ? 'rest' : (sc.pts>=6 ? 'full' : (sc.pts>0 ? 'part' : ''));
+    html += '<button type="button" class="daystrip-d'+(isToday?' is-today':'')+(isFuture?' is-future':'')+'" data-goto-tab="today" '+
+      'title="'+fmtDate(iso)+'">'+
+      '<span class="dow">'+DOW_SHORT[i]+'</span>'+
+      '<span class="num mono">'+d.getDate()+'</span>'+
+      '<span class="dot '+dotCls+'"></span>'+
+    '</button>';
+  }
+  wrap.innerHTML = html;
+}
+
+/* ---------- Özet kutuları ---------- */
+function statTile(icon, label, value, sub, cls){
+  return '<div class="stat-tile"><div class="stat-tile-head">'+icon+'<span>'+label+'</span></div>'+
+    '<div class="stat-v '+(cls||'')+'">'+value+'</div>'+
+    (sub ? '<div class="stat-sub">'+sub+'</div>' : '')+'</div>';
+}
+function renderStatTiles(){
+  var wrap = document.getElementById('stat-grid');
+  if(!wrap) return;
+  var totalTrained = 0, thisMonth = 0;
+  var monthPrefix = todayISO.slice(0,7);
+  Object.keys(state.workout).forEach(function(iso){
+    var sc = dayScoreRaw(iso);
+    if(sc.exDone > 0){ totalTrained++; if(iso.slice(0,7)===monthPrefix) thisMonth++; }
+  });
+
+  // Son 30 günlük kilo değişimi — hedefe doğru mu gidiyor, ona göre renkleniyor.
+  var wl = state.weightLog.slice().sort(function(a,b){ return a.date<b.date?-1:1; });
+  var cutoff = new Date(); cutoff.setDate(cutoff.getDate()-30);
+  var cutISO = toISO(cutoff);
+  var recent = wl.filter(function(p){ return p.date >= cutISO; });
+  var deltaTxt = '–', deltaCls = '', deltaSub = 'yeterli ölçüm yok';
+  if(recent.length >= 2){
+    var diff = recent[recent.length-1].v - recent[0].v;
+    var goal = state.profile.goalWeightKg;
+    var towardGoal = goal ? ((goal < recent[0].v) ? diff < 0 : diff > 0) : diff < 0;
+    deltaTxt = (diff>0?'+':'') + (Math.round(diff*10)/10) + ' kg';
+    deltaCls = Math.abs(diff) < 0.05 ? '' : (towardGoal ? 'good' : 'bad');
+    deltaSub = recent.length + ' ölçüm';
+  }
+
+  var goalSub = '';
+  var last = wl.length ? wl[wl.length-1].v : state.profile.weightKg;
+  if(state.profile.goalWeightKg && last){
+    var togo = Math.round(Math.abs(last - state.profile.goalWeightKg)*10)/10;
+    goalSub = togo <= 0.05 ? 'hedefe ulaştın 🎯' : 'hedefe '+togo+' kg';
+  }
+
+  var iDumb = '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.4"></circle><circle cx="19" cy="12" r="2.4"></circle><line x1="7.4" y1="12" x2="16.6" y2="12"></line><line x1="9.5" y1="8.5" x2="9.5" y2="15.5"></line><line x1="14.5" y1="8.5" x2="14.5" y2="15.5"></line></svg>';
+  var iCal  = '<svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="3"></rect><line x1="3" y1="9.5" x2="21" y2="9.5"></line></svg>';
+  var iFire = '<svg viewBox="0 0 24 24"><path d="M12 3c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 4 4 4 7a6 6 0 0 1-12 0c0-5 3-6 6-12z"></path></svg>';
+  var iScale= '<svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="3"></rect><path d="M9 11a3 3 0 0 1 6 0"></path><path d="M12 11V8.5"></path></svg>';
+
+  wrap.innerHTML =
+    statTile(iDumb, 'Antrenman günü', totalTrained, 'toplam') +
+    statTile(iCal, 'Bu ay', thisMonth, MONTH_NAMES[parseISO(todayISO).getMonth()]) +
+    statTile(iFire, 'Seri', computeStreak(), 'gün üst üste') +
+    statTile(iScale, 'Kilo · 30 gün', deltaTxt, goalSub || deltaSub, deltaCls);
+}
+
+/* ---------- Yıllık aktivite ısı haritası ---------- */
+function renderHeatmap(){
+  var holder = document.getElementById('heatmap-holder');
+  if(!holder) return;
+  var today = parseISO(todayISO);
+  // Sütunlar pazartesi başlar; son sütun bu haftanın pazartesisi.
+  var end = new Date(today); end.setDate(today.getDate() - dowIndex(todayISO));
+  var start = new Date(end); start.setDate(end.getDate() - 52*7);
+
+  var months = '', cols = '', lastMonth = -1;
+  for(var wk=0; wk<=52; wk++){
+    var colStart = new Date(start); colStart.setDate(start.getDate() + wk*7);
+    var mo = colStart.getMonth();
+    var showM = (mo !== lastMonth) && colStart.getDate() <= 7 && wk < 51;
+    months += '<span>'+(showM ? MONTH_NAMES[mo].slice(0,3) : '')+'</span>';
+    if(colStart.getDate() <= 7) lastMonth = mo;
+    var cells = '';
+    for(var d=0; d<7; d++){
+      var day = new Date(colStart); day.setDate(colStart.getDate()+d);
+      var iso = toISO(day);
+      var inProgram = iso >= PROGRAM_START;
+      var sc = inProgram ? dayScoreRaw(iso) : null;
+      var lv = sc ? scoreLevel(sc.pts) : 0;
+      var cls = 'hm-c l'+lv + (iso===todayISO?' today':'') + (iso>todayISO?' future':'');
+      var title = fmtDate(iso) + (sc && sc.pts ? ' · '+sc.pts+'/6 hedef' : '');
+      cells += '<div class="'+cls+'" title="'+title+'"></div>';
+    }
+    cols += '<div class="hm-col">'+cells+'</div>';
+  }
+  holder.innerHTML =
+    '<div class="hm-wrap"><div class="hm-months">'+months+'</div>'+
+    '<div class="hm-body"><div class="hm-days"><span>Pzt</span><span></span><span>Çar</span><span></span><span>Cum</span><span></span><span></span></div>'+
+    '<div class="hm-grid">'+cols+'</div></div></div>'+
+    '<div class="hm-legend">Az <div class="hm-c l0"></div><div class="hm-c l1"></div><div class="hm-c l2"></div><div class="hm-c l3"></div><div class="hm-c l4"></div> Çok</div>';
+  scrollHeatmapToNow();
+}
+/* Yıl haritası soldan taşar; en güncel hafta görünsün diye sağa kaydırılır. Sekme gizliyken
+   scrollWidth 0 olduğu için bu, render sırasında değil sekme görünür olunca da çağrılıyor. */
+function scrollHeatmapToNow(){
+  var w = document.querySelector('#heatmap-holder .hm-wrap');
+  if(w && w.scrollWidth > w.clientWidth) w.scrollLeft = w.scrollWidth;
+}
+
+/* ---------- Kas dengesi ----------
+   openGym'in "muscle balance" ekranı: haftalık/aylık/tüm zamanlar, işaretlenmiş
+   setlerden hesaplanan bölge yoğunluğu ve — asıl faydalı kısım — o dönemde HİÇ
+   çalışmadığın bölgelerin adı. */
+var balancePeriod = 7;
+/* Haftalık programın (SPLIT + karın devresi) dokunduğu bölgelerin kümesi. */
+function programRegions(){
+  if(programRegions._c) return programRegions._c;
+  var set = {};
+  SPLIT.forEach(function(day){
+    if(day.venue==='rest') return;
+    (day.exercises||[]).forEach(function(e){ muscleNameToRegions(e.muscle).forEach(function(r){ set[r]=true; }); });
+  });
+  ABS_CIRCUIT.forEach(function(a){ muscleNameToRegions(a.muscle).forEach(function(r){ set[r]=true; }); });
+  return (programRegions._c = set);
+}
+function muscleVolume(days){
+  var vol = {};
+  function add(region, sets){ if(!region) return; vol[region] = (vol[region]||0) + sets; }
+  var from = null;
+  if(days > 0){ var d = parseISO(todayISO); d.setDate(d.getDate()-(days-1)); from = toISO(d); }
+  Object.keys(state.workout).forEach(function(iso){
+    if(from && iso < from) return;
+    if(iso > todayISO) return;
+    var w = state.workout[iso];
+    var day = SPLIT[dowIndex(iso)];
+    if(w.ex){
+      day.exercises.forEach(function(e){
+        if(!w.ex[e.id]) return;
+        var sets = parseSetCount(e.detail) || 1;
+        muscleNameToRegions(e.muscle).forEach(function(r){ add(r, sets); });
+      });
+    }
+    if(w.abs){
+      ABS_CIRCUIT.forEach(function(a){
+        if(!w.abs[a.id]) return;
+        var sets = parseSetCount(a.detail) || 1;
+        muscleNameToRegions(a.muscle).forEach(function(r){ add(r, sets); });
+      });
+    }
+  });
+  return vol;
+}
+function renderBalance(){
+  var holder = document.getElementById('balance-holder');
+  if(!holder) return;
+  document.querySelectorAll('#balance-seg button').forEach(function(b){
+    b.classList.toggle('active', +b.dataset.period === balancePeriod);
+  });
+  var vol = muscleVolume(balancePeriod);
+  var regions = Object.keys(MUSCLE_REGION_LABEL);
+  var max = 0;
+  regions.forEach(function(r){ if((vol[r]||0) > max) max = vol[r]; });
+
+  if(!max){
+    holder.innerHTML = '<div class="mb-missing">Bu dönemde işaretlenmiş hareket yok. Bugün sekmesinden hareketleri işaretledikçe burası dolacak.</div>';
+    return;
+  }
+
+  var rank = regions.filter(function(r){ return vol[r]; })
+                    .sort(function(a,b){ return vol[b]-vol[a]; })
+                    .map(function(r){
+    var pct = Math.round(vol[r]/max*100);
+    return '<div class="mb-rank-row"><span class="lbl">'+MUSCLE_REGION_LABEL[r]+'</span>'+
+      '<span class="bar"><i style="width:'+pct+'%"></i></span>'+
+      '<span class="n">'+vol[r]+' set</span></div>';
+  }).join('');
+
+  // "Hiç çalışmadın" listesi yalnızca programın gerçekten kapsadığı bölgeleri sayar.
+  // Boyun sadece duruş rutininde geçiyor; onu eksik diye göstermek yanıltıcı olurdu.
+  var missing = regions.filter(function(r){ return !vol[r] && programRegions()[r]; })
+                       .map(function(r){ return MUSCLE_REGION_LABEL[r]; });
+  var missHtml = missing.length
+    ? '<div class="mb-missing">Bu dönemde hiç çalışmadığın bölgeler: <b>'+missing.join(', ')+'</b></div>'
+    : '<div class="mb-missing">Bu dönemde bütün bölgeleri çalıştın. 👏</div>';
+
+  holder.innerHTML = '<div class="mb-figs"><div class="muscle-map-figures">'+MUSCLE_MAP_SVG+'</div></div>' + missHtml + '<div class="mb-rank">'+rank+'</div>';
+
+  regions.forEach(function(r){
+    var v = vol[r] || 0;
+    if(!v) return;
+    var lv = v >= max*0.75 ? 4 : v >= max*0.5 ? 3 : v >= max*0.25 ? 2 : 1;
+    holder.querySelectorAll('[data-region="'+r+'"]').forEach(function(el){ el.classList.add('lv'+lv); });
+  });
+}
+
+/* ---------- Rekorlar & tahmini 1RM ---------- */
+function renderRecords(){
+  var holder = document.getElementById('records-holder');
+  if(!holder) return;
+  var rows = weightedExercises().map(function(ex){
+    var log = sortedLog(ex.key);
+    if(!log.length) return null;
+    var best = bestLift(ex.key);
+    var one = best1RMFor(ex.key, ex.detail);
+    return { ex:ex, best:best, one:one, n:log.length };
+  }).filter(Boolean);
+
+  if(!rows.length){
+    holder.innerHTML = '<div class="mb-missing">Henüz ağırlık kaydı yok. Bugün sekmesinde hareketin yanındaki kg kutusunu doldurdukça rekorların burada birikir.</div>';
+    return;
+  }
+  holder.innerHTML = rows.map(function(r){
+    return '<div class="rec-row">'+
+      '<div class="rec-name">'+r.ex.name+'</div>'+
+      '<div class="rec-sub">'+DOW_NAMES[r.ex.dow]+' · '+r.n+' kayıt · '+r.ex.detail+'</div>'+
+      '<div class="ex-meta">'+
+        '<span class="pr-tag">🏆 en ağır '+r.best.kg+' kg</span>'+
+        (r.one ? '<span class="e1rm-tag">1RM ~'+r.one.est+' kg</span>' : '')+
+        '<button type="button" class="ex-hist-btn" data-ex-sheet="'+r.ex.key+'">Geçmiş</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+/* ---------- Hareket geçmişi alt sayfası ---------- */
+function closeSheet(){
+  var b = document.getElementById('sheet-backdrop');
+  if(b) b.remove();
+}
+function openExerciseSheet(key){
+  var ex = weightedExercises().find(function(e){ return e.key===key; });
+  if(!ex) return;
+  var log = sortedLog(key);
+  var one = best1RMFor(key, ex.detail);
+  var reps = parseRepCount(ex.detail);
+  var best = bestLift(key);
+
+  // Basit kıvılcım grafiği — kaydedilen ağırlıkların zaman içindeki seyri.
+  var spark = '';
+  if(log.length >= 2){
+    var vals = log.map(function(p){ return p.kg; });
+    var mn = Math.min.apply(null, vals), mx = Math.max.apply(null, vals);
+    var span = (mx - mn) || 1;
+    var W = 300, H = 74, pad = 6;
+    var pts = log.map(function(p,i){
+      var x = pad + (i/(log.length-1))*(W-pad*2);
+      var y = H-pad - ((p.kg-mn)/span)*(H-pad*2);
+      return Math.round(x*10)/10 + ',' + Math.round(y*10)/10;
+    }).join(' ');
+    var firstX = pad, lastX = pad + (W-pad*2);
+    var lastPt = log[log.length-1];
+    var lastY = H-pad - ((lastPt.kg-mn)/span)*(H-pad*2);
+    spark = '<svg class="spark" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" aria-hidden="true">'+
+      '<polygon points="'+firstX+','+(H-pad)+' '+pts+' '+lastX+','+(H-pad)+'" fill="var(--grad-a)" opacity=".12"/>'+
+      // vector-effect: viewBox yatayda esnetildiği için çizgi kalınlığı da esnerdi.
+      '<polyline points="'+pts+'" fill="none" stroke="var(--grad-a)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>'+
+      '<circle cx="'+lastX+'" cy="'+(Math.round(lastY*10)/10)+'" r="3.5" fill="var(--grad-a)" vector-effect="non-scaling-stroke"/>'+
+    '</svg>';
+  }
+
+  var runningBest = -Infinity;
+  var rowsHtml = log.slice().reverse().map(function(p, idx, arr){
+    var prev = arr[idx+1];
+    var diff = prev ? Math.round((p.kg - prev.kg)*10)/10 : 0;
+    var deltaCls = diff>0 ? 'up' : (diff<0 ? 'down' : '');
+    var deltaTxt = diff===0 ? '' : (diff>0?'+':'')+diff;
+    var isPr = best && p.date===best.date && p.kg===best.kg;
+    return '<div class="hist-row'+(isPr?' is-pr':'')+'">'+
+      '<span class="d">'+fmtDate(p.date)+(isPr?' · 🏆 rekor':'')+'</span>'+
+      '<span class="kg">'+p.kg+' kg</span>'+
+      '<span class="delta '+deltaCls+'">'+deltaTxt+'</span>'+
+    '</div>';
+  }).join('');
+
+  var oneHtml = one
+    ? '<div class="sheet-1rm"><span class="v mono">'+one.est+'</span><span class="u">kg tahmini 1RM</span></div>'+
+      '<div class="sheet-1rm-note">'+one.kg+' kg × '+one.reps+' tekrar kaydından (Epley). '+ONERM_REP_CAP+' tekrarın üstünde tahmin yapılmaz.</div>'
+    : '<div class="sheet-1rm-note" style="margin-top:14px;">Tahmini 1RM için bu hareketin tekrar sayısı gerekiyor'+(reps?'':' (programda tanımlı değil)')+'.</div>';
+
+  var wrap = document.createElement('div');
+  wrap.id = 'sheet-backdrop';
+  wrap.className = 'sheet-backdrop';
+  wrap.innerHTML = '<div class="sheet" role="dialog" aria-modal="true">'+
+    '<div class="sheet-grip"></div>'+
+    '<h3>'+ex.name+'</h3>'+
+    '<div class="sheet-sub">'+DOW_NAMES[ex.dow]+' · '+ex.detail+'</div>'+
+    oneHtml + spark +
+    '<div class="hist-list">'+rowsHtml+'</div>'+
+    '<button type="button" class="sheet-close" data-sheet-close>Kapat</button>'+
+  '</div>';
+  wrap.addEventListener('click', function(e){ if(e.target===wrap) closeSheet(); });
+  document.body.appendChild(wrap);
+}
+
+/* ---------- Dinlenme sayacı ----------
+   Sabit konumlu değil, tab bar'ın üstünde akış içinde bir flex çocuğu: bu dosyadaki
+   iOS düzeltmeleriyle aynı mantık. */
+var restState = null;  // {left, total, label}
+var restTick = null;
+function restSettings(){ return state.settings; }
+function startRest(secs, label){
+  secs = secs || restSettings().restSecs || 90;
+  restState = { left:secs, total:secs, label:label||'Dinlenme' };
+  renderRestBar();
+  clearInterval(restTick);
+  restTick = setInterval(function(){
+    if(!restState){ clearInterval(restTick); return; }
+    restState.left--;
+    if(restState.left <= 0){ finishRest(); return; }
+    renderRestBar();
+  }, 1000);
+}
+function stopRest(){
+  restState = null;
+  clearInterval(restTick); restTick = null;
+  renderRestBar();
+}
+function finishRest(){
+  if(restSettings().restSound) restAlert();
+  stopRest();
+}
+function addRestSeconds(delta){
+  if(!restState) return;
+  restState.left = Math.max(5, restState.left + delta);
+  restState.total = Math.max(restState.total, restState.left);
+  renderRestBar();
+}
+function renderRestBar(){
+  var bar = document.getElementById('rest-bar');
+  if(!bar) return;
+  if(!restState){ bar.hidden = true; return; }
+  bar.hidden = false;
+  var m = Math.floor(restState.left/60), s = restState.left%60;
+  document.getElementById('rest-clock').textContent = m + ':' + String(s).padStart(2,'0');
+  document.getElementById('rest-label').textContent = restState.label;
+  document.getElementById('rest-fill').style.width = (restState.left/restState.total*100) + '%';
+}
+/* Kısa bir bip + titreşim. Ses dosyası yok; WebAudio ile üretiliyor ki dosya tek parça kalsın. */
+function restAlert(){
+  try{
+    if(navigator.vibrate) navigator.vibrate([120,70,120]);
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if(!Ctx) return;
+    var ctx = restAlert._ctx || (restAlert._ctx = new Ctx());
+    if(ctx.state === 'suspended') ctx.resume();
+    [0, 0.22].forEach(function(offset){
+      var osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime + offset);
+      gain.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + offset + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + offset + 0.18);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + offset);
+      osc.stop(ctx.currentTime + offset + 0.2);
+    });
+  }catch(e){}
+}
+
+/* ---------- Ekranı açık tutma ----------
+   Tarayıcı sayfa görünmez olur olmaz kilidi kendisi bırakır; bu yüzden "istiyor muyuz"
+   bilgisini ayrı tutup her visibilitychange'de yeniden alıyoruz. */
+var wlSentinel = null, wlWanted = false, wlPending = false;
+function wakeLockSupported(){ return 'wakeLock' in navigator; }
+function wlAcquire(){
+  if(!wlWanted || wlSentinel || wlPending || !wakeLockSupported()) return;
+  if(document.visibilityState !== 'visible') return;
+  wlPending = true;
+  navigator.wakeLock.request('screen').then(function(s){
+    wlPending = false;
+    if(!wlWanted){ s.release().catch(function(){}); return; }
+    wlSentinel = s;
+    s.addEventListener('release', function(){ if(wlSentinel===s) wlSentinel = null; });
+  }).catch(function(){
+    // iOS düşük güç modunda ve bazı tarayıcılar düşük şarjda reddeder. Kullanıcının
+    // yapabileceği bir şey yok — sessizce geç, sayfa tekrar görünür olunca yine dene.
+    wlPending = false; wlSentinel = null;
+  });
+}
+document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') wlAcquire(); });
+function setWakeLock(on){
+  wlWanted = !!on;
+  if(wlWanted){ wlAcquire(); }
+  else { var s = wlSentinel; wlSentinel = null; if(s) s.release().catch(function(){}); }
+}
+/* Antrenman "sürüyor" demek: bugün en az bir hareket işaretlenmiş ama hepsi değil. */
+function workoutInProgress(){
+  var sc = dayScoreRaw(todayISO);
+  return sc.exTotal > 0 && sc.exDone > 0 && sc.exDone < sc.exTotal;
+}
+function syncWakeLock(){
+  setWakeLock(state.settings.wakeLock && workoutInProgress());
+}
+
+/* ---------- Görünüm: tema + vurgu rengi ---------- */
+var ACCENTS = [
+  {id:'indigo', label:'İndigo', css:'linear-gradient(135deg,#4F46E5,#06B6D4)'},
+  {id:'ember',  label:'Ateş',   css:'linear-gradient(135deg,#F43F1F,#F0A319)'},
+  {id:'teal',   label:'Yeşil',  css:'linear-gradient(135deg,#0FA76F,#22D3EE)'},
+  {id:'violet', label:'Mor',    css:'linear-gradient(135deg,#7C5CFC,#D946EF)'},
+  {id:'rose',   label:'Gül',    css:'linear-gradient(135deg,#E11D63,#FB7185)'},
+  {id:'slate',  label:'Füme',   css:'linear-gradient(135deg,#334155,#64748B)'}
+];
+function applyAppearance(){
+  var root = document.documentElement;
+  var th = state.settings.theme;
+  if(th === 'auto') root.removeAttribute('data-theme');
+  else root.setAttribute('data-theme', th);
+  root.setAttribute('data-accent', state.settings.accent || 'indigo');
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta){
+    var c = getComputedStyle(root).getPropertyValue('--grad-a').trim();
+    if(c) meta.setAttribute('content', c);
+  }
+}
+function renderSettingsUI(){
+  var s = state.settings;
+  var a = document.getElementById('set-rest-auto'); if(a) a.checked = !!s.restAuto;
+  var so = document.getElementById('set-rest-sound'); if(so) so.checked = !!s.restSound;
+  var wl = document.getElementById('set-wakelock'); if(wl) wl.checked = !!s.wakeLock;
+  var note = document.getElementById('wakelock-note'); if(note) note.hidden = wakeLockSupported();
+  document.querySelectorAll('#set-rest-secs button').forEach(function(b){
+    b.classList.toggle('active', +b.dataset.secs === s.restSecs);
+  });
+  document.querySelectorAll('#set-theme button').forEach(function(b){
+    b.classList.toggle('active', b.dataset.themeVal === s.theme);
+  });
+  var sw = document.getElementById('set-accent');
+  if(sw && !sw.dataset.built){
+    sw.innerHTML = ACCENTS.map(function(c){
+      return '<button type="button" class="swatch" data-accent-val="'+c.id+'" title="'+c.label+'" aria-label="'+c.label+'" style="background:'+c.css+'"></button>';
+    }).join('');
+    sw.dataset.built = '1';
+  }
+  if(sw) sw.querySelectorAll('.swatch').forEach(function(b){
+    b.classList.toggle('on', b.dataset.accentVal === s.accent);
+  });
+}
+
+/* ---------- Kahraman bloğundaki "bugün" eylem satırı ---------- */
+function renderHeroToday(){
+  var btn = document.getElementById('hero-today');
+  if(!btn) return;
+  var dow = dowIndex(todayISO);
+  var day = SPLIT[dow];
+  var sc = dayScoreRaw(todayISO);
+  var icoWrap = document.getElementById('ht-ico');
+  var iconSvg = day.venue==='rest'
+    ? '<svg viewBox="0 0 24 24"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"></path></svg>'
+    : '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.4"></circle><circle cx="19" cy="12" r="2.4"></circle><line x1="7.4" y1="12" x2="16.6" y2="12"></line><line x1="9.5" y1="8.5" x2="9.5" y2="15.5"></line><line x1="14.5" y1="8.5" x2="14.5" y2="15.5"></line></svg>';
+  icoWrap.innerHTML = iconSvg;
+  document.getElementById('ht-title').textContent = day.title;
+
+  var cta = document.getElementById('ht-cta');
+  var sub = document.getElementById('ht-sub');
+  if(day.venue==='rest'){
+    sub.textContent = day.focus;
+    cta.textContent = 'Dinlen';
+    btn.classList.add('is-done');
+  } else if(sc.exDone >= sc.exTotal && sc.exTotal > 0){
+    sub.textContent = 'Tamamlandı · ' + sc.exDone + '/' + sc.exTotal + ' hareket';
+    cta.textContent = 'Gör';
+    btn.classList.add('is-done');
+  } else {
+    sub.textContent = VENUE_LABEL[day.venue] + ' · ' + sc.exDone + '/' + sc.exTotal + ' hareket';
+    cta.textContent = sc.exDone > 0 ? 'Devam' : 'Başla';
+    btn.classList.remove('is-done');
+  }
+}
+/* "Başla"ya basınca antrenman kartını (ve içindeki hareket listesini) açıp oraya kaydır. */
+function jumpToWorkout(){
+  var card = document.getElementById('today-card');
+  if(!card) return;
+  var outer = card.querySelector(':scope > details');
+  if(outer) outer.open = true;
+  var exSection = document.getElementById('today-exercises');
+  if(exSection){
+    var d = exSection.closest('details');
+    if(d) d.open = true;
+  }
+  card.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* ---------- v2 render girişi ---------- */
+function renderV2(){
+  renderHeroToday();
+  renderDaystrip();
+  renderStatTiles();
+  renderHeatmap();
+  renderBalance();
+  renderRecords();
+  renderSettingsUI();
+  syncWakeLock();
+}
+
+/* ---------- v2 olayları ----------
+   Mevcut dinleyicilere dokunulmuyor; bunlar onlardan SONRA çalışan ayrı dinleyiciler,
+   yani state güncellenmiş oluyor (rekor tespiti buna dayanıyor). */
+document.addEventListener('change', function(e){
+  var t = e.target;
+
+  // Hareket işaretlendi → dinlenme sayacını başlat (kapatıldıysa hiçbir şey yapma).
+  if(t.matches('[data-ex]') || t.matches('[data-abs]')){
+    if(t.checked && state.settings.restAuto) startRest(state.settings.restSecs, 'Dinlenme');
+    else if(!t.checked) { /* geri alındıysa sayacı rahat bırak */ }
+    syncWakeLock();
+    return;
+  }
+
+  // Ağırlık girildi → kişisel rekor mu?
+  if(t.matches('[data-wt]')){
+    var key = t.dataset.wt;
+    var kg = parseFloat(t.value);
+    if(!isNaN(kg)){
+      var prev = bestLift(key, todayISO);
+      if(prev && kg > prev.kg) flashPR(key, kg, prev.kg);
+      else if(!prev && sortedLog(key).length === 1) flashFirstLog();
+    }
+    renderStatTiles(); renderRecords();
+    return;
+  }
+
+  if(t.id==='set-rest-auto'){ mutate(function(){ state.settings.restAuto = t.checked; }); return; }
+  if(t.id==='set-rest-sound'){ mutate(function(){ state.settings.restSound = t.checked; }); if(t.checked) restAlert(); return; }
+  if(t.id==='set-wakelock'){ mutate(function(){ state.settings.wakeLock = t.checked; }); syncWakeLock(); return; }
+});
+
+document.addEventListener('click', function(e){
+  if(e.target.closest('#hero-today')){ jumpToWorkout(); return; }
+
+  var add = e.target.closest('[data-rest-add]');
+  if(add){ addRestSeconds(+add.dataset.restAdd); return; }
+  if(e.target.closest('[data-rest-skip]')){ stopRest(); return; }
+
+  var secs = e.target.closest('#set-rest-secs button');
+  // Süreyi değiştirmek sayacı başlatmaz; ayar ekranında 3 dakikalık bir sayacın kendiliğinden
+  // çalışmaya başlaması beklenmedik olurdu. Sayaç zaten çalışıyorsa yeni süreye uyarlanır.
+  if(secs){
+    var v = +secs.dataset.secs;
+    mutate(function(){ state.settings.restSecs = v; });
+    if(restState) startRest(v, restState.label);
+    return;
+  }
+
+  var th = e.target.closest('#set-theme button');
+  if(th){ mutate(function(){ state.settings.theme = th.dataset.themeVal; }); applyAppearance(); renderChart(); return; }
+
+  var ac = e.target.closest('[data-accent-val]');
+  if(ac){ mutate(function(){ state.settings.accent = ac.dataset.accentVal; }); applyAppearance(); renderChart(); return; }
+
+  var per = e.target.closest('#balance-seg button');
+  if(per){ balancePeriod = +per.dataset.period; renderBalance(); return; }
+
+  var sheet = e.target.closest('[data-ex-sheet]');
+  if(sheet){ openExerciseSheet(sheet.dataset.exSheet); return; }
+
+  if(e.target.closest('[data-sheet-close]')){ closeSheet(); return; }
+});
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeSheet(); });
+
+/* Rekor kutlaması — gün tamamlama kutlamasıyla aynı toast, farklı metin. */
+function toastMsg(text){
+  var toast = document.getElementById('celebrate-toast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'celebrate-toast';
+    toast.className = 'celebrate-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = text;
+  toast.classList.add('show');
+  clearTimeout(toastMsg._t);
+  toastMsg._t = setTimeout(function(){ toast.classList.remove('show'); }, 3200);
+}
+function flashPR(key, kg, prevKg){
+  var ex = weightedExercises().find(function(e){ return e.key===key; });
+  toastMsg('🏆 Yeni rekor! ' + (ex?ex.name.split(' (')[0]:'Hareket') + ' · ' + kg + ' kg (önceki ' + prevKg + ')');
+  if(navigator.vibrate) navigator.vibrate([40,60,40,60,120]);
+}
+function flashFirstLog(){ toastMsg('✅ İlk kaydın alındı — bundan sonrası kıyaslanacak.'); }
 
 /* ============ EVENTS ============ */
 document.addEventListener('change', function(e){
