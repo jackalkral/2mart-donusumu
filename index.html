@@ -10,7 +10,7 @@
    response for it and is forced to fetch fresh content from the network — then this same check
    passes and the app loads normally. */
 (function(){
-  var BUILD_ID = "20260922133413";
+  var BUILD_ID = "20260922161630";
   try{
     var params = new URLSearchParams(location.search);
     if(params.get('v') !== BUILD_ID){
@@ -1090,6 +1090,9 @@ body{
   padding:5px 11px; border-radius:999px; backdrop-filter:blur(6px); pointer-events:none;
 }
 .mv-credit{ text-align:right; font-size:11px; color:var(--ink-faint); margin:-4px 0 12px; }
+.mv-approx{ font-size:12.5px; line-height:1.45; color:var(--ink-dim); background:var(--surface-2); border-radius:10px; padding:9px 11px; margin:0 0 10px; }
+.ex-thumb-x{ cursor:pointer; }
+.ex-thumb-x:active{ transform:scale(.94); }
 .mv-credit a{ color:inherit; text-decoration:underline; text-underline-offset:2px; }
 
 .mv-tiles{ display:flex; gap:10px; margin-top:14px; }
@@ -3300,52 +3303,62 @@ var MEDIA_CREDIT_URL = 'https://gymvisual.com/';
 var EX_MEDIA = {
   "Leg press ya da squat (bar/dambıl)":{i:"0739-10Z2DXU.jpg",g:"0739-10Z2DXU.gif",t:"Kalça",e:"Makine"},
   "Leg curl makinesi":{i:"0586-17lJ1kr.jpg",g:"0586-17lJ1kr.gif",t:"Hamstring",e:"Makine"},
-  "Hip thrust (bar ile)":{i:"1409-qKBpF7I.jpg",g:"1409-qKBpF7I.gif",t:"Kalça",e:"Bar"},
+  "Hip thrust (bar ile)":{i:"1409-qKBpF7I.jpg",g:"1409-qKBpF7I.gif",t:"Kalça",e:"Bar",a:1},
   "Bacak ekstansiyon makinesi":{i:"0585-my33uHU.jpg",g:"0585-my33uHU.gif",t:"Quadriceps",e:"Makine"},
   "Calf raise makinesi":{i:"0605-ykUOVze.jpg",g:"0605-ykUOVze.gif",t:"Baldır",e:"Makine"},
   "Şınav (gerekirse dizde)":{i:"0662-I4hDWkc.jpg",g:"0662-I4hDWkc.gif",t:"Göğüs",e:"Vücut ağırlığı"},
   "Sandalyede dips":{i:"0129-RrLske5.jpg",g:"0129-RrLske5.gif",t:"Triceps",e:"Vücut ağırlığı"},
+  "Plank-to-push-up":{i:"3665-hCjGsRQ.jpg",g:"3665-hCjGsRQ.gif",t:"Karın",e:"Vücut ağırlığı"},
   "Lat pulldown":{i:"0579-7F1DVzn.jpg",g:"0579-7F1DVzn.gif",t:"Sırt (Lat)",e:"Makine"},
   "Oturarak sıra çekme (cable row)":{i:"0861-fUBheHs.jpg",g:"0861-fUBheHs.gif",t:"Üst Sırt",e:"Kablo"},
   "Face pull":{i:"0233-ZfyAGhK.jpg",g:"0233-ZfyAGhK.gif",t:"Omuz",e:"Kablo"},
   "Dambıl biceps curl":{i:"0294-NbVPDMW.jpg",g:"0294-NbVPDMW.gif",t:"Biceps",e:"Dambıl"},
-  "Squat":{i:"0043-qXTaZnJ.jpg",g:"0043-qXTaZnJ.gif",t:"Kalça",e:"Bar"},
-  "Bulgar split squat":{i:"2368-9E25EOx.jpg",g:"2368-9E25EOx.gif",t:"Quadriceps",e:"Vücut ağırlığı"},
+  "Squat":{i:"0043-qXTaZnJ.jpg",g:"0043-qXTaZnJ.gif",t:"Kalça",e:"Bar",a:1},
+  "Bulgar split squat":{i:"2368-9E25EOx.jpg",g:"2368-9E25EOx.gif",t:"Quadriceps",e:"Vücut ağırlığı",a:1},
   "Glute bridge":{i:"3013-u0cNiij.jpg",g:"3013-u0cNiij.gif",t:"Kalça",e:"Vücut ağırlığı"},
-  "Reverse lunge":{i:"0381-SSsBDwB.jpg",g:"0381-SSsBDwB.gif",t:"Kalça",e:"Dambıl"},
+  "Reverse lunge":{i:"0381-SSsBDwB.jpg",g:"0381-SSsBDwB.gif",t:"Kalça",e:"Dambıl",a:1},
+  "Duvar squat (statik)":{i:"0624-sVQCCeG.jpg",g:"0624-sVQCCeG.gif",t:"Kalça",e:"Vücut ağırlığı",a:1},
   "Romanian deadlift (bar/dambıl)":{i:"0085-wQ2c4XD.jpg",g:"0085-wQ2c4XD.gif",t:"Kalça",e:"Bar"},
   "Kettlebell/dambıl swing":{i:"0549-UHJlbu3.jpg",g:"0549-UHJlbu3.gif",t:"Kalça",e:"Kettlebell"},
   "Göğüs presi makinesi":{i:"0577-T0yTjgW.jpg",g:"0577-T0yTjgW.gif",t:"Göğüs",e:"Makine"},
   "Farmer carry":{i:"2133-qPEzJjA.jpg",g:"2133-qPEzJjA.gif",t:"Quadriceps",e:"Dambıl"},
   "Mountain climber":{i:"0630-RJgzwny.jpg",g:"0630-RJgzwny.gif",t:"Kardiyo",e:"Vücut ağırlığı"},
-  "Squat to press (su şişesi/dambıl)":{i:"0550-yWxMvB5.jpg",g:"0550-yWxMvB5.gif",t:"Omuz",e:"Kettlebell"},
-  "Superman":{i:"1352-ANbbry2.jpg",g:"1352-ANbbry2.gif",t:"Omurga",e:"Vücut ağırlığı"},
-  "Plank hold":{i:"3665-hCjGsRQ.jpg",g:"3665-hCjGsRQ.gif",t:"Karın",e:"Vücut ağırlığı"},
-  "Plank":{i:"3665-hCjGsRQ.jpg",g:"3665-hCjGsRQ.gif",t:"Karın",e:"Vücut ağırlığı"},
+  "Squat to press (su şişesi/dambıl)":{i:"0550-yWxMvB5.jpg",g:"0550-yWxMvB5.gif",t:"Omuz",e:"Kettlebell",a:1},
+  "Superman":{i:"1352-ANbbry2.jpg",g:"1352-ANbbry2.gif",t:"Omurga",e:"Vücut ağırlığı",a:1},
+  "Plank hold":{i:"2135-VBAWRPG.jpg",g:"2135-VBAWRPG.gif",t:"Karın",e:"Ağırlıklı",a:1},
+  "Plank":{i:"2135-VBAWRPG.jpg",g:"2135-VBAWRPG.gif",t:"Karın",e:"Ağırlıklı",a:1},
   "Bicycle crunch":{i:"0003-1ZFqTDN.jpg",g:"0003-1ZFqTDN.gif",t:"Karın",e:"Vücut ağırlığı"},
   "Bacak kaldırma (leg raise)":{i:"0865-9IxJdtC.jpg",g:"0865-9IxJdtC.gif",t:"Karın",e:"Vücut ağırlığı"},
   "Russian twist":{i:"0687-XVDdcoj.jpg",g:"0687-XVDdcoj.gif",t:"Karın",e:"Vücut ağırlığı"},
   "Side plank":{i:"0705-RKjH6Lt.jpg",g:"0705-RKjH6Lt.gif",t:"Karın",e:"Vücut ağırlığı"},
   "Mountain climber (kor)":{i:"0630-RJgzwny.jpg",g:"0630-RJgzwny.gif",t:"Kardiyo",e:"Vücut ağırlığı"},
+  "Yerinde tempolu yürüyüş":{i:"3672-fNGumX0.jpg",g:"3672-fNGumX0.gif",t:"Kardiyo",e:"Vücut ağırlığı",a:1},
+  "Vücut ağırlığı squat":{i:"1685-QChZi3x.jpg",g:"1685-QChZi3x.gif",t:"Quadriceps",e:"Vücut ağırlığı",a:1},
+  "Kürek çekme hareketi (bantsız)":{i:"3166-wd4ds3s.jpg",g:"3166-wd4ds3s.gif",t:"Üst Sırt",e:"Vücut ağırlığı"},
+  "Kürek kemiği sıkma":{i:"3166-wd4ds3s.jpg",g:"3166-wd4ds3s.gif",t:"Üst Sırt",e:"Vücut ağırlığı",a:1},
   "Ayakta hamstring esnetme":{i:"1511-99rWm7w.jpg",g:"1511-99rWm7w.gif",t:"Hamstring",e:"Vücut ağırlığı"},
-  "Ayakta quadriceps esnetme":{i:"0613-BWnJR72.jpg",g:"0613-BWnJR72.gif",t:"Quadriceps",e:"Vücut ağırlığı"},
+  "Ayakta quadriceps esnetme":{i:"0613-BWnJR72.jpg",g:"0613-BWnJR72.gif",t:"Quadriceps",e:"Vücut ağırlığı",a:1},
   "Kapıda/duvar göğüs esnetme":{i:"1271-Uto7l43.jpg",g:"1271-Uto7l43.gif",t:"Göğüs",e:"Vücut ağırlığı"},
   "Kapıda göğüs esnetme":{i:"1271-Uto7l43.jpg",g:"1271-Uto7l43.gif",t:"Göğüs",e:"Vücut ağırlığı"},
-  "Kürek çekme hareketi (bantsız)":{i:"3166-wd4ds3s.jpg",g:"3166-wd4ds3s.gif",t:"Üst Sırt",e:"Vücut ağırlığı"}
+  "Serbest esneme (isteğe bağlı)":{i:"1363-JbC2iaV.jpg",g:"1363-JbC2iaV.gif",t:"Omurga",e:"Vücut ağırlığı",a:1}
 };
 
 function mediaFor(name){
   var m = EX_MEDIA[name];
   if(!m || !state.settings.exMedia) return null;
-  return { img:MEDIA_IMG + m.i, gif:MEDIA_GIF + m.g, target:m.t, equip:m.e };
+  return { img:MEDIA_IMG + m.i, gif:MEDIA_GIF + m.g, target:m.t, equip:m.e, approx:!!m.a };
 }
 /* Satırdaki küçük görsel. Yüklenemezse (ağ yok, kaynak değişti) sessizce yer tutucuya
    düşüyor — kırık resim ikonu görünmüyor. */
 function thumbHTML(name){
   if(!state.settings.exMedia) return '';
   var m = mediaFor(name);
-  if(!m) return '<span class="ex-thumb ex-thumb-x" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.4"></circle><circle cx="19" cy="12" r="2.4"></circle><line x1="7.4" y1="12" x2="16.6" y2="12"></line><line x1="9.5" y1="8.5" x2="9.5" y2="15.5"></line><line x1="14.5" y1="8.5" x2="14.5" y2="15.5"></line></svg></span>';
-  return '<span class="ex-thumb" role="button" tabindex="0" data-move-sheet="'+escAttr(name)+'" aria-label="'+escAttr(name)+' — animasyonu göster">'+
+  // Animasyonu olmayan hareketler de dokunulabilir: sayfası yine açılıyor (set/tekrar,
+  // kas etiketi, video bağlantısı). Eskiden bunlar ölü bir ikondu ve "açılmıyor" gibi
+  // görünüyordu.
+  var open = ' role="button" tabindex="0" data-move-sheet="'+escAttr(name)+'" aria-label="'+escAttr(name)+' — ayrıntılar"';
+  if(!m) return '<span class="ex-thumb ex-thumb-x"'+open+'><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.4"></circle><circle cx="19" cy="12" r="2.4"></circle><line x1="7.4" y1="12" x2="16.6" y2="12"></line><line x1="9.5" y1="8.5" x2="9.5" y2="15.5"></line><line x1="14.5" y1="8.5" x2="14.5" y2="15.5"></line></svg></span>';
+  return '<span class="ex-thumb"'+open+'>'+
     '<img src="'+m.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'ex-thumb-x\');this.remove();">'+
   '</span>';
 }
@@ -3381,6 +3394,7 @@ function openMoveSheet(name){
       '<img src="'+m.gif+'" data-gif="'+m.gif+'" data-still="'+m.img+'" alt="'+escAttr(name)+'" decoding="async" onerror="this.closest(\'.mv-media\').remove();">'+
       '<span class="mv-media-hint">duraklatmak için dokun</span>'+
     '</div>'+
+    (m.approx ? '<div class="mv-approx">Bu animasyon en yakın eşleşme — senin yaptığın versiyondan biraz farklı olabilir.</div>' : '')+
     '<div class="mv-credit"><a href="'+MEDIA_CREDIT_URL+'" target="_blank" rel="noopener">'+MEDIA_CREDIT+'</a></div>';
   }
 
@@ -3431,6 +3445,7 @@ function openMoveSheet(name){
     mediaHtml +
     '<h3>'+name+'</h3>'+
     '<div class="sheet-sub">'+sub+'</div>'+
+    (m ? '' : '<div class="mv-approx" style="margin-top:12px;">Bu hareketin animasyonu yok — kaynak kütüphanede birebir karşılığı bulunmuyor. Aşağıdaki video bağlantısı doğru formu gösterir.</div>')+
     '<div class="ex-meta" style="margin-top:10px;">'+tags+'</div>'+
     tiles + histHtml +
     '<a class="howto-link" style="display:inline-block;margin-top:14px;" href="https://www.youtube.com/results?search_query='+encodeURIComponent(name+' doğru form nasıl yapılır')+'" target="_blank" rel="noopener">Videoyu izle</a>'+
