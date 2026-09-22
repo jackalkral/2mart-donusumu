@@ -10,7 +10,7 @@
    response for it and is forced to fetch fresh content from the network — then this same check
    passes and the app loads normally. */
 (function(){
-  var BUILD_ID = "20260922101443";
+  var BUILD_ID = "20260922104722";
   try{
     var params = new URLSearchParams(location.search);
     if(params.get('v') !== BUILD_ID){
@@ -35,58 +35,93 @@
 </head>
 <body>
 <title>2 Mart Dönüşümü</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<!-- Web yazı tipi yok: openGym gibi sistem yazı tipi yığını kullanılıyor (SF / Segoe / Roboto). -->
 <style>
-/* ============ TOKENS ============ */
+/* ============ TOKENS ============
+   openGym'in (github.com/DuarteSantos8/openGym, AGPL-3.0) tasarım sisteminden uyarlandı:
+   iOS sistem paleti, koyu varsayılan, nötr yüzey rampası, saç teli ayraçlar ve renk
+   yalnızca vurgu + durum için. Değişkenlerin ADLARI eskisiyle aynı bırakıldı (--ember,
+   --teal, --ink, --border …) — böylece dosyadaki 300+ kural olduğu gibi çalışıyor,
+   sadece altlarındaki renkler değişti. */
 :root{
-  --grad-a:#4F46E5; --grad-b:#06B6D4; --glow:#F472B6;
-  --ember:#FF5A36; --ember-ink:#FFFFFF; --ember-soft:#FFE4DC;
-  --teal:#0FA76F; --teal-soft:#DCF6E9;
-  --gold:#F0A319; --gold-soft:#FDECC8;
-  --violet:#7C5CFC; --violet-soft:#EBE5FF;
-  --danger:#F43F5E; --danger-soft:#FEE2E7; --gold-ink:#8A5C00;
-  --bg:#F1F3FC; --surface:#FFFFFF; --surface-2:#ECF0FB; --surface-3:#E1E6FA;
-  --ink:#10152F; --ink-dim:#585E88; --ink-faint:#9AA0C9; --border:#E1E5F6;
-  --shadow-sm:0 1px 2px rgba(21,26,74,.07), 0 1px 1px rgba(21,26,74,.04);
-  --shadow-md:0 16px 36px -16px rgba(21,26,74,.22), 0 6px 16px -6px rgba(21,26,74,.12);
-  --shadow-glow:0 0 0 1px rgba(255,255,255,.06), 0 20px 50px -20px rgba(79,70,229,.55);
-  --focus:#4F46E5;
-  color-scheme:light;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --grad-a:#6366F1; --grad-b:#22D3EE; --glow:#F472B6;
-    --ember:#FF7A5C; --ember-ink:#1A0800; --ember-soft:#3A1D14;
-    --teal:#34D399; --teal-soft:#0E2B22;
-    --gold:#FBBF48; --gold-soft:#2E2409;
-    --violet:#A78BFA; --violet-soft:#241C42;
-    --danger:#FB7185; --danger-soft:#3A1420; --gold-ink:#FBBF48;
-    --bg:#080B18; --surface:#121732; --surface-2:#171D3D; --surface-3:#1F2650;
-    --ink:#EEF0FC; --ink-dim:#A7ADD6; --ink-faint:#666EA0; --border:#242C57;
-    --shadow-sm:0 1px 2px rgba(0,0,0,.35);
-    --shadow-md:0 18px 40px -18px rgba(0,0,0,.6), 0 6px 16px -6px rgba(0,0,0,.4);
-    --shadow-glow:0 0 0 1px rgba(255,255,255,.05), 0 20px 55px -18px rgba(99,102,241,.55);
-    --focus:#8B92FF;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --grad-a:#6366F1; --grad-b:#22D3EE; --glow:#F472B6;
-  --ember:#FF7A5C; --ember-ink:#1A0800; --ember-soft:#3A1D14;
-  --teal:#34D399; --teal-soft:#0E2B22;
-  --gold:#FBBF48; --gold-soft:#2E2409;
-  --violet:#A78BFA; --violet-soft:#241C42;
-  --danger:#FB7185; --danger-soft:#3A1420; --gold-ink:#FBBF48;
-  --bg:#080B18; --surface:#121732; --surface-2:#171D3D; --surface-3:#1F2650;
-  --ink:#EEF0FC; --ink-dim:#A7ADD6; --ink-faint:#666EA0; --border:#242C57;
-  --shadow-sm:0 1px 2px rgba(0,0,0,.35);
-  --shadow-md:0 18px 40px -18px rgba(0,0,0,.6), 0 6px 16px -6px rgba(0,0,0,.4);
-  --shadow-glow:0 0 0 1px rgba(255,255,255,.05), 0 20px 55px -18px rgba(99,102,241,.55);
-  --focus:#8B92FF;
+  /* yüzeyler — koyu varsayılan */
+  --bg:#000000; --bg-el:#0E0E10;
+  --surface:#1C1C1E; --surface-2:#2C2C2E; --surface-3:#3A3A3C;
+
+  /* metin */
+  --ink:#FFFFFF; --ink-dim:rgba(235,235,245,.60); --ink-faint:rgba(235,235,245,.32);
+
+  /* ayraçlar: saç teli. --border bir renk olarak kalıyor ki mevcut
+     "1px solid var(--border)" kuralları kırılmasın; kalınlık --hair ile inceltiliyor. */
+  --border:rgba(84,84,88,.60); --sep-op:rgba(84,84,88,.34); --hair:.5px;
+
+  /* iOS sistem paleti (koyu değerleri) */
+  --blue:#0A84FF; --green:#30D158; --red:#FF453A; --orange:#FF9F0A;
+  --yellow:#FFD60A; --cyan:#40C8E0; --indigo:#5E5CE6; --pink:#FF375F;
+  --purple:#BF5AF2; --grey:#8E8E93;
+
+  /* vurgu — varsayılan yeşil, openGym gibi */
+  --acc:var(--green); --acc-2:#248A3D; --on-acc:#000000;
+  --grad-a:var(--acc); --grad-b:var(--acc);   /* eski gradyan değişkenleri düz vurguya bağlandı */
+  --glow:var(--acc);
+
+  /* eski anlamsal renkler → sistem paletine eşlendi, "soft" tonlar şeffaf karışım */
+  --ember:var(--orange);  --ember-ink:#000000; --ember-soft:color-mix(in srgb,var(--orange) 16%,transparent);
+  --teal:var(--green);                         --teal-soft:color-mix(in srgb,var(--green) 16%,transparent);
+  --gold:var(--yellow);   --gold-ink:var(--yellow); --gold-soft:color-mix(in srgb,var(--yellow) 16%,transparent);
+  --violet:var(--purple);                      --violet-soft:color-mix(in srgb,var(--purple) 16%,transparent);
+  --danger:var(--red);                         --danger-soft:color-mix(in srgb,var(--red) 16%,transparent);
+
+  /* gölge yok: openGym'de yükseklik gölgeyle değil yüzey tonuyla anlatılıyor */
+  --shadow-sm:none; --shadow-md:none;
+  --shadow-glow:0 6px 18px -4px color-mix(in srgb,var(--acc) 55%,transparent);
+
+  --focus:var(--acc);
+  --ease:cubic-bezier(.32,.72,0,1); --fast:140ms; --med:220ms;
   color-scheme:dark;
 }
+
+:root[data-theme="light"]{
+  --bg:#F2F2F7; --bg-el:#F7F7FA;
+  --surface:#FFFFFF; --surface-2:#ECECEF; --surface-3:#E3E3E8;
+  --ink:#000000; --ink-dim:rgba(60,60,67,.60); --ink-faint:rgba(60,60,67,.30);
+  --border:rgba(60,60,67,.29); --sep-op:rgba(60,60,67,.20);
+  --blue:#007AFF; --green:#34C759; --red:#FF3B30; --orange:#FF9500;
+  --yellow:#FFCC00; --cyan:#30B0C7; --indigo:#5856D6; --pink:#FF2D55;
+  --purple:#AF52DE; --grey:#8E8E93;
+  --acc-2:#248A3D; --on-acc:#FFFFFF;
+  --ember-ink:#FFFFFF; --gold-ink:#8A6100;
+  color-scheme:light;
+}
+/* "Otomatik" seçilince sistem açık temadaysa açık palete geç. Koyu varsayılan olduğu
+   için burada yalnızca açığa DÖNÜŞ tanımlanıyor. */
+@media (prefers-color-scheme: light){
+  :root[data-theme="auto"]{
+    --bg:#F2F2F7; --bg-el:#F7F7FA;
+    --surface:#FFFFFF; --surface-2:#ECECEF; --surface-3:#E3E3E8;
+    --ink:#000000; --ink-dim:rgba(60,60,67,.60); --ink-faint:rgba(60,60,67,.30);
+    --border:rgba(60,60,67,.29); --sep-op:rgba(60,60,67,.20);
+    --blue:#007AFF; --green:#34C759; --red:#FF3B30; --orange:#FF9500;
+    --yellow:#FFCC00; --cyan:#30B0C7; --indigo:#5856D6; --pink:#FF2D55;
+    --purple:#AF52DE; --grey:#8E8E93;
+    --acc-2:#248A3D; --on-acc:#FFFFFF;
+    --ember-ink:#FFFFFF; --gold-ink:#8A6100;
+    color-scheme:light;
+  }
+}
+
+/* Vurgu renkleri — Apple sistem renkleri, böylece renk değiştirmek "sistem dışı" durmuyor.
+   Dolu bir vurgu düğmesindeki yazı rengi ölçülmüş kontrasta göre seçiliyor: açık temada
+   yeşil/sarı/turuncu üstünde beyaz AA'yı geçmiyor, siyah geçiyor. */
+:root[data-accent="lime"]  { --acc:var(--green);  --acc-2:#248A3D; --on-acc:#000; }
+:root[data-accent="sky"]   { --acc:var(--blue);   --acc-2:#0060DF; --on-acc:#FFF; }
+:root[data-accent="orange"]{ --acc:var(--orange); --acc-2:#C76B00; --on-acc:#000; }
+:root[data-accent="violet"]{ --acc:var(--purple); --acc-2:#8944AB; --on-acc:#FFF; }
+:root[data-accent="pink"]  { --acc:var(--pink);   --acc-2:#D70036; --on-acc:#FFF; }
+:root[data-accent="teal"]  { --acc:var(--cyan);   --acc-2:#0071A4; --on-acc:#000; }
+:root[data-theme="light"][data-accent="sky"],
+:root[data-theme="light"][data-accent="violet"],
+:root[data-theme="light"][data-accent="pink"]{ --on-acc:#FFF; }
 
 /* ============ BASE ============ */
 *{box-sizing:border-box;}
@@ -671,6 +706,361 @@ html:root[data-theme="dark"][data-accent="slate"] { --grad-a:#7C8AA5; --grad-b:#
 .seg-mini{ display:inline-flex; background:var(--surface-2); border-radius:11px; padding:3px; gap:2px; flex:0 0 auto; }
 .seg-mini button{ border:none; background:none; color:var(--ink-dim); font-family:inherit; font-weight:750; font-size:13px; padding:8px 11px; border-radius:9px; cursor:pointer; min-height:38px; }
 .seg-mini button.active{ background:var(--surface); color:var(--ink); box-shadow:var(--shadow-sm); }
+/* ============================================================================
+   openGym GÖRÜNÜMÜ
+   ----------------------------------------------------------------------------
+   Yukarıdaki kuralların yapısı korunuyor; bu katman yalnızca görsel dili
+   değiştiriyor. openGym'in sayfasındaki dört kural esas alındı:
+
+   1. TEK TİP ÖLÇEĞİ, ÇOĞUNLUKLA NORMAL AĞIRLIK. Eski sayfada neredeyse her şey
+      700/800'dü; her şey bağırınca hiyerarşi düzleşiyor. Burada ağırlık anlam
+      taşıyor: başlık 600, içeriği 400, gerisini punto hallediyor. Büyük harfe
+      çevirme kaldırıldı — başlıklar cümle düzeninde.
+   2. NÖTR YÜZEY RAMPASI. Kartlar doygun mavi-griler değil, birkaç puan aralıklı
+      nötr griler. Renk yalnızca vurguya ve duruma harcanıyor.
+   3. GÖLGE DEĞİL, SAÇ TELİ. Yükseklik gölgeyle değil yüzey tonuyla anlatılıyor;
+      ayraçlar yarım piksel ve ikon rayından sonra başlıyor, böylece liste
+      çerçeveli kutular yığını değil tek bir nesne gibi okunuyor.
+   4. ONAYLAYAN HAREKET. Basışlar ~%2 küçülüyor, geçişler 140-220ms. Hiçbir şey
+      süs olsun diye zıplamıyor veya kaymıyor.
+   ========================================================================== */
+
+/* ---- tipografi ---- */
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display','Segoe UI',Roboto,system-ui,sans-serif;
+  font-size:17px; line-height:1.29; letter-spacing:-.012em;
+  font-variant-numeric:tabular-nums;
+}
+/* .mono artık ayrı bir yazı tipi değil: gövde yazı tipinin tablo rakamları.
+   Ölçü rakamları yine hizalı kalıyor, ekranda iki farklı yazı tipi gezinmiyor. */
+.mono{ font-family:inherit; font-variant-numeric:tabular-nums; letter-spacing:-.012em; }
+
+.page-header{ padding:calc(env(safe-area-inset-top) + 14px) 4px 2px; margin-bottom:18px; }
+.page-header h2{ font-family:inherit; font-size:34px; line-height:1.06; font-weight:700; letter-spacing:-.028em; text-transform:none; }
+.page-header p{ font-size:15px; color:var(--ink-dim); font-weight:400; letter-spacing:-.006em; margin-top:4px; }
+
+.card-title,.today-title{
+  font-family:inherit; font-size:17px; font-weight:600; line-height:1.29;
+  letter-spacing:-.012em; text-transform:none;
+}
+.card-sub{ font-size:13px; font-weight:400; color:var(--ink-dim); letter-spacing:-.001em; margin-top:1px; }
+.accordion-count{ font-family:inherit; font-size:13px; font-weight:400; color:var(--ink-dim); }
+.accordion-chevron{ color:var(--ink-faint); font-size:16px; }
+
+/* ---- kart: düz yüzey, gölge yok, çerçeve yok ---- */
+.card{
+  background:var(--surface); border:none; border-radius:14px;
+  box-shadow:none; padding:16px; animation:none;
+}
+.grid{ gap:12px; }
+.tab-page{ animation:ogFade var(--med) var(--ease) both; }
+@keyframes ogFade{ from{ opacity:0; transform:translateY(4px); } to{ opacity:1; transform:none; } }
+
+/* ---- kart ikonu: 29px düz kare, gradyan yok ---- */
+.card-icon{ width:29px; height:29px; border-radius:7px; box-shadow:none; color:#fff; }
+.card-icon svg{ width:18px; height:18px; stroke-width:1.9; }
+.card-icon.i-ember { background:var(--orange); color:#000; }
+.card-icon.i-teal  { background:var(--green);  color:#000; }
+.card-icon.i-gold  { background:var(--yellow); color:#000; }
+.card-icon.i-violet{ background:var(--purple); color:#fff; }
+.card-icon.i-grad  { background:var(--acc);    color:var(--on-acc); }
+.card-head{ gap:12px; }
+
+/* ---- listeler: saç teli ayraç, ikon rayından sonra başlar ---- */
+.check-row{ border-bottom:none; position:relative; padding:11px 2px; gap:12px; }
+.check-row + .check-row::before{
+  content:''; position:absolute; left:0; right:0; top:0; height:var(--hair); background:var(--border);
+}
+.check-row:active{ background:var(--surface-2); }
+.check-row-title{ font-size:17px; font-weight:400; line-height:1.25; letter-spacing:-.012em; }
+.check-row.done .check-row-title{ color:var(--ink-dim); text-decoration-color:var(--acc); text-decoration-thickness:1.5px; }
+.check-row .detail{ font-size:13px; font-weight:400; color:var(--ink-dim); margin-top:2px; }
+/* İşaret dairesi: dolu disk değil, iOS'un onay imi. Vurgu rengi doğrudan çizgide. */
+.check-circle{ width:26px; height:26px; border:1.7px solid var(--ink-faint); background:none; }
+.check-row input:checked ~ .check-circle{
+  background:var(--acc); border-color:var(--acc); animation:none;
+}
+.check-row input:checked ~ .check-circle::after{ width:7px; height:13px; border-width:0 2.2px 2.2px 0; border-color:var(--on-acc); }
+.reminder-row,.playlist-song,.set-row,.hist-row,.rec-row{ border-bottom-color:var(--border); border-bottom-width:var(--hair); }
+
+/* ---- etiketler: köşeli, sessiz ---- */
+.venue-pill,.type-pill{ font-size:12px; font-weight:500; letter-spacing:0; text-transform:capitalize; padding:3px 8px; border-radius:6px; }
+.muscle-tag{ font-size:12px; font-weight:500; letter-spacing:0; padding:3px 7px; border-radius:6px; background:var(--surface-2); color:var(--ink-dim); }
+.muscle-tag-gold{ background:var(--surface-2); color:var(--ink-dim); }
+.badge{ border-radius:6px; font-size:12px; font-weight:500; letter-spacing:0; text-transform:none; }
+.e1rm-tag,.pr-tag,.ex-hist-btn,.muscle-map-tag{ border-radius:6px; font-size:12px; font-weight:500; letter-spacing:0; padding:3px 7px; }
+.e1rm-tag{ background:var(--acc-soft,color-mix(in srgb,var(--acc) 16%,transparent)); color:var(--acc); }
+.pr-tag{ background:var(--surface-2); color:var(--ink-dim); }
+.muscle-map-tag{ background:var(--surface-2); color:var(--ink-dim); border:none; }
+
+/* ---- düğmeler ---- */
+.btn,.btn-sm,.log-form button,.sheet-close,.notif-btn,.qty-btn{
+  border-radius:12px; font-size:17px; font-weight:600; letter-spacing:-.012em;
+  box-shadow:none; transition:transform var(--fast) var(--ease), background var(--fast);
+}
+.btn-sm,.notif-btn{ background:var(--surface-2); color:var(--ink); border:none; font-size:15px; padding:11px 16px; }
+.log-form button{ background:var(--acc); color:var(--on-acc); font-size:15px; }
+.sheet-close{ background:var(--surface-2); border:none; color:var(--ink); }
+.btn:active,.btn-sm:active,.log-form button:active,.sheet-close:active{ transform:scale(.975); }
+
+/* ---- form alanları ---- */
+.field input,.field select,.log-form input,.backup-textarea,textarea#why-input,.wt-field,.rpe-pill{
+  background:var(--surface-2); border:none; border-radius:10px; color:var(--ink);
+  font-size:17px; font-weight:400; letter-spacing:-.012em;
+}
+.field label{ font-size:13px; font-weight:400; color:var(--ink-dim); text-transform:none; letter-spacing:-.001em; }
+.wt-field.auto{ border:none; background:color-mix(in srgb,var(--ink) 6%,var(--surface-2)); }
+.wt-field .wt-input{ font-family:inherit; font-weight:500; font-size:17px; }
+.wt-field-unit{ font-size:12px; font-weight:400; color:var(--ink-dim); }
+.wt-hint{ font-size:13px; font-weight:400; color:var(--ink-dim); }
+.rpe-pill.active{ background:var(--acc); box-shadow:none; }
+.backup-textarea{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12px; }
+
+/* ---- segment denetimleri ---- */
+.chart-seg,.seg-mini{ background:var(--surface-3); border-radius:9px; padding:2px; gap:0; }
+.chart-seg button,.seg-mini button{
+  border-radius:7px; font-size:14px; font-weight:400; color:var(--ink-dim);
+  letter-spacing:-.006em; min-height:30px; padding:6px 10px; background:none; box-shadow:none;
+}
+.chart-seg button.active,.seg-mini button.active{ background:var(--surface); color:var(--ink); font-weight:500; box-shadow:0 3px 8px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.06); }
+
+/* ---- anahtar (iOS) ---- */
+.switch{ width:51px; height:31px; }
+.switch .track{ background:var(--surface-3); }
+.switch .track::after{ width:27px; height:27px; top:2px; left:2px; box-shadow:0 3px 8px rgba(0,0,0,.15),0 1px 1px rgba(0,0,0,.16); }
+.switch input:checked + .track{ background:var(--acc); }
+.switch input:checked + .track::after{ transform:translateX(20px); }
+.set-row-txt .t{ font-size:17px; font-weight:400; letter-spacing:-.012em; }
+.set-row-txt .s{ font-size:13px; font-weight:400; color:var(--ink-dim); line-height:1.38; }
+
+/* ---- gün çipleri / hafta şeridi ---- */
+.day-chip{ background:none; border:none; border-radius:10px; }
+.day-chip .dname{ font-family:inherit; font-size:11px; font-weight:500; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-faint); }
+.day-chip.selected,.day-chip.today{ background:var(--surface-2); }
+.daystrip-d{ background:none; border:none; border-radius:10px; padding:8px 2px 9px; }
+.daystrip-d .dow{ font-size:11px; font-weight:500; letter-spacing:.03em; color:var(--ink-faint); }
+.daystrip-d .num{ font-family:inherit; font-size:17px; font-weight:400; letter-spacing:-.012em; }
+.daystrip-d .dot{ width:5px; height:5px; }
+.daystrip-d .dot.part{ background:var(--orange); }
+.daystrip-d .dot.full{ background:var(--acc); }
+.daystrip-d .dot.rest{ background:none; border:none; }
+.daystrip-d.is-today{ background:var(--acc); color:var(--on-acc); box-shadow:none; }
+.daystrip-d.is-today .dow{ color:var(--on-acc); opacity:.7; }
+.daystrip-d.is-today .dot.full,.daystrip-d.is-today .dot.part{ background:var(--on-acc); }
+
+/* ---- özet kutuları ---- */
+.stat-tile{ background:var(--surface); border-radius:14px; padding:14px; }
+.stat-grid{ gap:12px; }
+.stat-tile-head{ font-size:15px; font-weight:400; color:var(--ink-dim); letter-spacing:-.006em; white-space:nowrap; }
+.stat-tile-head span{ overflow:hidden; text-overflow:ellipsis; }
+.stat-v{ font-family:inherit; font-size:30px; font-weight:600; letter-spacing:-.026em; margin-top:6px; }
+.stat-v.good{ color:var(--acc); } .stat-v.bad{ color:var(--red); }
+.stat-sub{ font-size:13px; color:var(--ink-faint); font-weight:400; }
+
+/* ---- ipucu / not kutuları ---- */
+.tip-box,.profile-note,.mb-missing,.reminder-water-note,.backup-note,.pain-tip{
+  background:var(--surface-2); border-radius:10px; font-size:15px; font-weight:400;
+  color:var(--ink-dim); letter-spacing:-.006em; line-height:1.4;
+}
+.mb-missing b{ color:var(--orange); font-weight:500; }
+.out-item,.recipe-card{ background:var(--surface-2); border-radius:10px; }
+.out-item .n{ font-size:22px; font-weight:600; letter-spacing:-.021em; }
+.out-item .l{ font-size:13px; color:var(--ink-dim); font-weight:400; }
+.footer-note{ font-size:13px; color:var(--ink-faint); }
+
+/* ---- alt sayfa ---- */
+.sheet{ background:var(--bg-el); border-radius:22px 22px 0 0; }
+.sheet h3{ font-family:inherit; font-size:22px; font-weight:700; letter-spacing:-.021em; text-transform:none; }
+.sheet-sub{ font-size:15px; color:var(--ink-dim); font-weight:400; }
+.sheet-1rm .v{ font-family:inherit; font-size:34px; font-weight:700; letter-spacing:-.028em; }
+.sheet-grip{ background:var(--surface-3); }
+
+/* ---- dinlenme sayacı ---- */
+#rest-bar{ background:color-mix(in srgb,var(--bg-el) 82%,transparent); backdrop-filter:saturate(180%) blur(24px); -webkit-backdrop-filter:saturate(180%) blur(24px); border-top:var(--hair) solid var(--sep-op); box-shadow:none; }
+#rest-bar .rest-t{ font-family:inherit; font-size:26px; font-weight:600; letter-spacing:-.026em; }
+#rest-bar .rest-lbl{ font-size:11px; font-weight:500; letter-spacing:.03em; color:var(--ink-faint); }
+#rest-bar .rest-bar-track i{ background:var(--acc); }
+#rest-bar .rest-acts button{ background:var(--surface-2); border:none; border-radius:10px; font-size:15px; font-weight:600; }
+#rest-bar .rest-acts .rest-skip{ background:var(--acc); color:var(--on-acc); }
+
+/* ---- kutlama / kayıt bildirimi ---- */
+.celebrate-toast{ background:var(--surface); color:var(--ink); border:var(--hair) solid var(--border); box-shadow:0 12px 32px -12px rgba(0,0,0,.6); font-size:15px; font-weight:500; border-radius:14px; }
+#save-flag{ background:var(--surface); color:var(--ink); border:var(--hair) solid var(--border); font-size:13px; font-weight:400; }
+
+/* ---- kahraman bloğu: gradyan gökkuşağı yerine düz yüzey ---- */
+.hero{ background:var(--surface); border-radius:0 0 22px 22px; margin-bottom:14px; padding-bottom:20px; overflow:visible; }
+.hero-bg{ display:none; }
+.hero-inner{ color:var(--ink); }
+.hero-eyebrow{
+  font-family:inherit; font-size:11px; font-weight:500; letter-spacing:.06em;
+  background:var(--surface-2); border:none; color:var(--ink-dim); padding:4px 9px; border-radius:6px; backdrop-filter:none;
+}
+.hero-startdate{ font-size:13px; color:var(--ink-faint); }
+.hero-title{
+  font-family:inherit; font-size:34px; line-height:1.06; font-weight:700;
+  letter-spacing:-.028em; text-transform:none; text-shadow:none;
+}
+.ring-track{ stroke:var(--surface-3); stroke-width:9; }
+.ring-fill{ stroke:var(--acc); stroke-width:9; }
+.ring-svg{ filter:none; }
+.ring-num{ font-family:inherit; font-weight:700; letter-spacing:-.028em; }
+.ring-label{ font-size:11px; font-weight:500; letter-spacing:.03em; color:var(--ink-faint); text-transform:uppercase; }
+.hstat-n{ font-family:inherit; font-weight:600; letter-spacing:-.021em; }
+.hstat-l{ font-size:11px; font-weight:500; letter-spacing:.03em; color:var(--ink-faint); }
+.hero-quote{ border-top:var(--hair) solid var(--border); font-size:15px; color:var(--ink-dim); }
+.hero-quote cite{ color:var(--ink-faint); }
+.hero-today{
+  background:var(--surface-2); border:none; border-radius:12px; backdrop-filter:none; color:var(--ink);
+}
+.hero-today:active{ background:var(--surface-3); }
+.hero-today .ht-ico{ width:36px; height:36px; border-radius:9px; background:var(--acc); }
+.hero-today .ht-ico svg{ stroke:var(--on-acc); }
+.hero-today .ht-eyebrow{ font-size:11px; font-weight:500; letter-spacing:.03em; color:var(--ink-faint); }
+.hero-today .ht-title{ font-size:17px; font-weight:400; letter-spacing:-.012em; }
+.hero-today .ht-sub{ font-size:13px; color:var(--ink-dim); font-weight:400; }
+.hero-today .ht-cta{ background:var(--acc); color:var(--on-acc); font-size:15px; font-weight:600; border-radius:8px; padding:7px 14px; }
+.hero-today.is-done .ht-cta{ background:var(--surface-3); color:var(--ink-dim); }
+.hero-today.is-done .ht-ico{ background:var(--surface-3); }
+.hero-today.is-done .ht-ico svg{ stroke:var(--ink-dim); }
+
+/* ---- alt sekme çubuğu: bulanık cam + ortada "Başla" düğmesi ---- */
+.tab-bar{
+  background:color-mix(in srgb,var(--bg-el) 78%,transparent);
+  backdrop-filter:saturate(180%) blur(24px); -webkit-backdrop-filter:saturate(180%) blur(24px);
+  border-top:var(--hair) solid var(--sep-op); box-shadow:none;
+  padding:7px 6px calc(6px + env(safe-area-inset-bottom)); align-items:flex-end; gap:0;
+}
+.tab-btn{ max-width:none; gap:3px; font-size:10px; font-weight:500; letter-spacing:.005em; color:var(--ink-faint); padding-top:3px; }
+.tab-btn-icon{ width:auto; height:auto; background:none; border-radius:0; color:var(--ink); }
+.tab-btn-icon svg{ width:25px; height:25px; stroke-width:1.65; }
+.tab-btn.active{ color:var(--acc); }
+.tab-btn.active .tab-btn-icon{ background:none; color:inherit; }
+.tab-btn.active .tab-btn-icon svg{ stroke-width:2; }
+/* Ortadaki daire: openGym'in imzası. Bugünün antrenmanına atlar. */
+.tab-start{ flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:none; padding:0; margin-top:-24px; cursor:pointer; font-family:inherit; font-size:10px; font-weight:600; color:var(--acc); }
+.tab-start .cir{
+  width:52px; height:52px; border-radius:50%; background:var(--acc); color:var(--on-acc);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 18px -4px color-mix(in srgb,var(--acc) 55%,transparent);
+  transition:transform var(--fast) var(--ease);
+}
+.tab-start:active .cir{ transform:scale(.93); }
+.tab-start .cir svg{ width:26px; height:26px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+/* Dinlenme günü: daire susuyor, yanıp sönen bir eylem çağrısı olmuyor. */
+.tab-start.is-rest .cir{ background:var(--surface-3); color:var(--ink-dim); box-shadow:none; }
+.tab-start.is-rest{ color:var(--ink-faint); }
+
+/* ---- vurgu renk örnekleri ---- */
+.swatch{ width:30px; height:30px; border-width:2px; }
+.swatch.on{ border-color:var(--ink); }
+
+/* ---- ısı haritası / kas dengesi: vurgu rampası ---- */
+.hm-c{ background:var(--surface-2); }
+.hm-c.l1{ background:color-mix(in srgb,var(--acc) 30%,var(--surface-2)); }
+.hm-c.l2{ background:color-mix(in srgb,var(--acc) 55%,var(--surface-2)); }
+.hm-c.l3{ background:color-mix(in srgb,var(--acc) 78%,var(--surface-2)); }
+.hm-c.l4{ background:var(--acc); }
+.hm-c.today{ box-shadow:0 0 0 1.5px var(--acc); }
+.mb-figs [data-region]{ fill:var(--surface-3); }
+.mb-figs [data-region].lv1{ fill:color-mix(in srgb,var(--acc) 30%,var(--surface-3)); }
+.mb-figs [data-region].lv2{ fill:color-mix(in srgb,var(--acc) 55%,var(--surface-3)); }
+.mb-figs [data-region].lv3{ fill:color-mix(in srgb,var(--acc) 78%,var(--surface-3)); }
+.mb-figs [data-region].lv4{ fill:var(--acc); }
+.muscle-map-figures [data-region].active{ fill:var(--acc); }
+.mm-outline{ stroke:var(--border); }
+.mb-rank-row .bar i{ background:var(--acc); }
+.mb-rank-row{ font-size:15px; font-weight:400; }
+.mb-rank-row .lbl{ color:var(--ink-dim); font-weight:400; }
+.mb-rank-row .n{ font-family:inherit; font-size:13px; }
+
+/* ---- konfeti: kutlama kalsın ama sistem renkleriyle ---- */
+.confetti-piece{ width:7px; height:11px; border-radius:1px; }
+
+/* ---- ilerleme çubukları / haftalık detay ---- */
+.hist-row-fill,.ring-metric-fill{ stroke:var(--acc); }
+.streak-num{ font-family:inherit; font-size:44px; font-weight:700; letter-spacing:-.028em; }
+.streak-label{ font-size:13px; color:var(--ink-dim); font-weight:400; }
+.howto-link{ color:var(--acc); font-size:13px; font-weight:400; }
+.playlist-link{ color:var(--acc); font-weight:400; font-size:15px; }
+.recipe-name{ font-size:17px; font-weight:600; letter-spacing:-.012em; }
+.recipe-protein{ color:var(--acc); font-size:13px; font-weight:400; }
+.recipe-time,.recipe-ing{ font-size:13px; color:var(--ink-dim); font-weight:400; }
+/* ---- düzeltmeler: bölüm başlıkları, kahraman yerleşimi ---- */
+/* Alt bölüm başlıkları (Isınma / Antrenman / Karın) openGym'de bağırmaz: 13px, normal
+   ağırlık, ikincil renk, cümle düzeni. Büyük harf + 800 ağırlık hiyerarşiyi düzleştiriyordu. */
+.sub{
+  font-family:inherit; font-size:13px; font-weight:400; letter-spacing:-.004em;
+  text-transform:none; color:var(--ink-dim); margin:20px 0 6px;
+}
+.accordion[open] > .sub{ margin-bottom:2px; }
+
+/* Kahraman bloğu artık diğerleri gibi bir kart: tam genişlik gradyan bant değil. */
+.hero{ border-radius:14px; margin:8px 0 12px; padding:16px; }
+.hero-inner{ padding:0; }
+.hero-top{ margin-bottom:12px; }
+.hero-title{ font-size:28px; letter-spacing:-.024em; margin-bottom:18px; }
+/* İki sütun eşit genişlikte değildi, "25 / 185" alt satıra kırılıyordu. Sabit sütunlu
+   bir ızgara ve tek satıra kilitli sayılar bunu bitiriyor. */
+.hero-main{ gap:16px; align-items:center; flex-wrap:nowrap; margin-bottom:16px; }
+.ring-wrap{ width:104px; height:104px; flex:0 0 104px; }
+.ring-num{ font-size:29px; }
+.ring-label{ font-size:10px; }
+.hero-stats{ flex:1; min-width:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 10px; }
+.hstat{ min-width:0; }
+.hstat-n{ font-size:19px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hstat-l{ font-size:10px; white-space:nowrap; }
+.hero-quote{ padding-top:14px; font-size:14px; }
+.hero-quote p{ font-style:normal; }
+.hero-today{ margin-bottom:14px; }
+
+/* Ortadaki daire içeriğin üstüne taşıyor; son kartın altında ona yer bırak. */
+.wrap{ padding-bottom:44px; }
+
+/* Program sekmesindeki haftalık şerit de aynı dile gelsin. */
+.week-strip{ gap:6px; }
+.day-chip{ flex:0 0 58px; width:58px; padding:9px 0 9px; gap:5px; }
+/* ---- düzeltmeler: program sekmesi ---- */
+/* Seçili gün çipi gradyan + parıltıydı; openGym'de seçim sadece dolu bir vurgu yüzeyi. */
+.day-chip.today{ border-color:transparent; }
+.day-chip.selected{ background:var(--acc); box-shadow:none; border-color:transparent; }
+.day-chip.selected .dname,.day-chip.selected .ddate{ color:var(--on-acc); }
+.day-chip.selected .dname{ opacity:.7; }
+.day-chip.selected .dtype-dot{ background:var(--on-acc); }
+.day-chip .ddate{ font-family:inherit; font-size:17px; font-weight:400; letter-spacing:-.012em; }
+.dtype-dot{ width:5px; height:5px; }
+
+.week-detail{ background:var(--surface-2); border-radius:12px; padding:14px; gap:6px; }
+.week-detail-day{ font-family:inherit; font-size:13px; font-weight:400; letter-spacing:-.001em; color:var(--ink-dim); }
+.week-detail-title{ font-size:17px; font-weight:600; letter-spacing:-.012em; }
+.week-detail-focus{ font-size:15px; font-weight:400; color:var(--ink-dim); letter-spacing:-.006em; }
+.week-detail-extra{ font-size:13px; font-weight:400; color:var(--ink-faint); border-top:var(--hair) solid var(--border); }
+
+.playlist-song{ font-size:17px; font-weight:400; letter-spacing:-.012em; border-bottom-width:var(--hair); }
+.playlist-song .artist{ color:var(--ink-dim); font-weight:400; }
+
+/* Geçmiş / haftalık özet satırları da aynı ölçekte kalsın. */
+.hist-date,.hist-compare-title{ font-size:13px; font-weight:400; color:var(--ink-dim); letter-spacing:-.001em; text-transform:none; font-family:inherit; }
+.hist-row-label{ font-size:15px; font-weight:400; color:var(--ink-dim); }
+.hist-row-val{ font-family:inherit; font-size:15px; font-weight:500; }
+.hist-row-bar{ background:var(--surface-3); }
+.hist-row-fill{ background:var(--acc); }
+.hist-delta-val{ font-family:inherit; font-weight:600; }
+.hist-delta-up{ color:var(--acc); } .hist-delta-down{ color:var(--red); }
+.hist-status-done{ color:var(--acc); } .hist-status-partial{ color:var(--orange); }
+
+/* Ölçüm halkaları (su/adım) ve grafik de vurgu rengini kullansın. */
+.ring-metric-track{ stroke:var(--surface-3); }
+.ring-metric-fill{ stroke:var(--acc); }
+.ring-metric-value{ font-family:inherit; font-weight:600; letter-spacing:-.021em; }
+.ring-metric-target{ font-size:13px; color:var(--ink-dim); font-weight:400; }
+.qty-btn{ background:var(--surface-2); border:none; color:var(--ink); font-size:15px; font-weight:600; border-radius:10px; }
+.streak-hero{ padding:6px 0 2px; }
+/* Rekor satırı sarı yerine vurgu rengiyle işaretleniyor — sistem sarısı koyu zeminde
+   diğer her şeyi bastırıyordu ve rekoru kupa ikonu zaten söylüyor. */
+.hist-row.is-pr .kg{ color:var(--acc); font-weight:600; }
+.hist-row .kg{ font-family:inherit; font-weight:500; font-size:17px; }
+.hist-row .d{ font-size:15px; }
+.hist-row .delta.up{ color:var(--acc); } .hist-row .delta.down{ color:var(--red); }
 </style>
 
 <main class="wrap">
@@ -1112,7 +1502,7 @@ html:root[data-theme="dark"][data-accent="slate"] { --grad-a:#7C8AA5; --grad-b:#
     </summary>
 
     <div class="set-row">
-      <div class="set-row-txt"><div class="t">Tema</div><div class="s">Varsayılan, telefonun sistem ayarını izler.</div></div>
+      <div class="set-row-txt"><div class="t">Tema</div><div class="s">Varsayılan koyu. Otomatik, telefonun sistem ayarını izler.</div></div>
       <div class="seg-mini" id="set-theme">
         <button type="button" data-theme-val="auto">Otomatik</button>
         <button type="button" data-theme-val="light">Açık</button>
@@ -1121,7 +1511,7 @@ html:root[data-theme="dark"][data-accent="slate"] { --grad-a:#7C8AA5; --grad-b:#
     </div>
 
     <div class="set-row" style="display:block;">
-      <div class="set-row-txt" style="margin-bottom:10px;"><div class="t">Vurgu rengi</div><div class="s">Başlık gradyanı, sekmeler ve grafikler.</div></div>
+      <div class="set-row-txt" style="margin-bottom:10px;"><div class="t">Vurgu rengi</div><div class="s">Sekmeler, düğmeler, grafikler ve ısı haritası.</div></div>
       <div class="swatches" id="set-accent"></div>
     </div>
   </details>
@@ -1189,6 +1579,10 @@ html:root[data-theme="dark"][data-accent="slate"] { --grad-a:#7C8AA5; --grad-b:#
   <button class="tab-btn" data-goto-tab="program" type="button">
     <span class="tab-btn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="3"></rect><line x1="3" y1="9.5" x2="21" y2="9.5"></line><line x1="8" y1="2.5" x2="8" y2="6.5"></line><line x1="16" y1="2.5" x2="16" y2="6.5"></line></svg></span>
     Program
+  </button>
+  <button class="tab-start" id="tab-start" type="button" aria-label="Bugünün antrenmanına git">
+    <span class="cir"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.4"></circle><circle cx="19" cy="12" r="2.4"></circle><line x1="7.4" y1="12" x2="16.6" y2="12"></line><line x1="9.5" y1="8.5" x2="9.5" y2="15.5"></line><line x1="14.5" y1="8.5" x2="14.5" y2="15.5"></line></svg></span>
+    <span id="tab-start-label">Başla</span>
   </button>
   <button class="tab-btn" data-goto-tab="progress" type="button">
     <span class="tab-btn-icon"><svg viewBox="0 0 24 24"><polyline points="4,17 9,10 13,14 20,5"></polyline><polyline points="14,5 20,5 20,11"></polyline></svg></span>
@@ -1590,7 +1984,7 @@ var BADGES = [
 ];
 
 var DEFAULT_STATE = {
-  schemaVersion:4,
+  schemaVersion:5,
   profile:{ sex:'', age:43, heightCm:182, weightKg:105, goalWeightKg:null, activity:'moderate' },
   stepGoal:8000,
   water:{}, steps:{}, workout:{}, nutrition:{}, posture:{}, cardio:{}, jumprope:{}, exerciseLog:{}, painLog:{},
@@ -1606,7 +2000,7 @@ var DEFAULT_STATE = {
   ],
   whyNote:'',
   /* v2: antrenman + görünüm tercihleri (openGym'in Settings ekranından uyarlandı) */
-  settings:{ restAuto:true, restSecs:90, restSound:true, wakeLock:true, theme:'auto', accent:'indigo' }
+  settings:{ restAuto:true, restSecs:90, restSound:true, wakeLock:true, theme:'dark', accent:'lime' }
 };
 
 /* ============ DATE HELPERS ============ */
@@ -1672,7 +2066,13 @@ function ensureShape(s){
     });
     s.exerciseLog = migrated;
   }
-  s.schemaVersion = 4;
+  if(incomingVersion < 5){
+    /* Görsel dil openGym'inkiyle değiştirildi; vurgu renkleri Apple sistem paletine geçti.
+       Kayıtlı eski adlar en yakın yeni renge taşınıyor, seçim sıfırlanmıyor. */
+    var accentMap = { indigo:'sky', ember:'orange', teal:'lime', violet:'violet', rose:'pink', slate:'sky' };
+    if(accentMap[s.settings.accent]) s.settings.accent = accentMap[s.settings.accent];
+  }
+  s.schemaVersion = 5;
   if (typeof s.whyNote !== 'string') s.whyNote = '';
   if (typeof s.stepGoal !== 'number') s.stepGoal = 8000;
   return s;
@@ -2656,10 +3056,10 @@ function renderStatTiles(){
   var iScale= '<svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="3"></rect><path d="M9 11a3 3 0 0 1 6 0"></path><path d="M12 11V8.5"></path></svg>';
 
   wrap.innerHTML =
-    statTile(iDumb, 'Antrenman günü', totalTrained, 'toplam') +
+    statTile(iDumb, 'Antrenman', totalTrained, 'toplam gün') +
     statTile(iCal, 'Bu ay', thisMonth, MONTH_NAMES[parseISO(todayISO).getMonth()]) +
     statTile(iFire, 'Seri', computeStreak(), 'gün üst üste') +
-    statTile(iScale, 'Kilo · 30 gün', deltaTxt, goalSub || deltaSub, deltaCls);
+    statTile(iScale, 'Kilo · 30g', deltaTxt, goalSub || deltaSub, deltaCls);
 }
 
 /* ---------- Yıllık aktivite ısı haritası ---------- */
@@ -2991,23 +3391,24 @@ function syncWakeLock(){
 }
 
 /* ---------- Görünüm: tema + vurgu rengi ---------- */
+/* Apple sistem renkleri — openGym'in yaptığı gibi. Örnekler düz renk, gradyan yok. */
 var ACCENTS = [
-  {id:'indigo', label:'İndigo', css:'linear-gradient(135deg,#4F46E5,#06B6D4)'},
-  {id:'ember',  label:'Ateş',   css:'linear-gradient(135deg,#F43F1F,#F0A319)'},
-  {id:'teal',   label:'Yeşil',  css:'linear-gradient(135deg,#0FA76F,#22D3EE)'},
-  {id:'violet', label:'Mor',    css:'linear-gradient(135deg,#7C5CFC,#D946EF)'},
-  {id:'rose',   label:'Gül',    css:'linear-gradient(135deg,#E11D63,#FB7185)'},
-  {id:'slate',  label:'Füme',   css:'linear-gradient(135deg,#334155,#64748B)'}
+  {id:'lime',   label:'Yeşil',  css:'#30D158'},
+  {id:'sky',    label:'Mavi',   css:'#0A84FF'},
+  {id:'orange', label:'Turuncu',css:'#FF9F0A'},
+  {id:'violet', label:'Mor',    css:'#BF5AF2'},
+  {id:'pink',   label:'Pembe',  css:'#FF375F'},
+  {id:'teal',   label:'Camgöbeği', css:'#40C8E0'}
 ];
 function applyAppearance(){
   var root = document.documentElement;
-  var th = state.settings.theme;
-  if(th === 'auto') root.removeAttribute('data-theme');
-  else root.setAttribute('data-theme', th);
+  // "auto" da yazılıyor: koyu artık varsayılan, açık palet [data-theme="light"] ve
+  // prefers-color-scheme:light altındaki [data-theme="auto"] ile geliyor.
+  root.setAttribute('data-theme', state.settings.theme || 'dark');
   root.setAttribute('data-accent', state.settings.accent || 'indigo');
   var meta = document.querySelector('meta[name="theme-color"]');
   if(meta){
-    var c = getComputedStyle(root).getPropertyValue('--grad-a').trim();
+    var c = getComputedStyle(root).getPropertyValue('--bg').trim();
     if(c) meta.setAttribute('content', c);
   }
 }
@@ -3079,9 +3480,23 @@ function jumpToWorkout(){
   card.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
+/* Sekme çubuğunun ortasındaki daire. Dinlenme gününde susuyor — yanıp sönen bir
+   eylem çağrısı olarak durmasın diye. */
+function renderTabStart(){
+  var btn = document.getElementById('tab-start');
+  if(!btn) return;
+  var day = SPLIT[dowIndex(todayISO)];
+  var sc = dayScoreRaw(todayISO);
+  var rest = day.venue === 'rest';
+  btn.classList.toggle('is-rest', rest || (sc.exTotal>0 && sc.exDone>=sc.exTotal));
+  document.getElementById('tab-start-label').textContent =
+    rest ? 'Dinlen' : (sc.exTotal>0 && sc.exDone>=sc.exTotal) ? 'Bitti' : (sc.exDone>0 ? 'Devam' : 'Başla');
+}
+
 /* ---------- v2 render girişi ---------- */
 function renderV2(){
   renderHeroToday();
+  renderTabStart();
   renderDaystrip();
   renderStatTiles();
   renderHeatmap();
@@ -3125,6 +3540,7 @@ document.addEventListener('change', function(e){
 
 document.addEventListener('click', function(e){
   if(e.target.closest('#hero-today')){ jumpToWorkout(); return; }
+  if(e.target.closest('#tab-start')){ showTab('today'); jumpToWorkout(); return; }
 
   var add = e.target.closest('[data-rest-add]');
   if(add){ addRestSeconds(+add.dataset.restAdd); return; }
